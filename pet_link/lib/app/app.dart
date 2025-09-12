@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pet_link/app/theme.dart';
 import 'package:pet_link/features/pets/presentation/pages/home_page.dart';
+import 'package:pet_link/features/pets/presentation/pages/edit_pet_page.dart';
 
 /// Root of your app (MaterialApp, routes, theme).
 class PetLinkApp extends StatelessWidget {
@@ -14,7 +15,7 @@ class PetLinkApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (_) => const HomePage(),
-        // '/pet': (_) => const PetDetailPage(), // add later
+        '/edit': (_) => const EditPetPage(),
       },
     );
   }

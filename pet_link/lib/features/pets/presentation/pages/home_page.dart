@@ -34,9 +34,8 @@ class HomePage extends StatelessWidget {
               ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Prove the FAB works: check your Debug Console/terminal.
-          print('add pet');
-          context.read<PetListProvider>().addDummy();
+          // Open the Add Pet form instead of adding a dummy
+          Navigator.pushNamed(context, '/edit');
         },
         child: const Icon(Icons.add),
       ),
