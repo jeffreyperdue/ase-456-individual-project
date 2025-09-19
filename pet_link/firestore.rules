@@ -1,0 +1,51 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read and write their own user document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Pets can be read and written by their owner
+    match /pets/{petId} {
+      allow read, write: if request.auth != null && 
+        (resource.data.ownerId == request.auth.uid || 
+         request.auth.uid == petId); // Allow owner to read/write their pets
+    }
+    
+    // Care plans can be read and written by the pet owner
+    match /carePlans/{carePlanId} {
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/pets/$(resource.data.petId)) &&
+        get(/databases/$(database)/documents/pets/$(resource.data.petId)).data.ownerId == request.auth.uid;
+    }
+    
+    // Access tokens can be read by the pet owner and written by the pet owner
+    match /accessTokens/{tokenId} {
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/pets/$(resource.data.petId)) &&
+        get(/databases/$(database)/documents/pets/$(resource.data.petId)).data.ownerId == request.auth.uid;
+    }
+    
+    // Lost reports can be read by anyone (for public lost pet alerts) but only written by pet owner
+    match /lostReports/{reportId} {
+      allow read: if true; // Public read for lost pet alerts
+      allow write: if request.auth != null && 
+        exists(/databases/$(database)/documents/pets/$(resource.data.petId)) &&
+        get(/databases/$(database)/documents/pets/$(resource.data.petId)).data.ownerId == request.auth.uid;
+    }
+    
+    // Weight entries can be read and written by the pet owner
+    match /weightEntries/{entryId} {
+      allow read, write: if request.auth != null && 
+        exists(/databases/$(database)/documents/pets/$(resource.data.petId)) &&
+        get(/databases/$(database)/documents/pets/$(resource.data.petId)).data.ownerId == request.auth.uid;
+    }
+    
+    // Default deny all other documents
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

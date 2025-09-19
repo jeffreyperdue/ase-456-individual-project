@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_link/features/pets/domain/pet.dart';
 import 'package:pet_link/features/pets/presentation/state/pet_list_provider.dart';
+import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
 
-class EditPetPage extends StatefulWidget {
+class EditPetPage extends ConsumerStatefulWidget {
   const EditPetPage({super.key});
 
   @override
-  State<EditPetPage> createState() => _EditPetPageState();
+  ConsumerState<EditPetPage> createState() => _EditPetPageState();
 }
 
-class _EditPetPageState extends State<EditPetPage> {
+class _EditPetPageState extends ConsumerState<EditPetPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
   String? _species; // simple dropdown for MVP
@@ -21,26 +22,51 @@ class _EditPetPageState extends State<EditPetPage> {
     super.dispose();
   }
 
-  void _save() {
+  Future<void> _save() async {
     // 1) Validate
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    // 2) Build Pet
+    // 2) Get current user
+    final currentUser = ref.read(currentUserDataProvider);
+    if (currentUser == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('You must be signed in to add pets'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    // 3) Build Pet
     final id = DateTime.now().microsecondsSinceEpoch.toString();
     final pet = Pet(
       id: id,
+      ownerId: currentUser.id,
       name: _nameCtrl.text.trim(),
       species: _species ?? 'Unknown',
     );
 
-    // 3) Add via provider
-    context.read<PetListProvider>().add(pet);
+    // 4) Add via Riverpod provider
+    try {
+      await ref.read(petsProvider.notifier).add(pet);
 
-    // 4) Give feedback and go back
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Pet added')));
-    Navigator.pop(context);
+      // 5) Give feedback and go back
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Pet added')));
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
+    }
   }
 
   @override

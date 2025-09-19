@@ -1,12 +1,11 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // <-- add this
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firebase_options.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:provider/provider.dart';
 import 'app/app.dart';
-import 'features/pets/presentation/state/pet_list_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,10 +23,5 @@ Future<void> main() async {
   }
   // ---------------------------------------------------
 
-  runApp(
-    MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => PetListProvider())],
-      child: const PetLinkApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: PetLinkApp()));
 }
