@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 void main() => runApp(MaterialApp(home:SnackBarPage())); 
 
 class SnackBarPage extends StatelessWidget {
+  const SnackBarPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

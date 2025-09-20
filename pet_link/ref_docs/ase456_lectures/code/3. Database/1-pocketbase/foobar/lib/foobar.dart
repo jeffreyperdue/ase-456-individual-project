@@ -1,7 +1,5 @@
 // The FooBar class (your model)
 class FooBar {
-  String foo;
-  int bar;
 
   FooBar({
     required this.foo,
@@ -14,6 +12,8 @@ class FooBar {
       bar: json['bar'] as int,
     );
   }
+  String foo;
+  int bar;
 
   Map<String, dynamic> toJson() => {
         'foo': foo,

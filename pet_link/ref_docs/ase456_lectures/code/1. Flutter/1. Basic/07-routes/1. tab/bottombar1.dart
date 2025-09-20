@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(MaterialApp(home:MyApp())); 
 
 class MyApp extends StatefulWidget {
-  const MyApp(); 
+  const MyApp({super.key}); 
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -37,6 +37,8 @@ class _MyAppState extends  State<MyApp> {
 } 
 
 class Home1 extends StatelessWidget {
+  const Home1({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -53,6 +55,9 @@ class Home1 extends StatelessWidget {
 }
 
 class Home2 extends StatelessWidget {
+  const Home2({super.key});
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body:Text("Home2"),

@@ -8,7 +8,7 @@ abstract class Widget {
   const Widget({this.key});
 
   @override
-  String toString() => '${runtimeType}(key: $key)';
+  String toString() => '$runtimeType(key: $key)';
 }
 
 abstract class StatelessWidget extends Widget {
@@ -24,7 +24,7 @@ abstract class StatefulWidget extends Widget {
 // TRADITIONAL WAY (Verbose)
 class MyAppTraditional extends StatelessWidget {
   // Declare + forward manually
-  const MyAppTraditional({String? key}) : super(key: key);
+  const MyAppTraditional({super.key});
   //                      │                    │       │
   //                      │                    │       └── Pass to parent
   //                      │                    └────────── Call parent constructor

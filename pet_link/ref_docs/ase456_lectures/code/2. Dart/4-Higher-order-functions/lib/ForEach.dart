@@ -24,14 +24,16 @@ var getProducts = () => [
 void forEachExample() {
   List<String> names = ['Alice', 'Bob', 'Charlie'];
   // Print each name
-  names.forEach((name) => print('Hello, $name!'));
+  for (var name in names) {
+    print('Hello, $name!');
+  }
 
   List<Product> products = getProducts();
-  products.forEach((product) {
+  for (var product in products) {
     print('Product: ${product.name}');
     print('Price: \$${product.price}');
     print('---');
-  });
+  }
 }
 
 void sideEffectsExample() {
@@ -47,18 +49,18 @@ void sideEffectsExample() {
   // Use map instead
   List<int> numbers = [1, 2, 3, 4];
   List<int> doubled = [];
-  numbers.forEach((num) {
+  for (var num in numbers) {
     doubled.add(num * 2); // Side effect
-  });
+  }
   print(doubled); // [2, 4, 6, 8]
 
   // Right usage - performing side effects
   List<String> students = ['Alice', 'Bob', 'Charlie'];
-  students.forEach((student) {
+  for (var student in students) {
     print('Welcome, $student!'); // Logging
     sendEmail(student); // API call
     updateDatabase(student); // Database update
-  });
+  }
 }
 
 void commonMistakesExample() {
@@ -72,6 +74,8 @@ void commonMistakesExample() {
   // Do not use forEach to transform a list
   // This is a common mistake
   // Use map instead
-  numbers.forEach((num) => doubled.add(num * 2)); // Awkward
+  for (var num in numbers) {
+    doubled.add(num * 2);
+  } // Awkward
   print(doubled); // [2, 4, 6]
 }

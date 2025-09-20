@@ -32,7 +32,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
   // and allows validation of the form.
   // Note: This is a GlobalKey<FormState>, not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
-  var _controller = TextEditingController();
+  final _controller = TextEditingController();
 
   @override
   void dispose() {

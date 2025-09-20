@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:test/test.dart';
 
 /// Unit tests for PocketBase connection
 /// Demonstrates testing external service connections

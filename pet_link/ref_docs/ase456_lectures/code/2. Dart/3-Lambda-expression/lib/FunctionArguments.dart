@@ -25,7 +25,7 @@ void functionAsArgument() {
   print('Result of operatorSelector 2: $result2');
 
   int add(int x, int y) => x + y;
-  Function add2 = (int x, int y) => x + y;
+  add2(int x, int y) => x + y;
 
   var result3 = operatorSelector(add, 10, 20);
   print('Result of operatorSelector 3: $result3');

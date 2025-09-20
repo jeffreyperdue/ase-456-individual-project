@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp()); 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {return MaterialApp(home: Home());}
 } 
 
 class Home extends StatelessWidget {
+  const Home({super.key});
+
   @override
   Widget build(BuildContext context) {
     // We need to use Scaffold to display containers
@@ -20,11 +24,17 @@ class Home extends StatelessWidget {
 }
 
 class BlueBox extends StatelessWidget {
+  const BlueBox({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 80,
       width: 260,
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        border: Border.all(),
+      ),
       // Child can be any widget
       child: const Text(
         "Text",
@@ -32,10 +42,6 @@ class BlueBox extends StatelessWidget {
           color: Colors.white,
           fontSize: 25
         ),  
-      ),
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        border: Border.all(),
       ),
     );
   }

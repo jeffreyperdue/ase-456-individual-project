@@ -31,6 +31,8 @@ Map<String, dynamic> generateRandomData() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _currentDocId = '';
   bool _isLoading = false;
   String _statusMessage = 'Click the button to generate foobar data!';
-  List<Map<String, dynamic>> _dataHistory = [];
+  final List<Map<String, dynamic>> _dataHistory = [];
 
   Future<void> _generateAndSaveFoobar() async {
     setState(() {

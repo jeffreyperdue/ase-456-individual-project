@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 void main() => runApp(MaterialApp(home:DialogPage())); 
 
 class DialogPage extends StatefulWidget {
+  const DialogPage({super.key});
+
   @override
   State<DialogPage> createState() => _DialogPageState();
 }
@@ -20,7 +22,7 @@ class _DialogPageState extends State<DialogPage> {
       appBar: AppBar(
         title: const Text('Dialog'),
       ),
-      body: Text(this.info), // This info will be updated from the dialog
+      body: Text(info), // This info will be updated from the dialog
       floatingActionButton: FloatingActionButton(
         // click the button to display dialog
         onPressed: () {
@@ -40,18 +42,18 @@ class _DialogPageState extends State<DialogPage> {
 class DialogUI extends StatelessWidget {
   final String input;
   final function;
-  DialogUI({required this.input, required this.function});
+  DialogUI({super.key, required this.input, required this.function});
 
   String returnValue = "";
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
+      child: SizedBox(
         width: 300,
         height: 300,
         child: Column(
           children: [
-            Text(this.input),
+            Text(input),
             TextField(
               onChanged: (val) {returnValue = val;},
             ),

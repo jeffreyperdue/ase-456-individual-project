@@ -13,6 +13,8 @@ class Arguments {
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -85,7 +87,7 @@ class Page1 extends StatelessWidget {
   static String route = '/page1';
   Arguments arguments;
 
-  Page1({required this.arguments,});
+  Page1({super.key, required this.arguments,});
    
   @override
   Widget build(BuildContext context) {
@@ -109,7 +111,7 @@ class Page2 extends StatelessWidget {
   static String route = '/page2';
    
   Arguments arguments;
-  Page2({required this.arguments,});
+  Page2({super.key, required this.arguments,});
   
   @override
   Widget build(BuildContext context) {

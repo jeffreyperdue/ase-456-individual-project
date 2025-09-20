@@ -6,8 +6,8 @@
 
 void cascadeExample() {
   // Create a list and add elements using cascade notation
-  var list = <String>[]
-    ..add("Hello")
+  var list = <String>["Hello"]
+    
     ..add("World")
     ..sort();
   print('Cascade List Example: $list'); // Output: [Hello, World]

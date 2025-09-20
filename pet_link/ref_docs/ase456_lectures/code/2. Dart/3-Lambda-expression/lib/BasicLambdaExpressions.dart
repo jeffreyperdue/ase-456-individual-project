@@ -41,9 +41,9 @@ void stepByStepExample() {
 
   // Step 2: Same function as lambda (arrow notation)
   print('\nStep 2: Same function as lambda');
-  var lambdaSquare = (int x) => x * x;
+  lambdaSquare(int x) => x * x;
   print('lambdaSquare(5): ${lambdaSquare(5)}');
-  print('lambdaSquare: ${lambdaSquare}');
+  print('lambdaSquare: $lambdaSquare');
 
   // Step 3: Using the lambda in different ways
   print('\nStep 3: Using lambda in different contexts');
@@ -52,7 +52,7 @@ void stepByStepExample() {
   print('Direct call: ${((int x) => x * x)(5)}');
 
   // Stored in variable
-  var storedSquare = (int x) => x * x;
+  storedSquare(int x) => x * x;
   print('Stored in variable: ${storedSquare(5)}');
 
   // Passed to higher-order function
@@ -70,13 +70,13 @@ void simpleLambdaExamples() {
 
   // Multiple simple lambda expressions
   print('--- Multiple Simple Lambda Expressions ---');
-  var getCurrentDateTime = () => DateTime.now();
-  var doubleIt = (int x) => x * 2;
-  var isEven = (int x) => x % 2 == 0;
-  var makeGreeting = (String name) => "Welcome, \$name!";
-  var toUpperCase = (String text) => text.toUpperCase();
-  var calculateArea = (double width, double height) => width * height;
-  var getFullName = (Map<String, String> person) =>
+  getCurrentDateTime() => DateTime.now();
+  doubleIt(int x) => x * 2;
+  isEven(int x) => x % 2 == 0;
+  makeGreeting(String name) => "Welcome, \$name!";
+  toUpperCase(String text) => text.toUpperCase();
+  calculateArea(double width, double height) => width * height;
+  getFullName(Map<String, String> person) =>
       '\${person["first"]} \${person["last"]}';
 
   print('getCurrentDateTime(): ${getCurrentDateTime()}');
@@ -93,9 +93,9 @@ void simpleLambdaExamples() {
   print('\n--- Functions as Variables ---');
 
   // Store different functions in variables
-  var add = (int a, int b) => a + b;
-  var subtract = (int a, int b) => a - b;
-  var multiply = (int a, int b) => a * b;
+  add(int a, int b) => a + b;
+  subtract(int a, int b) => a - b;
+  multiply(int a, int b) => a * b;
 
   // Store functions in a list!
   var operations = [add, subtract, multiply];
@@ -114,7 +114,7 @@ void simpleLambdaExamples() {
   print('calculator["multiply"](7, 2): ${calculator["multiply"]!(7, 2)}');
 
   // Conditional logic
-  var getGrade = (int score) => score >= 90
+  getGrade(int score) => score >= 90
       ? 'A'
       : score >= 80
       ? 'B'

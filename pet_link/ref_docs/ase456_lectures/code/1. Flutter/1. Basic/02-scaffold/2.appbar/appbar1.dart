@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({required this.title});
+  const MyHomePage({super.key, required this.title});
   final String title;
 
   @override
@@ -25,7 +25,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       // appBar can have actions
       appBar: AppBar(
-        title: Text(this.title),
+        title: Text(title),
         actions: [
           IconButton(
             icon: const Icon(Icons.info),

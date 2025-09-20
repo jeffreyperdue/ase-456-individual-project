@@ -5,14 +5,14 @@ import '../models/student.dart';
 /// Provides CRUD operations for Student data in PocketBase
 /// Demonstrates PocketBase patterns and best practices using instance-based design
 class PocketBaseCrudService {
-  // Instance variables instead of static
-  final PocketBase _pb;
-  final String _collection = 'students';
 
   // Constructor - this makes it an instance-based class
   PocketBaseCrudService({
     String baseUrl = 'http://127.0.0.1:8090',
   }) : _pb = PocketBase(baseUrl);
+  // Instance variables instead of static
+  final PocketBase _pb;
+  final String _collection = 'students';
 
   /// Get reference to students collection
   RecordService get _studentsRef => _pb.collection(_collection);

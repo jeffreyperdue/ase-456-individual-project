@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp()); 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {return MaterialApp(home: CardPage());}
 } 
 
 class CardPage extends StatelessWidget {
+  const CardPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +25,7 @@ class CardPage extends StatelessWidget {
             borderRadius: BorderRadius.circular(16.0),
           ),
           elevation: 4.0, // shadow depth
-          child: Container(
+          child: SizedBox(
             width: 200, height: 200,
             child: Center(child: Text("Hello")),
           ),

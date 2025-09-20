@@ -16,6 +16,7 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
 - Pet Sitter / Walker
 - Pet Trainer
 - Adoption Agency / Rescue
+  
 
 ### Secondary users (later)
 
@@ -59,17 +60,20 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
 
 ### Weekly Milestones for Sprint 1
 
-- **Week 1:**
-    - Scaffold Flutter project.
-    - Connect Firebase (Auth, Firestore, Storage).
-    - Verify local notifications package setup.
-- **Week 2:**
-    - Implement user authentication (signup/login).
-    - Create data models with `freezed` + JSON serialization.
-    - Build Firestore rules for basic Pet ownership.
-- **Week 3:**
-    - Build Pet CRUD UI (create, edit, delete pet).
-    - Add photo upload (Firebase Storage).
+- **Week 1:** ✅ **COMPLETED**
+    - ✅ Scaffold Flutter project.
+    - ✅ Connect Firebase (Auth, Firestore, Storage).
+    - ✅ Verify local notifications package setup.
+- **Week 2:** ✅ **COMPLETED**
+    - ✅ Implement user authentication (signup/login).
+    - ✅ Create data models with User domain model.
+    - ✅ Build Firestore rules for basic Pet ownership.
+    - ✅ Migrate to Riverpod state management.
+    - ✅ Implement AuthWrapper for protected routes.
+- **Week 3:** 🔄 **IN PROGRESS**
+    - ✅ Build Pet CRUD UI (create, edit, delete pet).
+    - ⏳ Add photo upload (Firebase Storage).
+    - ⏳ Enhanced pet profile forms.
 - **Week 4:**
     - Implement Care Plan form (diet, feeding schedule, meds).
     - Connect feeding/med times to local notifications.
@@ -103,40 +107,41 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
 
 ## 5) Flutter architecture
 
-- **State mgmt:** Riverpod (simple, testable).
-- **Navigation:** go_router.
-- **Data layer:** Repository pattern (Firestore backend).
+- **State mgmt:** ✅ Riverpod (simple, testable) - **IMPLEMENTED**
+- **Navigation:** ⏳ go_router (currently using basic Navigator)
+- **Data layer:** ✅ Repository pattern (Firestore backend) - **IMPLEMENTED**
+- **Authentication:** ✅ Firebase Auth with user management - **IMPLEMENTED**
 - **Offline:** `hive` for cached profile & reminders (stretch goal).
-- **Cloud:** Firebase (Auth, Firestore, Storage, Messaging).
+- **Cloud:** ✅ Firebase (Auth, Firestore) - **PARTIALLY IMPLEMENTED**
 - **Analytics/Crash:** Firebase Analytics + Crashlytics.
 
-**Starter packages:**
+**Current packages:**
 
-- `flutter_riverpod`, `go_router`, `freezed` + `json_serializable`
-- `cloud_firestore`, `firebase_auth`, `firebase_storage`, `firebase_messaging`
-- `flutter_local_notifications`, `qr_flutter`, `image_picker`
+- ✅ `flutter_riverpod`, `cloud_firestore`, `firebase_auth` - **IMPLEMENTED**
+- ⏳ `go_router`, `firebase_storage`, `firebase_messaging` - **PENDING**
+- ⏳ `flutter_local_notifications`, `qr_flutter`, `image_picker` - **PENDING**
 
 ---
 
-## 6) Data model (initial)
+## 6) Data model (current status)
 
-- **User** { id, name, email, role[] }
-- **Pet** { id, ownerId, name, species, breed, dob/age, weightKg, heightCm, photoUrl, isLost }
-- **CarePlan** { id, petId, dietText, feedingSchedule[], medications[] }
-- **AccessToken** { id, petId, grantedBy, role, expiresAt }
-- **LostReport** { id, petId, createdAt, lastSeenGeo, notes, posterUrl }
-- **WeightEntry** { id, petId, date, weightKg }
+- ✅ **User** { id, email, displayName, photoUrl, roles[], createdAt, updatedAt } - **IMPLEMENTED**
+- ✅ **Pet** { id, ownerId, name, species, breed, dateOfBirth, weightKg, heightCm, photoUrl, isLost, createdAt, updatedAt } - **IMPLEMENTED**
+- ⏳ **CarePlan** { id, petId, dietText, feedingSchedule[], medications[] } - **PENDING**
+- ⏳ **AccessToken** { id, petId, grantedBy, role, expiresAt } - **PENDING**
+- ⏳ **LostReport** { id, petId, createdAt, lastSeenGeo, notes, posterUrl } - **PENDING**
+- ⏳ **WeightEntry** { id, petId, date, weightKg } - **PENDING**
 
 ---
 
 ## 7) MVP Screens (Sprint 1)
 
-1. **Login/Signup**
-2. **Pet List/Dashboard**
-3. **Pet Profile Create/Edit**
-4. **Care Plan Editor (feeding + meds)**
-5. **Reminder Notifications**
-6. **Read-only Shared Profile View**
+1. ✅ **Login/Signup** - **IMPLEMENTED**
+2. ✅ **Pet List/Dashboard** - **IMPLEMENTED**
+3. ✅ **Pet Profile Create/Edit** - **IMPLEMENTED**
+4. ⏳ **Care Plan Editor (feeding + meds)** - **PENDING**
+5. ⏳ **Reminder Notifications** - **PENDING**
+6. ⏳ **Read-only Shared Profile View** - **PENDING**
 
 ---
 
@@ -171,7 +176,6 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
 ## 11) Next actions (Week 1)
 
 - Scaffold Flutter project + Firebase init.
-- Define models with `freezed`.
 - Implement Pet CRUD UI.
 - Add Care Plan form + schedule local reminders.
 - Generate QR code for shareable profile.

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp()); 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {return MaterialApp(home: Home());}
 } 
@@ -9,6 +11,8 @@ class MyApp extends StatelessWidget {
 // Remove the yellow underline
 // https://stackoverflow.com/questions/47114639/yellow-lines-under-text-widgets-in-flutter
 class Home extends StatelessWidget {
+  const Home({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Text(

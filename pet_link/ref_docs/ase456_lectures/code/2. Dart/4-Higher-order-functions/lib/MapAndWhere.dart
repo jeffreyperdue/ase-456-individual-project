@@ -16,6 +16,7 @@ class Text {
   final String content;
   Text(this.content);
 
+  @override
   String toString() => 'Text("$content")';
 }
 

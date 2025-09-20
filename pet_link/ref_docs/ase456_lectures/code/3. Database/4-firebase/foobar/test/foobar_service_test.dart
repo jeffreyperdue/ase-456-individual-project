@@ -177,6 +177,6 @@ class TestHelper {
 
   /// Verify FooBar has expected structure
   static bool isValidFooBar(FooBar foobar) {
-    return foobar.foo is String && foobar.bar is int;
+    return foobar.bar is int;
   }
 }

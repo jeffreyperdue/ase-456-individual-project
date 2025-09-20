@@ -19,6 +19,8 @@ class MyApp extends StatelessWidget {
 
 class BottomNavigationPage extends StatelessWidget {
   int index = 0;
+
+  BottomNavigationPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

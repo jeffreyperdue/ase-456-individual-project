@@ -4,11 +4,15 @@ enum Gender { MAN, WOMEN }
 
 void main() => runApp(MyApp()); 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {return MaterialApp(home: RadioPage());}
 } 
 
 class RadioPage extends StatefulWidget {
+  const RadioPage({super.key});
+
   @override
   _RadioPageState createState() => _RadioPageState();
 }
@@ -19,7 +23,7 @@ class _RadioPageState extends State<RadioPage> {
   @override
   Widget build(BuildContext context) {
     
-    _update(value) {
+    update(value) {
        setState(() {
          _gender = value as Gender;
          if (_gender == Gender.MAN) {
@@ -47,7 +51,7 @@ class _RadioPageState extends State<RadioPage> {
                 leading: Radio(
                   value: Gender.MAN,
                   groupValue: _gender,
-                  onChanged: (value) {_update(value);},
+                  onChanged: (value) {update(value);},
                 ),
               ),
               ListTile(
@@ -55,13 +59,13 @@ class _RadioPageState extends State<RadioPage> {
                 leading: Radio(
                   value: Gender.WOMEN,
                   groupValue: _gender,
-                  onChanged: (value) {_update(value);},
+                  onChanged: (value) {update(value);},
                 ),
               ),
               SizedBox(
                 height: 40,
               ),
-              Text(this._text), 
+              Text(_text), 
             ],
           ),
         ),

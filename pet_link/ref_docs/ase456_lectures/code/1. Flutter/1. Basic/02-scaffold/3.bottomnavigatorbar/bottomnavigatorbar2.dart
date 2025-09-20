@@ -16,6 +16,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyStateful extends StatefulWidget {
+  const MyStateful({super.key});
+
   @override
   State<MyStateful> createState() => BottomNavigationPage();
 }  

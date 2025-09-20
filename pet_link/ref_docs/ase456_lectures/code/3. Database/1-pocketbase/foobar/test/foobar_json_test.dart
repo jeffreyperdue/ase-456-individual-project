@@ -88,10 +88,10 @@ void main() {
       final json1 = original.toJson();
       final temp1 = FooBar.fromJson(json1);
       final json2 = temp1.toJson();
-      final final_result = FooBar.fromJson(json2);
+      final finalResult = FooBar.fromJson(json2);
 
       // Assert
-      expect(final_result, equals(original));
+      expect(finalResult, equals(original));
     });
   });
 

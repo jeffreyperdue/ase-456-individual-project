@@ -13,8 +13,8 @@ void nullSafetyExample() {
 }
 
 void chainingExample() {
-String? first = null;
-String? second = null; 
+String? first;
+String? second; 
 String? third = "Found!";
 
 String result = first ?? 

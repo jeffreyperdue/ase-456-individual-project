@@ -18,7 +18,7 @@ void foldExample() {
 
   // Concatenate strings
   List<String> words = ['Hello', 'World', '!'];
-  String sentence = words.fold('', (result, word) => result + word + ' ');
+  String sentence = words.fold('', (result, word) => '$result$word ');
   print(sentence.trim()); // "Hello World !"
 
   List<Product> cart = [
@@ -28,7 +28,7 @@ void foldExample() {
   ];
 
   double totalPrice = cart.fold(0.0, (total, product) => total + product.price);
-  print('Total: \$${totalPrice}'); // Total: $6.5
+  print('Total: \$$totalPrice'); // Total: $6.5
 
   // Find the maximum number
   int maxNumber = numbers.fold(

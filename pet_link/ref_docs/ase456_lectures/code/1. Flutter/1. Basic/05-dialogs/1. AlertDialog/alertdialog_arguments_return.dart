@@ -2,17 +2,21 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp()); 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {return MaterialApp(home: AlertDialogPage());}
 } 
 
 class AlertDialogPage extends StatefulWidget {
+  const AlertDialogPage({super.key});
+
   @override
   State<AlertDialogPage> createState() => _AlertDialogPageState();
 }
 
 class _AlertDialogPageState extends State<AlertDialogPage> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   String inputString = "";
   var _title = 'AlertDialogPage';
   
@@ -54,7 +58,7 @@ class _AlertDialogPageState extends State<AlertDialogPage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Title + ${info}'),
+          title: Text('Title + $info'),
           content: TextFormField(controller: _controller),
           actions: <Widget>[
             TextButton(

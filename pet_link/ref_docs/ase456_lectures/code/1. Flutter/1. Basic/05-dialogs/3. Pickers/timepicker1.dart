@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 void main() => runApp(MaterialApp(home:TimePickerPage())); 
 
 class TimePickerPage extends StatefulWidget {
+  const TimePickerPage({super.key});
+
   @override
   _TimePickerPageState createState() => _TimePickerPageState();
 }
@@ -33,7 +35,7 @@ class _TimePickerPageState extends State<TimePickerPage> {
             },
             child: Text('Time Picker'),
           ),
-          Text('$_selectedTime'),
+          Text(_selectedTime),
         ],
       ),
     );

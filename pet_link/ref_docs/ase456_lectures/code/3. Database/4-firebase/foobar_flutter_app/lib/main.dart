@@ -10,7 +10,7 @@ void main() async {
   
   try {
     print("🔥 Initializing Firebase...");
-    print("Platform: ${defaultTargetPlatform}");
+    print("Platform: $defaultTargetPlatform");
     print("Is Web: $kIsWeb");
     
     await Firebase.initializeApp(
@@ -59,6 +59,8 @@ Map<String, dynamic> generateRandomData() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -88,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _currentDocId = '';
   bool _isLoading = false;
   String _statusMessage = 'Click the button to generate foobar data!';
-  List<Map<String, dynamic>> _dataHistory = [];
+  final List<Map<String, dynamic>> _dataHistory = [];
   String _debugInfo = '';
 
   @override

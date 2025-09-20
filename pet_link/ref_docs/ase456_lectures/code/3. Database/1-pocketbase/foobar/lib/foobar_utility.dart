@@ -7,10 +7,10 @@ import 'foobar_crud.dart';
 /// Utility class for importing/exporting FooBar data between JSON files and database
 /// This class demonstrates how to handle bulk data operations
 class FooBarUtility {
-  final FooBarCrudService _crudService;
 
   /// Constructor: Initialize with CRUD service
   FooBarUtility(this._crudService);
+  final FooBarCrudService _crudService;
 
   /// IMPORT: Read JSON file and upload FooBar records to database
   ///
@@ -43,7 +43,7 @@ class FooBarUtility {
         throw Exception('JSON file must contain an array of objects');
       }
 
-      final List<dynamic> jsonList = jsonData as List<dynamic>;
+      final List<dynamic> jsonList = jsonData;
       print('JSON parsed successfully, found ${jsonList.length} records');
 
       // Step 4: Convert each JSON object to FooBar and upload to database

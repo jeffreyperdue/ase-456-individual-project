@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp()); 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {return MaterialApp(home: DropdownPage());}
 } 
 
 class DropdownPage extends StatefulWidget {
+  const DropdownPage({super.key});
+
   @override
   _DropdownPageState createState() => _DropdownPageState();
 }
@@ -43,7 +47,7 @@ class _DropdownPageState extends State<DropdownPage> {
                 },
               ),
               SizedBox(height:100),
-              Text(this._selectedValue),
+              Text(_selectedValue),
             ],
           ),
         ),

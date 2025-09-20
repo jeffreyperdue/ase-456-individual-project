@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 void main() => runApp(MaterialApp(home:MyApp())); 
 
 class MyApp extends StatefulWidget {
-  const MyApp(); 
+  const MyApp({super.key}); 
   @override
   State<MyApp> createState() => _MyAppState();
 }

@@ -43,7 +43,7 @@ void typeCastingExample() {
   print('Casted text: $text');
 
   // Nullable casting
-  dynamic nullValue = null;
+  dynamic nullValue;
   String? nullableText = nullValue as String?;
   print('Nullable cast result: $nullableText');
 
@@ -65,7 +65,7 @@ void typeCastingExampleWithError() {
 void betterTypeCastingExample() {
   dynamic value = 42;
   if (value is String) {
-    String text = value as String; // This will throw an error
+    String text = value; // This will throw an error
     print('Casted text: $text');
   } else { 
     print('Value is not a String, cannot cast: $value');

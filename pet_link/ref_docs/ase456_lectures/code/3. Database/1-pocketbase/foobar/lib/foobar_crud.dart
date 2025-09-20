@@ -4,11 +4,11 @@ import 'foobar.dart';
 /// CRUD Service for FooBar collection
 /// This class provides simple Create, Read, Update, Delete operations
 class FooBarCrudService {
-  final PocketBase _pb;
-  static const String _collectionName = 'foobar';
 
   /// Constructor: Initialize with PocketBase instance
   FooBarCrudService(this._pb);
+  final PocketBase _pb;
+  static const String _collectionName = 'foobar';
 
   /// CREATE: Add a new FooBar record to the database
   /// Returns the created FooBar with its generated ID

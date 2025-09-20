@@ -2,12 +2,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 /// Student model for PocketBase
 /// Demonstrates how to create a data model that works with PocketBase
-class Student {
-  final String id; // Document ID
-  final String name; // Student name
-  final int age; // Student age
-  final String major; // Student's major
-  final DateTime createdAt; // Timestamp
+class Student { // Timestamp
 
   const Student({
     required this.id,
@@ -16,6 +11,22 @@ class Student {
     required this.major,
     required this.createdAt,
   });
+
+  /// record.model is used to convert a Map to a Student object
+  factory Student.fromJson(Map<String, dynamic> map) {
+    return Student(
+      id: map['id'] as String? ?? '',
+      name: map['name'] as String? ?? '',
+      age: map['age'] as int? ?? 0,
+      major: map['major'] as String? ?? '',
+      createdAt: _parseDateTime(map['createdAt']),
+    );
+  }
+  final String id; // Document ID
+  final String name; // Student name
+  final int age; // Student age
+  final String major; // Student's major
+  final DateTime createdAt;
 
   /// Convert Student to Map for PocketBase
   /// This is used when saving data to PocketBase
@@ -31,17 +42,6 @@ class Student {
       'major': major,
       'createdAt': createdAt.toIso8601String(),
     };
-  }
-
-  /// record.model is used to convert a Map to a Student object
-  factory Student.fromJson(Map<String, dynamic> map) {
-    return Student(
-      id: map['id'] as String? ?? '',
-      name: map['name'] as String? ?? '',
-      age: map['age'] as int? ?? 0,
-      major: map['major'] as String? ?? '',
-      createdAt: _parseDateTime(map['createdAt']),
-    );
   }
 
   /// Helper method to safely parse DateTime from dynamic value

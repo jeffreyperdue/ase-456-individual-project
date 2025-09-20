@@ -30,7 +30,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(debugShowCheckedModeBanner: false, home: TabPage());
@@ -38,6 +38,8 @@ class MyApp extends StatelessWidget {
 }
 
 class TabPage extends StatelessWidget {
+  const TabPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     // 1. DefaultTabController is needed
@@ -71,6 +73,8 @@ class TabPage extends StatelessWidget {
 }
 
 class Home1 extends StatelessWidget {
+  const Home1({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -86,6 +90,9 @@ class Home1 extends StatelessWidget {
   }
 }
 class Home2 extends StatelessWidget {
+  const Home2({super.key});
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(body: Text("Home2"));
   }

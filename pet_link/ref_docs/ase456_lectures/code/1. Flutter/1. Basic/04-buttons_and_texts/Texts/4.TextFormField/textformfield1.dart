@@ -21,6 +21,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyCustomForm extends StatelessWidget {
+  const MyCustomForm({super.key});
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(

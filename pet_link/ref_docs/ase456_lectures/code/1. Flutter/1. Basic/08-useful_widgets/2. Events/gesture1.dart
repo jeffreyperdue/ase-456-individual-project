@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 void main() => runApp(MaterialApp(home:GesturePage())); 
 
 class GesturePage extends StatelessWidget {
+  const GesturePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

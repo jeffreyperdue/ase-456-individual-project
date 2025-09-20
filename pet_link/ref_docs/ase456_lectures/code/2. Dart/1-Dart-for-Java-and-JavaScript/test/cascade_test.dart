@@ -25,8 +25,8 @@ void main() {
 
     test('cascade operator should work with list operations', () {
       // Test cascade operator functionality directly
-      var testList = <String>[]
-        ..add("First")
+      var testList = <String>["First"]
+        
         ..add("Second")
         ..sort();
       

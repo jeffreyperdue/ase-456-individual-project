@@ -9,7 +9,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyPage extends StatelessWidget {
-  const MyPage({Key? key}) : super(key: key);
+  const MyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,7 @@ class MyPage extends StatelessWidget {
 
 class PageA extends StatelessWidget {
   String info;
-  PageA({Key? key, required this.info}) : super(key: key);
+  PageA({super.key, required this.info});
   
   @override
   Widget build(BuildContext context) {
@@ -58,7 +58,7 @@ class PageA extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Page A (argument ${info}) - Click the button to get the result'),
+          Text('Page A (argument $info) - Click the button to get the result'),
           IconButton(
             onPressed: () {
               Navigator.pop(context, 10); // returns 10 

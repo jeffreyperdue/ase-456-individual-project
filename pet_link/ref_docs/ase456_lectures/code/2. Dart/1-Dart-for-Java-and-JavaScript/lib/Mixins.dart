@@ -138,7 +138,7 @@ void demonstrateCascadeWithMixins() {
     ..swim()
     ..quack();
 
-  print('Duck created and performed multiple actions using cascade! ${duck}');
+  print('Duck created and performed multiple actions using cascade! $duck');
 }
 
 void main() {
