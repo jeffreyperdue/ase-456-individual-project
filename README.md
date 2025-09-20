@@ -173,9 +173,22 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
 
 ---
 
-## 11) Next actions (Week 1)
+## 11) Next actions (Week 3 - Current Priority)
 
-- Scaffold Flutter project + Firebase init.
-- Implement Pet CRUD UI.
-- Add Care Plan form + schedule local reminders.
-- Generate QR code for shareable profile.
+### Immediate (This Week)
+- ⏳ **Photo Upload**: Implement Firebase Storage integration for pet photos
+- ⏳ **Enhanced Pet Profile**: Add more detailed pet information fields (diet, medical info, etc.)
+- ⏳ **Care Plan Model**: Create CarePlan data model and Firestore integration
+- ⏳ **Care Plan UI**: Build forms for diet, feeding schedule, and medications
+
+### Week 4 Goals
+- ⏳ **Local Notifications**: Implement `flutter_local_notifications` for feeding/med reminders
+- ⏳ **Care Plan Integration**: Connect care plan data to notification scheduling
+- ⏳ **Navigation Upgrade**: Migrate from basic Navigator to `go_router` for better routing
+
+### Week 5 Goals (Sprint 1 Completion)
+- ⏳ **QR Code Generation**: Implement `qr_flutter` for shareable pet profiles
+- ⏳ **Read-only Profile View**: Create public profile page accessible via QR/link
+- ⏳ **End-to-end Testing**: Complete user journey from pet creation to shared profile
+- ⏳ **UI Polish**: Improve theming, accessibility, and user experience
+
