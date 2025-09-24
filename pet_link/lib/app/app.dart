@@ -20,7 +20,20 @@ class PetLinkApp extends StatelessWidget {
         '/': (_) => const AuthWrapper(child: HomePage()),
         '/login': (_) => const LoginPage(),
         '/signup': (_) => const SignUpPage(),
-        '/edit': (_) => const EditPetPage(),
+        // Use onGenerateRoute for passing arguments for edit
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/edit') {
+          final args = settings.arguments; // may be null for create
+          return MaterialPageRoute(
+            builder:
+                (_) => EditPetPage(
+                  petToEdit:
+                      args is Map && args['pet'] != null ? args['pet'] : null,
+                ),
+          );
+        }
+        return null;
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_link/features/pets/presentation/state/pet_list_provider.dart';
 import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
+import 'package:pet_link/features/pets/domain/pet.dart';
 
 /// Shows the list of pets and a FAB to add a dummy pet.
 class HomePage extends ConsumerWidget {
@@ -113,17 +114,81 @@ class HomePage extends ConsumerWidget {
                     : ListView.builder(
                       itemCount: pets.length,
                       itemBuilder: (context, i) {
-                        final pet = pets[i];
+                        final Pet pet = pets[i];
+                        final imageUrl = pet.photoUrl;
+                        final cacheBustedUrl =
+                            imageUrl == null
+                                ? null
+                                : '${imageUrl}${imageUrl.contains('?') ? '&' : '?'}ts=${DateTime.now().millisecondsSinceEpoch}';
                         return ListTile(
+                          leading: CircleAvatar(
+                            foregroundImage:
+                                cacheBustedUrl != null
+                                    ? NetworkImage(cacheBustedUrl)
+                                    : null,
+                            child:
+                                cacheBustedUrl == null
+                                    ? Text(
+                                      pet.name.substring(0, 1).toUpperCase(),
+                                    )
+                                    : null,
+                          ),
                           title: Text(pet.name),
                           subtitle: Text(pet.species),
-                          trailing: IconButton(
-                            tooltip: 'Delete',
-                            icon: const Icon(Icons.delete_outline),
-                            onPressed:
-                                () => ref
-                                    .read(petsProvider.notifier)
-                                    .remove(pet.id),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                tooltip: 'Edit',
+                                icon: const Icon(Icons.edit_outlined),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/edit',
+                                    arguments: {'pet': pet},
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                tooltip: 'Delete',
+                                icon: const Icon(Icons.delete_outline),
+                                onPressed: () async {
+                                  final confirmed = await showDialog<bool>(
+                                    context: context,
+                                    builder:
+                                        (context) => AlertDialog(
+                                          title: const Text('Delete Pet'),
+                                          content: Text(
+                                            'Are you sure you want to delete ${pet.name}?',
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed:
+                                                  () => Navigator.pop(
+                                                    context,
+                                                    false,
+                                                  ),
+                                              child: const Text('Cancel'),
+                                            ),
+                                            FilledButton(
+                                              onPressed:
+                                                  () => Navigator.pop(
+                                                    context,
+                                                    true,
+                                                  ),
+                                              child: const Text('Delete'),
+                                            ),
+                                          ],
+                                        ),
+                                  );
+                                  if (confirmed == true) {
+                                    await ref
+                                        .read(petsProvider.notifier)
+                                        .remove(pet.id);
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                         );
                       },

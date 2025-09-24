@@ -70,10 +70,11 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
     - ✅ Build Firestore rules for basic Pet ownership.
     - ✅ Migrate to Riverpod state management.
     - ✅ Implement AuthWrapper for protected routes.
-- **Week 3:** 🔄 **IN PROGRESS**
-    - ✅ Build Pet CRUD UI (create, edit, delete pet).
-    - ⏳ Add photo upload (Firebase Storage).
-    - ⏳ Enhanced pet profile forms.
+- **Week 3:** ✅ **COMPLETED**
+    - ✅ Build Pet CRUD UI (create, edit, delete pet)
+    - ✅ Photo upload (Firebase Storage) with web/mobile support
+    - ✅ Published Firestore & Storage rules (owner-only access)
+    - ⏳ Enhanced pet profile fields (extend in Week 4)
 - **Week 4:**
     - Implement Care Plan form (diet, feeding schedule, meds).
     - Connect feeding/med times to local notifications.
@@ -117,9 +118,9 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
 
 **Current packages:**
 
-- ✅ `flutter_riverpod`, `cloud_firestore`, `firebase_auth` - **IMPLEMENTED**
-- ⏳ `go_router`, `firebase_storage`, `firebase_messaging` - **PENDING**
-- ⏳ `flutter_local_notifications`, `qr_flutter`, `image_picker` - **PENDING**
+- ✅ `flutter_riverpod`, `cloud_firestore`, `firebase_auth`, `firebase_storage`, `image_picker` - **IMPLEMENTED**
+- ⏳ `go_router`, `firebase_messaging` - **PENDING**
+- ⏳ `flutter_local_notifications`, `qr_flutter` - **PENDING**
 
 ---
 

@@ -1,99 +1,55 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pet_link/features/pets/domain/pet.dart';
 import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
+import 'package:pet_link/features/pets/data/pets_repository.dart';
 
 /// Riverpod provider for pets list state management.
 /// Syncs with Firestore for persistence.
 class PetListNotifier extends StateNotifier<AsyncValue<List<Pet>>> {
-  PetListNotifier(this._ref) : super(const AsyncValue.loading()) {
-    _loadPets();
+  PetListNotifier(this._ref, this._repository)
+    : super(const AsyncValue.loading()) {
+    // Initial subscription
+    _subscribe();
+    // Re-subscribe whenever the authenticated user changes
+    _ref.listen(currentUserDataProvider, (_, __) => _subscribe());
   }
 
   final Ref _ref;
+  final PetsRepository _repository;
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
-  _petsSubscription;
+  StreamSubscription<List<Pet>>? _subscription;
 
-  void _loadPets() {
-    // Get current user ID
+  void _subscribe() {
     final currentUser = _ref.read(currentUserDataProvider);
+    _subscription?.cancel();
     if (currentUser == null) {
       state = const AsyncValue.data([]);
       return;
     }
-
-    // Listen to Firestore changes and update state
-    _petsSubscription = _firestore
-        .collection('pets')
-        .where('ownerId', isEqualTo: currentUser.id)
-        .snapshots()
+    _subscription = _repository
+        .watchPetsForOwner(currentUser.id)
         .listen(
-          (snapshot) {
-            final pets =
-                snapshot.docs.map((doc) {
-                  final data = doc.data();
-                  return Pet(
-                    id: doc.id,
-                    ownerId: data['ownerId'] ?? '',
-                    name: data['name'] ?? '',
-                    species: data['species'] ?? 'Unknown',
-                    breed: data['breed'],
-                    dateOfBirth: data['dateOfBirth']?.toDate(),
-                    weightKg: data['weightKg']?.toDouble(),
-                    heightCm: data['heightCm']?.toDouble(),
-                    photoUrl: data['photoUrl'],
-                    isLost: data['isLost'] ?? false,
-                    createdAt: data['createdAt']?.toDate(),
-                    updatedAt: data['updatedAt']?.toDate(),
-                  );
-                }).toList();
-            state = AsyncValue.data(pets);
-          },
-          onError: (error, stackTrace) {
-            state = AsyncValue.error(error, stackTrace);
-          },
+          (pets) => state = AsyncValue.data(pets),
+          onError: (error, stack) => state = AsyncValue.error(error, stack),
         );
   }
 
   Future<void> add(Pet pet) async {
-    try {
-      // Save to Firestore - this will trigger the listener above
-      await _firestore.collection('pets').doc(pet.id).set({
-        'ownerId': pet.ownerId,
-        'name': pet.name,
-        'species': pet.species,
-        'breed': pet.breed,
-        'dateOfBirth': pet.dateOfBirth,
-        'weightKg': pet.weightKg,
-        'heightCm': pet.heightCm,
-        'photoUrl': pet.photoUrl,
-        'isLost': pet.isLost,
-        'createdAt': FieldValue.serverTimestamp(),
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
-      print('✅ Pet saved to Firestore: ${pet.name}');
-    } catch (e) {
-      print('❌ Error saving pet: $e');
-      rethrow;
-    }
+    await _repository.createPet(pet);
+  }
+
+  Future<void> update(String petId, Map<String, dynamic> updates) async {
+    await _repository.updatePet(petId, updates);
   }
 
   Future<void> remove(String id) async {
-    try {
-      await _firestore.collection('pets').doc(id).delete();
-      print('✅ Pet deleted from Firestore: $id');
-    } catch (e) {
-      print('❌ Error deleting pet: $e');
-      rethrow;
-    }
+    await _repository.deletePet(id);
   }
 
   @override
   void dispose() {
-    _petsSubscription.cancel();
+    _subscription?.cancel();
     super.dispose();
   }
 
@@ -115,7 +71,12 @@ class PetListNotifier extends StateNotifier<AsyncValue<List<Pet>>> {
 }
 
 /// Provider for the pets list state.
+final petsRepositoryProvider = Provider<PetsRepository>((ref) {
+  // A plain provider to share a single repository instance
+  return PetsRepository();
+});
+
 final petsProvider =
     StateNotifierProvider<PetListNotifier, AsyncValue<List<Pet>>>(
-      (ref) => PetListNotifier(ref),
+      (ref) => PetListNotifier(ref, ref.read(petsRepositoryProvider)),
     );

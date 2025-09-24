@@ -1,11 +1,17 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pet_link/features/pets/domain/pet.dart';
 import 'package:pet_link/features/pets/presentation/state/pet_list_provider.dart';
 import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
 
 class EditPetPage extends ConsumerStatefulWidget {
-  const EditPetPage({super.key});
+  const EditPetPage({super.key, this.petToEdit});
+
+  final Pet? petToEdit; // if provided, we're editing
 
   @override
   ConsumerState<EditPetPage> createState() => _EditPetPageState();
@@ -15,11 +21,45 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtrl = TextEditingController();
   String? _species; // simple dropdown for MVP
+  XFile? _selectedPhoto; // holds selected image file before upload
+  bool _isSaving = false;
+  Uint8List? _selectedBytes; // used for Flutter Web preview
 
   @override
   void dispose() {
     _nameCtrl.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Prefill when editing
+    final pet = widget.petToEdit;
+    if (pet != null) {
+      _nameCtrl.text = pet.name;
+      _species = pet.species;
+    }
+  }
+
+  Future<void> _pickPhoto() async {
+    // Beginner note: ImagePicker opens the device gallery/camera based on source
+    final picker = ImagePicker();
+    final result = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 1600,
+    );
+    if (result != null) {
+      if (kIsWeb) {
+        final bytes = await result.readAsBytes();
+        setState(() {
+          _selectedPhoto = result;
+          _selectedBytes = bytes;
+        });
+      } else {
+        setState(() => _selectedPhoto = result);
+      }
+    }
   }
 
   Future<void> _save() async {
@@ -40,18 +80,53 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
       return;
     }
 
-    // 3) Build Pet
-    final id = DateTime.now().microsecondsSinceEpoch.toString();
+    setState(() => _isSaving = true);
+
+    // 3) Determine id (new vs edit)
+    final existing = widget.petToEdit;
+    final id = existing?.id ?? DateTime.now().microsecondsSinceEpoch.toString();
+    String? photoUrl;
+
+    // 3a) If a photo is selected, upload it first so we can store its URL
+    try {
+      if (_selectedPhoto != null) {
+        final repo = ref.read(petsRepositoryProvider);
+        photoUrl = await repo.uploadPetPhoto(
+          ownerId: currentUser.id,
+          petId: id,
+          file: _selectedPhoto!,
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Photo upload failed: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+
     final pet = Pet(
       id: id,
       ownerId: currentUser.id,
       name: _nameCtrl.text.trim(),
       species: _species ?? 'Unknown',
+      photoUrl: photoUrl ?? existing?.photoUrl,
     );
 
     // 4) Add via Riverpod provider
     try {
-      await ref.read(petsProvider.notifier).add(pet);
+      if (existing == null) {
+        await ref.read(petsProvider.notifier).add(pet);
+      } else {
+        await ref.read(petsProvider.notifier).update(id, {
+          'name': pet.name,
+          'species': pet.species,
+          if (photoUrl != null) 'photoUrl': photoUrl,
+        });
+      }
 
       // 5) Give feedback and go back
       if (mounted) {
@@ -66,19 +141,45 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
           context,
         ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
+    } finally {
+      if (mounted) setState(() => _isSaving = false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Pet')),
+      appBar: AppBar(
+        title: Text(widget.petToEdit == null ? 'Add Pet' : 'Edit Pet'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
+              // Photo preview + pick button
+              GestureDetector(
+                onTap: _pickPhoto,
+                child: CircleAvatar(
+                  radius: 44,
+                  backgroundImage:
+                      _selectedPhoto == null
+                          ? null
+                          : kIsWeb
+                          ? (_selectedBytes != null
+                              ? MemoryImage(_selectedBytes!)
+                              : null)
+                          : FileImage(File(_selectedPhoto!.path))
+                              as ImageProvider<Object>,
+                  child:
+                      _selectedPhoto == null
+                          ? const Icon(Icons.add_a_photo, size: 28)
+                          : null,
+                ),
+              ),
+              const SizedBox(height: 12),
+
               // Pet name
               TextFormField(
                 controller: _nameCtrl,
@@ -111,8 +212,9 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
                 width: double.infinity,
                 child: FilledButton.icon(
                   icon: const Icon(Icons.save),
-                  onPressed: _save,
-                  label: const Text('Save'),
+                  onPressed: _isSaving ? null : _save,
+                  label:
+                      _isSaving ? const Text('Saving...') : const Text('Save'),
                 ),
               ),
             ],
