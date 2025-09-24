@@ -177,7 +177,7 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
 ## 11) Next actions (Week 3 - Current Priority)
 
 ### Immediate (This Week)
-- ⏳ **Photo Upload**: Implement Firebase Storage integration for pet photos
+- ✅ **Photo Upload**: Implement Firebase Storage integration for pet photos
 - ⏳ **Enhanced Pet Profile**: Add more detailed pet information fields (diet, medical info, etc.)
 - ⏳ **Care Plan Model**: Create CarePlan data model and Firestore integration
 - ⏳ **Care Plan UI**: Build forms for diet, feeding schedule, and medications
