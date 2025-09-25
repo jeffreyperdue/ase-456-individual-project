@@ -1,113 +1,76 @@
-# ASE456 - PetLink
-
-# PetLink – Cross-Platform Pet Care App (Flutter/Dart)
-
----
-
-## 1) One-liner
-
-A cross-platform app for pet owners, sitters, trainers, and adoption agencies to share up-to-date pet profiles, care plans, and training info — plus a lost-and-found alert system with push notifications.
+# ASE456 – PetLink  
+**PetLink – Cross-Platform Pet Care App (Flutter/Dart)**  
 
 ---
 
-## 2) Primary users
-
-- Pet Owner
-- Pet Sitter / Walker
-- Pet Trainer
-- Adoption Agency / Rescue
-  
-
-### Secondary users (later)
-
-- Groomer / Vet
-- Foster Parent
+## 1) One-liner  
+*A shared hub for pet care. PetLink keeps owners, families, and sitters perfectly in sync with real-time schedules, reminders, and handoffs — with room to grow into adoption agencies, trainers, and professionals.*  
 
 ---
 
-## 3) Core value props
+## 2) Primary Users  
 
-- **Single source of truth** for a pet’s needs (diet, meds, routines, behavior, training).
-- **Shareable profiles** with permissions (viewer vs editor; time-boxed links for sitters).
-- **Actionable reminders** (feeding/meds/potty) via push notifications.
-- **Lost & Found broadcast** within a radius with a shareable poster/QR.
-- **Directory & handoff**: connect agencies ↔ owners, trainers, sitters.
+**Now (MVP + Sync focus):**  
+- Pet Owner (Admin)  
+- Family / Roommates (Co-caretakers)  
+- Pet Sitter / Walker (Temporary role)  
 
----
-
-## 4) Development timeline (two 5-week sprints)
-
-### Sprint 1 (Weeks 1–5)
-
-**Goal:** Ship MVP by end of Sprint.
-
-**Core features (must-have):**
-
-- User onboarding + Firebase Auth.
-- Create/edit Pet Profile with:
-    - Name, species/breed, age, weight, height.
-    - Photo upload.
-    - Diet + feeding schedule.
-    - Medications (name, dose, time).
-- Local notifications for feeding/med reminders.
-- Shareable read-only profile via link/QR.
-
-**Stretch goals:**
-
-- Bathroom/behavioral notes.
-- Emergency contacts & vet info.
-- Export profile as PDF/printable handoff sheet.
-
-### Weekly Milestones for Sprint 1
-
-- **Week 1:** ✅ **COMPLETED**
-    - ✅ Scaffold Flutter project.
-    - ✅ Connect Firebase (Auth, Firestore, Storage).
-    - ✅ Verify local notifications package setup.
-- **Week 2:** ✅ **COMPLETED**
-    - ✅ Implement user authentication (signup/login).
-    - ✅ Create data models with User domain model.
-    - ✅ Build Firestore rules for basic Pet ownership.
-    - ✅ Migrate to Riverpod state management.
-    - ✅ Implement AuthWrapper for protected routes.
-- **Week 3:** ✅ **COMPLETED**
-    - ✅ Build Pet CRUD UI (create, edit, delete pet)
-    - ✅ Photo upload (Firebase Storage) with web/mobile support
-    - ✅ Published Firestore & Storage rules (owner-only access)
-    - ⏳ Enhanced pet profile fields (extend in Week 4)
-- **Week 4:**
-    - Implement Care Plan form (diet, feeding schedule, meds).
-    - Connect feeding/med times to local notifications.
-- **Week 5:**
-    - Build shareable read-only profile (link/QR).
-    - End-to-end test: create pet → add care plan → receive reminder → share QR.
-    - Polish UI and fix bugs.
-
-### Sprint 2 (Weeks 6–10)
-
-**Goal:** Expand functionality & polish.
-
-**Core features (must-have):**
-
-- Lost & Found mode:
-    - Mark pet as lost.
-    - Capture last seen location.
-    - Auto-generate poster with QR.
-- Basic trainer/adoption agency directory (static data).
-- Add weight tracker (manual entries).
-- Improve UI theming & accessibility.
-
-**Stretch goals:**
-
-- Push notifications for lost alerts (Firebase Cloud Messaging).
-- Role-based access tokens (sitter view).
-- Training logs (progress, cues, notes).
-- Offline cache of pet profile (Hive).
+**Later (professional roles):**  
+- Adoption Agency / Rescue  
+- Dog Trainer  
+- Groomer / Vet  
+- Foster Parent  
 
 ---
 
-## 5) Flutter architecture
+## 3) Core Value Propositions  
+- **Real-time sync** – shared care plans, feeding/meds, and reminders update instantly across linked users.  
+- **Role-based permissions** – owner, co-caretaker, sitter (time-boxed), viewer.  
+- **Simple handoff** – generate a secure QR or link for sitters and temporary caregivers.  
+- **Single source of truth** – diet, meds, routines, and behavior in one trusted place.  
+- **Lost & Found alerts** – broadcast missing pet info within a radius, with auto-generated posters.  
+- **Professional extensions** – agencies manage handoffs, trainers log progress, vets/groomers view health notes.  
 
+---
+
+## 4) Development Timeline (Two 5-week sprints)  
+
+### Sprint 1 (Weeks 1–5) – **Owner MVP**  
+Goal: Ship core app for owners by end of Sprint.  
+
+**Must-have:**  
+- User onboarding + Firebase Auth  
+- Create/edit Pet Profile (name, species, breed, age, weight, height, photo)  
+- Care Plan form (diet, feeding schedule, meds)  
+- Local notifications (feeding/med reminders)  
+- Read-only profile (QR/link share)  
+
+**Stretch:**  
+- Bathroom/behavioral notes  
+- Emergency contacts & vet info  
+- Export profile (PDF handoff sheet)  
+
+---
+
+### Sprint 2 (Weeks 6–10) – **Sync Foundation**  
+Goal: Expand to multi-user care.  
+
+**Must-have:**  
+- AccessToken model for role-based sharing  
+- Real-time updates on care plan tasks (feeding/med checkoffs)  
+- Handoff flow for sitters (QR invite, auto-expire)  
+- Notifications for completed tasks (sitter → owner updates)  
+- Lost & Found mode (mark pet lost, last seen location, poster generator)  
+
+**Stretch:**  
+- Push notifications for lost alerts (Firebase Cloud Messaging)  
+- Role-based trainer/adoption roles  
+- Training logs (progress, cues, notes)  
+- Offline cache with Hive  
+
+---
+
+## 5) Flutter Architecture  
 - **State mgmt:** ✅ Riverpod (simple, testable) - **IMPLEMENTED**
 - **Navigation:** ⏳ go_router (currently using basic Navigator)
 - **Data layer:** ✅ Repository pattern (Firestore backend) - **IMPLEMENTED**
@@ -116,80 +79,65 @@ A cross-platform app for pet owners, sitters, trainers, and adoption agencies to
 - **Cloud:** ✅ Firebase (Auth, Firestore) - **PARTIALLY IMPLEMENTED**
 - **Analytics/Crash:** Firebase Analytics + Crashlytics.
 
-**Current packages:**
-
-- ✅ `flutter_riverpod`, `cloud_firestore`, `firebase_auth`, `firebase_storage`, `image_picker` - **IMPLEMENTED**
-- ⏳ `go_router`, `firebase_messaging` - **PENDING**
-- ⏳ `flutter_local_notifications`, `qr_flutter` - **PENDING**
+**Packages:**  
+- ✅ flutter_riverpod, cloud_firestore, firebase_auth, firebase_storage, image_picker  
+- ⏳ go_router, firebase_messaging, flutter_local_notifications, qr_flutter  
 
 ---
 
-## 6) Data model (current status)
-
-- ✅ **User** { id, email, displayName, photoUrl, roles[], createdAt, updatedAt } - **IMPLEMENTED**
-- ✅ **Pet** { id, ownerId, name, species, breed, dateOfBirth, weightKg, heightCm, photoUrl, isLost, createdAt, updatedAt } - **IMPLEMENTED**
-- ⏳ **CarePlan** { id, petId, dietText, feedingSchedule[], medications[] } - **PENDING**
-- ⏳ **AccessToken** { id, petId, grantedBy, role, expiresAt } - **PENDING**
-- ⏳ **LostReport** { id, petId, createdAt, lastSeenGeo, notes, posterUrl } - **PENDING**
-- ⏳ **WeightEntry** { id, petId, date, weightKg } - **PENDING**
-
----
-
-## 7) MVP Screens (Sprint 1)
-
-1. ✅ **Login/Signup** - **IMPLEMENTED**
-2. ✅ **Pet List/Dashboard** - **IMPLEMENTED**
-3. ✅ **Pet Profile Create/Edit** - **IMPLEMENTED**
-4. ⏳ **Care Plan Editor (feeding + meds)** - **PENDING**
-5. ⏳ **Reminder Notifications** - **PENDING**
-6. ⏳ **Read-only Shared Profile View** - **PENDING**
+## 6) Data Model  
+- ✅**User** { id, email, displayName, photoUrl, roles[], createdAt, updatedAt } ✅  
+- ✅**Pet** { id, ownerId, name, species, breed, dateOfBirth, weightKg, heightCm, photoUrl, isLost, createdAt, updatedAt } ✅  
+- ⏳**CarePlan** { id, petId, dietText, feedingSchedule[], medications[] } ⏳  
+- ⏳**AccessToken** { id, petId, grantedBy, role, expiresAt } ⏳  
+- ⏳**TaskLog** { id, petId, taskId, completedBy, completedAt } (new, for sync)  
+- ⏳**LostReport** { id, petId, createdAt, lastSeenGeo, notes, posterUrl } ⏳  
+- ⏳**WeightEntry** { id, petId, date, weightKg } ⏳  
 
 ---
 
-## 8) Phase roadmap (refined)
+## 7) MVP Screens (Sprint 1)  
+- ✅ Login/Signup  
+- ✅ Pet List/Dashboard  
+- ✅ Pet Profile Create/Edit  
+- ⏳ Care Plan Editor (feeding + meds)  
+- ⏳ Reminder Notifications  
+- ⏳ Read-only Shared Profile View  
+
+---
+
+## 8.1) Phase roadmap (refined)
 
 - **Sprint 1 (Weeks 1–5):** MVP complete.
 - **Sprint 2 (Weeks 6–10):** Lost mode, weight tracking, directory, polish.
 - **Stretch beyond class project:** advanced roles, push alerts, offline sync, trainer/adoption flows.
 
-## 9) Success criteria
-
-- MVP delivered by end of Sprint 1.
-- At least one pet profile can be:
-    1. Created.
-    2. Updated with diet/med info.
-    3. Generates a reminder.
-    4. Shared read-only via QR.
-- Sprint 2 expands into Lost & Found + extra polish.
+## 8.2) Phase Roadmap (Beyond Class Project)  
+- **Phase 1:** Owner MVP (profiles + reminders + QR share)  
+- **Phase 2:** Family / Sitter Sync (multi-user roles, handoff links, task checkoffs)  
+- **Phase 3:** Professional extensions (adoption agencies, trainers, groomers/vets)  
+- **Phase 4:** Insights & reporting (health logs, exports, analytics)  
+- **Phase 5:** Offline cache, advanced notifications, expanded ecosystem  
 
 ---
 
-## 10) Risks & mitigations
+## 9) Success Criteria  
+- Sprint 1: One owner can create a pet, add a care plan, get reminders, share QR profile.  
+- Sprint 2: **Two linked accounts can see and complete the same care plan in real time.**  
+- Long-term: Agencies, trainers, and vets adopt PetLink as a trusted handoff and coordination tool.  
 
 ---
 
-- **Time (3–5 hrs/week):** keep Sprint 1 tight; defer extras to Sprint 2.
-- **Push notification complexity:** start local, add FCM later.
-- **Privacy:** share links expire; lost posters opt-in contact info.
+## 10) Risks & Mitigations  
+- **Time (4–6 hrs/week):** keep MVP tight; defer stretch goals.  
+- **Sync complexity:** start simple with AccessToken + real-time updates; refine roles later.  
+- **Push notifications:** begin with local, layer in FCM once core sync works.  
+- **Privacy:** expiring share links, clear opt-in for lost posters, limited role permissions.  
 
 ---
 
-## 11) Next actions (Week 3 - Current Priority)
-
-### Immediate (This Week)
-- ⏳ **Photo Upload**: Implement Firebase Storage integration for pet photos
-- ⏳ **Enhanced Pet Profile**: Add more detailed pet information fields (diet, medical info, etc.)
-- ⏳ **Care Plan Model**: Create CarePlan data model and Firestore integration
-- ⏳ **Care Plan UI**: Build forms for diet, feeding schedule, and medications
-
-### Week 4 Goals
-- ⏳ **Local Notifications**: Implement `flutter_local_notifications` for feeding/med reminders
-- ⏳ **Care Plan Integration**: Connect care plan data to notification scheduling
-- ⏳ **Navigation Upgrade**: Migrate from basic Navigator to `go_router` for better routing
-
-### Week 5 Goals (Sprint 1 Completion)
-- ⏳ **QR Code Generation**: Implement `qr_flutter` for shareable pet profiles
-- ⏳ **Read-only Profile View**: Create public profile page accessible via QR/link
-- ⏳ **End-to-end Testing**: Complete user journey from pet creation to shared profile
-- ⏳ **UI Polish**: Improve theming, accessibility, and user experience
-
+## 11) Next Actions (Week 4 Goals)  
+- Build CarePlan data model & UI (diet, feeding, meds).  
+- Implement local notifications for reminders.  
+- Connect care plan → notifications.  
+- Migrate to go_router for navigation.  

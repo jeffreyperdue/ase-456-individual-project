@@ -32,6 +32,8 @@ paginate: true
 - Riverpod `PetListNotifier` streaming user’s pets
 - Real-time list updates on create/update/delete
 
+---
+
 ### Security
 - Firestore rules: owner-only create/read/update/delete for `pets`
 - Storage rules: owner-only writes; reads allowed via auth or download token
