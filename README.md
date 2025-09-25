@@ -52,6 +52,57 @@ Goal: Ship core app for owners by end of Sprint.
 
 ---
 
+# PetLink – Weekly Development Plan  
+
+---
+
+## Week 1 – ✅ Completed  
+- ✅ Scaffold Flutter project  
+- ✅ Connect Firebase (Auth, Firestore, Storage)  
+- ✅ Verify local notifications package setup  
+
+---
+
+## Week 2 – ✅ Completed  
+- ✅ Implement user authentication (signup/login)  
+- ✅ Create data models with User domain model  
+- ✅ Build Firestore rules for basic Pet ownership  
+- ✅ Migrate to Riverpod state management  
+- ✅ Implement AuthWrapper for protected routes  
+
+---
+
+## Week 3 – ✅ Completed  
+- ✅ Build Pet CRUD UI (create, edit, delete pet)  
+- ✅ Photo upload (Firebase Storage) with web/mobile support  
+- ✅ Publish Firestore & Storage rules (owner-only access)  
+- ⏳ Enhanced Pet Profile fields (extend in Week 4)  
+
+---
+
+## Week 4 – Current Goals  
+- ⏳ Implement **Care Plan form** (diet, feeding schedule, medications)  
+- ⏳ Connect feeding/med times to **local notifications**  
+- ⏳ Extend **Pet Profile fields** with more detailed info (diet, medical, behavioral notes)  
+- ⏳ Begin migration from **Navigator → go_router** for cleaner routing  
+- ⏳ Lay groundwork for **AccessToken model** (role-based sharing, sitter/family sync)  
+
+---
+
+## Week 5 – Upcoming Goals  
+- ⏳ Build **shareable read-only profile** (QR/link) for quick handoffs  
+- ⏳ Create **public profile view** accessible via QR/link  
+- ⏳ Conduct **end-to-end test**:  
+  1. Create pet  
+  2. Add care plan  
+  3. Receive reminder  
+  4. Share profile with sitter/family  
+- ⏳ Introduce first **handoff concept** (time-boxed link, sitter preview role)  
+- ⏳ **Polish UI/UX** (theming, accessibility, bug fixes)  
+
+---
+
+
 ### Sprint 2 (Weeks 6–10) – **Sync Foundation**  
 Goal: Expand to multi-user care.  
 
@@ -136,8 +187,9 @@ Goal: Expand to multi-user care.
 
 ---
 
-## 11) Next Actions (Week 4 Goals)  
-- Build CarePlan data model & UI (diet, feeding, meds).  
-- Implement local notifications for reminders.  
-- Connect care plan → notifications.  
-- Migrate to go_router for navigation.  
+## 11) Next Actions (Week 4 Goals)    
+- ⏳ Implement **Care Plan form** (diet, feeding schedule, medications)  
+- ⏳ Connect feeding/med times to **local notifications**  
+- ⏳ Extend **Pet Profile fields** with more detailed info (diet, medical, behavioral notes)  
+- ⏳ Begin migration from **Navigator → go_router** for cleaner routing  
+- ⏳ Lay groundwork for **AccessToken model** (role-based sharing, sitter/family sync) 
