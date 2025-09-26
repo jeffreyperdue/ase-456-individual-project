@@ -1,0 +1,74 @@
+# PetLink – 30-Day Launch Playbook
+
+## 🎯 Goal
+Grow from **0 → 500+ Daily Active Users (DAU)** in the first 30 days.  
+Focus: **Acquire → Activate → Retain → Grow**.
+
+---
+
+## 📅 Day 0–7: Pre-Launch & Soft Start
+**Objective:** Seed your first 50–100 testers.
+
+- [ ] Recruit early adopters (friends, family, classmates with pets).  
+- [ ] Set up **TestFlight (iOS)** + **Play Internal Testing (Android)**.  
+- [ ] Create a **feedback form** (Google Form or Typeform).  
+- [ ] Draft **app store listing**: keywords, screenshots, 30-sec explainer video.  
+- [ ] Create a **PetLink Community Chat** (Discord/Slack/FB Group).  
+- [ ] Outreach to 2–3 local rescues/shelters — offer free use for handoffs.  
+
+---
+
+## 📅 Day 8–14: Public Beta Launch
+**Objective:** Hit 200+ users, validate onboarding.
+
+- [ ] Launch to **friends-of-friends** with referral invites (QR/link).  
+- [ ] Post in **pet owner groups** (Reddit r/dogs, Facebook pet sitter groups).  
+- [ ] Share **Lost & Found poster generator demo** as viral content.  
+- [ ] Collect feedback on onboarding flow (Pet → Care Plan → Reminder).  
+- [ ] Monitor **Day 1 retention rate** (target 30–40%).  
+- [ ] Track basic funnel: installs → pet created → care plan saved → reminder received.  
+
+---
+
+## 📅 Day 15–21: Retention & Feature Hooks
+**Objective:** Keep users coming back daily.
+
+- [ ] Implement **reminder-driven re-engagement** (feeding/med tasks).  
+- [ ] Highlight **TaskLog streaks** (“5 days of perfect care”).  
+- [ ] Add light **weight tracking graph** as a daily/weekly hook.  
+- [ ] Send **push notifications (FCM)**:  
+  - "Don’t forget Max’s dinner at 6 PM!"  
+  - "Buddy’s weight hasn’t been updated in 1 week."  
+- [ ] Begin small **ASO test** (update keywords/screenshots).  
+- [ ] Monitor **Day 7 retention rate** (target 15–20%).  
+
+---
+
+## 📅 Day 22–30: Growth Loops
+**Objective:** Expand DAU through invites and partnerships.
+
+- [ ] Encourage **co-caretaker invites** (“Add your family or sitter to sync care”).  
+- [ ] Incentivize referrals: unlock a free **Lost Poster style** or **premium feature trial**.  
+- [ ] Partner with **1–2 adoption agencies**: use PetLink for foster/adoption handoffs.  
+- [ ] Launch **social campaign**:  
+  - “Share your pet’s Lost Poster demo.”  
+  - “How I keep my family in sync with PetLink.”  
+- [ ] Gather 3–5 **success stories/testimonials** for marketing.  
+- [ ] Monitor **Day 30 retention rate** (target 8–12%).  
+
+---
+
+## 📊 Metrics to Track
+- **Acquisition:** # of installs (iOS + Android).  
+- **Activation:** % of users who create pet + care plan within 24h.  
+- **Retention:** Day 1 / Day 7 / Day 30 active %.  
+- **Engagement:** Avg. reminders completed per user per day.  
+- **Referral:** # of invites sent (sitters/family).  
+
+---
+
+## 🏆 Success Criteria
+- 500+ DAU by Day 30.  
+- Day 1 retention ≥ 35%.  
+- Day 7 retention ≥ 15%.  
+- At least 50+ sitters/family members onboarded via QR handoffs.  
