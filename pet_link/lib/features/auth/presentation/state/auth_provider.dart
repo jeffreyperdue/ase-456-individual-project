@@ -21,11 +21,13 @@ final currentUserProvider = FutureProvider<app_user.User?>((ref) async {
 
 /// Notifier for authentication state management.
 class AuthNotifier extends StateNotifier<AsyncValue<app_user.User?>> {
-  AuthNotifier(this._authService) : super(const AsyncValue.loading()) {
+  AuthNotifier(this._authService, this._ref)
+    : super(const AsyncValue.loading()) {
     _initialize();
   }
 
   final AuthService _authService;
+  final Ref _ref;
   late StreamSubscription<firebase_auth.User?> _authSubscription;
 
   void _initialize() {
@@ -34,6 +36,8 @@ class AuthNotifier extends StateNotifier<AsyncValue<app_user.User?>> {
       (firebaseUser) async {
         if (firebaseUser == null) {
           state = const AsyncValue.data(null);
+          // Clear all user-specific data when signed out
+          _clearUserData();
         } else {
           try {
             final appUser = await _authService.getCurrentAppUser();
@@ -84,11 +88,25 @@ class AuthNotifier extends StateNotifier<AsyncValue<app_user.User?>> {
     }
   }
 
+  /// Clear all user-specific provider data.
+  void _clearUserData() {
+    try {
+      // Import the providers we need to invalidate
+      _ref.invalidate(currentUserDataProvider);
+
+      // Note: We can't directly import pet/care plan providers here due to circular imports
+      // The UI layer will handle invalidating those providers
+    } catch (e) {
+      // Silently handle any errors during cleanup
+    }
+  }
+
   /// Sign out the current user.
   Future<void> signOut() async {
     try {
       await _authService.signOut();
       state = const AsyncValue.data(null);
+      _clearUserData();
     } catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);
       rethrow;
@@ -127,7 +145,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<app_user.User?>> {
 final authProvider =
     StateNotifierProvider<AuthNotifier, AsyncValue<app_user.User?>>((ref) {
       final authService = ref.watch(authServiceProvider);
-      return AuthNotifier(authService);
+      return AuthNotifier(authService, ref);
     });
 
 /// Convenience provider to get the current user data (non-nullable when authenticated).

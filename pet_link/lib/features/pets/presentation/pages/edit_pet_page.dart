@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pet_link/features/pets/domain/pet.dart';
 import 'package:pet_link/features/pets/presentation/state/pet_list_provider.dart';
 import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
+import 'package:pet_link/features/care_plans/presentation/pages/care_plan_form_page.dart';
+import 'package:pet_link/features/pets/presentation/pages/pet_profile_form_page.dart';
 
 class EditPetPage extends ConsumerStatefulWidget {
   const EditPetPage({super.key, this.petToEdit});
@@ -146,11 +148,45 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
     }
   }
 
+  void _navigateToCarePlan(BuildContext context) {
+    if (widget.petToEdit != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => CarePlanFormPage(pet: widget.petToEdit!),
+        ),
+      );
+    }
+  }
+
+  void _navigateToProfile(BuildContext context) {
+    if (widget.petToEdit != null) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => PetProfileFormPage(pet: widget.petToEdit!),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.petToEdit == null ? 'Add Pet' : 'Edit Pet'),
+        actions: [
+          if (widget.petToEdit != null) ...[
+            IconButton(
+              onPressed: () => _navigateToProfile(context),
+              icon: const Icon(Icons.person_outline),
+              tooltip: 'Pet Profile',
+            ),
+            IconButton(
+              onPressed: () => _navigateToCarePlan(context),
+              icon: const Icon(Icons.medical_services),
+              tooltip: 'Care Plan',
+            ),
+          ],
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
