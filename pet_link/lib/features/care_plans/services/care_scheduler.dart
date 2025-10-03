@@ -140,7 +140,9 @@ class CareScheduler {
 
       return notificationId;
     } catch (e) {
-      print('Failed to schedule feeding notification: $e');
+      print(
+        'Failed to schedule feeding notification for ${carePlan.petId} at $timeString: $e',
+      );
       return null;
     }
   }
@@ -197,7 +199,9 @@ class CareScheduler {
 
       return notificationId;
     } catch (e) {
-      print('Failed to schedule medication notification: $e');
+      print(
+        'Failed to schedule medication notification for ${medication.name} at $timeString: $e',
+      );
       return null;
     }
   }
@@ -254,5 +258,26 @@ class CareScheduler {
     }
 
     return DateTimeComponents.dayOfWeekAndTime; // Specific days
+  }
+
+  /// Get statistics about scheduled notifications.
+  Map<String, int> getScheduledNotificationStats() {
+    final stats = <String, int>{};
+
+    for (final entry in _scheduledNotificationIds.entries) {
+      final petId = entry.key;
+      final count = entry.value.length;
+      stats[petId] = count;
+    }
+
+    return stats;
+  }
+
+  /// Get total number of scheduled notifications.
+  int getTotalScheduledNotifications() {
+    return _scheduledNotificationIds.values.fold(
+      0,
+      (total, ids) => total + ids.length,
+    );
   }
 }

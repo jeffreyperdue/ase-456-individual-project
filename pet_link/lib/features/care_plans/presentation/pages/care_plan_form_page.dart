@@ -6,6 +6,7 @@ import '../../domain/feeding_schedule.dart';
 import '../../domain/medication.dart';
 import '../widgets/feeding_schedule_widget.dart';
 import '../widgets/medication_widget.dart';
+import '../widgets/notification_status_widget.dart';
 import '../../application/care_plan_form_provider.dart';
 import '../../application/care_plan_provider.dart';
 import '../../application/providers.dart';
@@ -52,7 +53,6 @@ class _CarePlanFormPageState extends ConsumerState<CarePlanFormPage> {
   @override
   Widget build(BuildContext context) {
     final formState = ref.watch(carePlanFormProvider);
-    final notificationsEnabled = ref.watch(notificationsEnabledProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -97,8 +97,8 @@ class _CarePlanFormPageState extends ConsumerState<CarePlanFormPage> {
 
               const SizedBox(height: 24),
 
-              // Notifications info
-              if (notificationsEnabled) _buildNotificationsInfo(),
+              // Notifications status
+              const NotificationStatusWidget(),
 
               const SizedBox(height: 24),
 
@@ -384,44 +384,6 @@ class _CarePlanFormPageState extends ConsumerState<CarePlanFormPage> {
     );
   }
 
-  Widget _buildNotificationsInfo() {
-    return Card(
-      color: Theme.of(context).colorScheme.primaryContainer,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          children: [
-            Icon(
-              Icons.notifications,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Notifications Enabled',
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    'You\'ll receive reminders for feeding and medication times.',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildValidationErrors() {
     final formState = ref.watch(carePlanFormProvider);
 
@@ -628,4 +590,3 @@ class _CarePlanFormPageState extends ConsumerState<CarePlanFormPage> {
     }
   }
 }
-

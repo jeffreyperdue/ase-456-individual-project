@@ -2,15 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
 import 'package:pet_link/features/auth/presentation/pages/login_page.dart';
+import 'package:pet_link/features/care_plans/application/notification_setup_provider.dart';
 
 /// Wrapper widget that handles authentication state and redirects accordingly.
-class AuthWrapper extends ConsumerWidget {
+class AuthWrapper extends ConsumerStatefulWidget {
   final Widget child;
 
   const AuthWrapper({super.key, required this.child});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends ConsumerState<AuthWrapper> {
+  bool _notificationsInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize notifications on app startup
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeNotifications();
+    });
+  }
+
+  Future<void> _initializeNotifications() async {
+    if (_notificationsInitialized) return;
+
+    try {
+      final setupNotifier = ref.read(notificationSetupProvider.notifier);
+      await setupNotifier.completeSetup();
+      _notificationsInitialized = true;
+    } catch (e) {
+      // Log error but don't crash the app
+      print('Failed to initialize notifications: $e');
+    }
+  }
+
+  Future<void> _reconcileNotifications() async {
+    try {
+      // For now, we'll just ensure notifications are initialized
+      // In a full implementation, we'd fetch all care plans for the user
+      // and reconcile them with the notification system
+      if (!_notificationsInitialized) {
+        await _initializeNotifications();
+      }
+    } catch (e) {
+      print('Failed to reconcile notifications: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
 
     return authState.when(
@@ -19,8 +62,11 @@ class AuthWrapper extends ConsumerWidget {
           // User is not authenticated, show login page
           return const LoginPage();
         } else {
-          // User is authenticated, show the main app
-          return child;
+          // User is authenticated, reconcile notifications and show the main app
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _reconcileNotifications();
+          });
+          return widget.child;
         }
       },
       loading: () {
