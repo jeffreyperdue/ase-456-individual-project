@@ -21,7 +21,7 @@ class NotificationPermissionDialog extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'PetLink would like to send you reminders for:',
+            'Petfolio would like to send you reminders for:',
             style: TextStyle(fontWeight: FontWeight.w500),
           ),
           SizedBox(height: 16),

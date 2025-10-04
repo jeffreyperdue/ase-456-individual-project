@@ -5,7 +5,7 @@ paginate: true
 ---
 
 <!-- _class: lead -->
-# PetLink – Week 3 Progress
+# Petfolio – Week 3 Progress
 ## Pet CRUD + Photo Upload
 
 ---

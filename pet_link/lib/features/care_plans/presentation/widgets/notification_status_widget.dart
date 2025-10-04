@@ -189,7 +189,7 @@ class NotificationStatusWidget extends ConsumerWidget {
 
       await notifications.show(
         999, // Test notification ID
-        'PetLink Test',
+        'Petfolio Test',
         'This is a test notification to verify your settings are working correctly.',
         const NotificationDetails(
           android: AndroidNotificationDetails(
@@ -246,7 +246,7 @@ class NotificationStatusWidget extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'PetLink Test',
+                  'Petfolio Test',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),

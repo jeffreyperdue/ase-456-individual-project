@@ -4,11 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pet_link/features/pets/domain/pet.dart';
-import 'package:pet_link/features/pets/presentation/state/pet_list_provider.dart';
-import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
-import 'package:pet_link/features/care_plans/presentation/pages/care_plan_form_page.dart';
-import 'package:pet_link/features/pets/presentation/pages/pet_profile_form_page.dart';
+import 'package:petfolio/features/pets/domain/pet.dart';
+import 'package:petfolio/features/pets/presentation/state/pet_list_provider.dart';
+import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/features/care_plans/presentation/pages/care_plan_form_page.dart';
+import 'package:petfolio/features/pets/presentation/pages/pet_profile_form_page.dart';
 
 class EditPetPage extends ConsumerStatefulWidget {
   const EditPetPage({super.key, this.petToEdit});

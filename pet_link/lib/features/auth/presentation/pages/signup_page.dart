@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
@@ -82,7 +82,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 const Icon(Icons.pets, size: 80, color: Colors.blue),
                 const SizedBox(height: 16),
                 const Text(
-                  'Join PetLink',
+                  'Join Petfolio',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,

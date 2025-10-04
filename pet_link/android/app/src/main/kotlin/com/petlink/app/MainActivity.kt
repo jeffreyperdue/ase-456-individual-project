@@ -1,4 +1,4 @@
-package com.petlink.app
+package com.petfolio.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_link/features/pets/domain/pet.dart';
-import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
-import 'package:pet_link/features/pets/data/pets_repository.dart';
+import 'package:petfolio/features/pets/domain/pet.dart';
+import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/features/pets/data/pets_repository.dart';
 
 /// Riverpod provider for pets list state management.
 /// Syncs with Firestore for persistence.

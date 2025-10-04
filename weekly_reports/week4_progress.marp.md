@@ -5,7 +5,7 @@ paginate: true
 ---
 
 <!-- _class: lead -->
-# PetLink – Week 4 Progress
+# Petfolio – Week 4 Progress
 ## Care Plans + Local Notifications
 
 ---
@@ -216,7 +216,7 @@ NotificationSetupNotifier {
 
 ## 🎉 MVP Milestone Reached!
 
-PetLink now delivers on its core promise:
+Petfolio now delivers on its core promise:
 - ✅ **Centralized Pet Management** - Complete pet profiles with photos
 - ✅ **Care Planning** - Feeding schedules and medication tracking  
 - ✅ **Smart Reminders** - Local notifications for care tasks

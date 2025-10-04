@@ -5,7 +5,7 @@ paginate: true
 ---
 
 <!-- _class: lead -->
-# PetLink  
+# Petfolio  
 **Cross-Platform Pet Care App**
 
 ---
@@ -20,7 +20,7 @@ paginate: true
 
 ## Solution
 
-PetLink centralizes pet care:
+Petfolio centralizes pet care:
 
 - **Profiles** with diet, meds, weight, photo  
 - **Reminders** via local notifications  

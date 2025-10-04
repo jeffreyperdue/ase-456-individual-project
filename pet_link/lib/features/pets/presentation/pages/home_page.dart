@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_link/features/pets/presentation/state/pet_list_provider.dart';
-import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
-import 'package:pet_link/features/pets/domain/pet.dart';
-import 'package:pet_link/features/pets/presentation/pages/pet_detail_page.dart';
-import 'package:pet_link/features/care_plans/application/pet_with_plan_provider.dart';
-import 'package:pet_link/features/care_plans/application/care_plan_provider.dart';
-import 'package:pet_link/features/care_plans/application/care_task_provider.dart';
-import 'package:pet_link/features/care_plans/presentation/widgets/care_plan_dashboard.dart';
+import 'package:petfolio/features/pets/presentation/state/pet_list_provider.dart';
+import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/features/pets/domain/pet.dart';
+import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
+import 'package:petfolio/features/care_plans/application/pet_with_plan_provider.dart';
+import 'package:petfolio/features/care_plans/application/care_plan_provider.dart';
+import 'package:petfolio/features/care_plans/application/care_task_provider.dart';
+import 'package:petfolio/features/care_plans/presentation/widgets/care_plan_dashboard.dart';
 
 /// Shows the list of pets and a FAB to add a dummy pet.
 class HomePage extends ConsumerWidget {
@@ -21,7 +21,7 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PetLink'),
+        title: const Text('Petfolio'),
         actions: [
           // User info and sign out
           PopupMenuButton<String>(

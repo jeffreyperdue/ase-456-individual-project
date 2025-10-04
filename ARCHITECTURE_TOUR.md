@@ -1,21 +1,21 @@
-# 🏗️ PetLink Project Architecture Tour
+# 🏗️ Petfolio Project Architecture Tour
 
-*A beginner-friendly guide to understanding the PetLink project structure*
+*A beginner-friendly guide to understanding the Petfolio project structure*
 
 ---
 
-## 🎯 What is PetLink?
+## 🎯 What is Petfolio?
 
-PetLink is a **cross-platform pet care app** built with Flutter that helps pet owners, families, and pet sitters stay synchronized with real-time care schedules, reminders, and pet information. Think of it as a shared hub for pet care where everyone involved in your pet's wellbeing can access the same information and coordinate care tasks.
+Petfolio is a **cross-platform pet care app** built with Flutter that helps pet owners, families, and pet sitters stay synchronized with real-time care schedules, reminders, and pet information. Think of it as a shared hub for pet care where everyone involved in your pet's wellbeing can access the same information and coordinate care tasks.
 
 ---
 
 ## 📁 Project Overview
 
-Your PetLink project is organized into several main areas:
+Your Petfolio project is organized into several main areas:
 
 ```
-PetLink/
+Petfolio/
 ├── 📱 pet_link/          # The main Flutter app
 ├── 📋 Documentation/     # Project planning & design files
 ├── 🎨 Visual Prototypes/ # UI/UX design mockups
@@ -79,7 +79,7 @@ This is where you organize different parts of your app. Each "feature" is like a
 
 ### 🏗️ Feature Architecture
 
-PetLink follows **Clean Architecture**, which organizes code into layers:
+Petfolio follows **Clean Architecture**, which organizes code into layers:
 
 ```
 features/[feature_name]/
@@ -221,7 +221,7 @@ This folder contains design mockups and color schemes:
 ## 🏗️ Architecture Principles
 
 ### 🧩 Clean Architecture
-PetLink uses **Clean Architecture**, which separates code into layers:
+Petfolio uses **Clean Architecture**, which separates code into layers:
 
 1. **Domain Layer** (`domain/`): Business rules and data models
 2. **Data Layer** (`data/`): External services and data storage
@@ -281,7 +281,7 @@ PetLink uses **Clean Architecture**, which separates code into layers:
 ## 💡 Key Concepts for Beginners
 
 ### 🏗️ **Feature-Based Organization**
-Instead of organizing by file type, PetLink organizes by feature. This makes it easier to find and modify related code.
+Instead of organizing by file type, Petfolio organizes by feature. This makes it easier to find and modify related code.
 
 ### 🔄 **State Management**
 Riverpod helps manage app data. When you change something in one part of the app, other parts automatically update.
@@ -307,4 +307,4 @@ One codebase works on iOS, Android, and web - no need to write separate apps.
 
 ---
 
-This architecture tour should help you understand how PetLink is organized and where to find different parts of the code. Remember: the key is that everything is organized by feature, making it easy to understand and modify specific parts of the app without affecting others!
+This architecture tour should help you understand how Petfolio is organized and where to find different parts of the code. Remember: the key is that everything is organized by feature, making it easy to understand and modify specific parts of the app without affecting others!

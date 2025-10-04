@@ -1,4 +1,4 @@
-# Mom Test for PetLink
+# Mom Test for Petfolio
 
 ## 1. Setup the Session
 > “We’re trying to understand how people coordinate day‑to‑day pet care with family members or sitters.”

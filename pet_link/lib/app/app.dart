@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:pet_link/app/theme.dart';
-import 'package:pet_link/features/pets/presentation/pages/home_page.dart';
-import 'package:pet_link/features/pets/presentation/pages/edit_pet_page.dart';
-import 'package:pet_link/features/pets/presentation/pages/pet_detail_page.dart';
-import 'package:pet_link/features/auth/presentation/pages/auth_wrapper.dart';
-import 'package:pet_link/features/auth/presentation/pages/login_page.dart';
-import 'package:pet_link/features/auth/presentation/pages/signup_page.dart';
-import 'package:pet_link/features/pets/domain/pet.dart';
+import 'package:petfolio/app/theme.dart';
+import 'package:petfolio/features/pets/presentation/pages/home_page.dart';
+import 'package:petfolio/features/pets/presentation/pages/edit_pet_page.dart';
+import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
+import 'package:petfolio/features/auth/presentation/pages/auth_wrapper.dart';
+import 'package:petfolio/features/auth/presentation/pages/login_page.dart';
+import 'package:petfolio/features/auth/presentation/pages/signup_page.dart';
+import 'package:petfolio/features/pets/domain/pet.dart';
 
 /// Root of your app (MaterialApp, routes, theme).
-class PetLinkApp extends StatelessWidget {
-  const PetLinkApp({super.key});
+class PetfolioApp extends StatelessWidget {
+  const PetfolioApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PetLink',
+      title: 'Petfolio',
       theme: buildTheme(),
       initialRoute: '/',
       routes: {

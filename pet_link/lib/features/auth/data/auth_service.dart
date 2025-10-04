@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pet_link/features/auth/domain/user.dart' as app_user;
+import 'package:petfolio/features/auth/domain/user.dart' as app_user;
 
 /// Service for handling Firebase Authentication and user management.
 class AuthService {

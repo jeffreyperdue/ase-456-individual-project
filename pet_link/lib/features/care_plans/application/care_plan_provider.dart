@@ -4,8 +4,8 @@ import '../domain/care_plan.dart';
 import '../domain/care_plan_repository.dart';
 import '../services/care_scheduler.dart';
 import 'providers.dart';
-import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
-import 'package:pet_link/features/auth/domain/user.dart' as app_user;
+import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/features/auth/domain/user.dart' as app_user;
 
 /// Riverpod provider for CarePlan state management.
 ///

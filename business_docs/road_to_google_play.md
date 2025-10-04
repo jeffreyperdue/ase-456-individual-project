@@ -61,7 +61,7 @@
 - Monitor Firebase Crashlytics + Analytics
 - Patch only critical issues
 
-**Deliverable:** PetLink live on Play Store before Christmas  
+**Deliverable:** Petfolio live on Play Store before Christmas  
 **Target:** Dec 24
 
 ---

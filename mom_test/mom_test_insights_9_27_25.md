@@ -1,4 +1,4 @@
-# PetLink – Mom Test Interview Insights
+# Petfolio – Mom Test Interview Insights
 
 ## 🔑 Key Insights from Users
 1. **Feeding & Med Routine Tracking**
@@ -27,7 +27,7 @@
 
 ---
 
-## 📌 Actionable Items (Mapped to PetLink Spec)
+## 📌 Actionable Items (Mapped to Petfolio Spec)
 1. **Task Check-Off Log (Sprint 2 priority)**
    - Add a **TaskLog model** (already sketched in spec).
    - Each feeding/med is a task → caretaker checks it off → synced in real time.

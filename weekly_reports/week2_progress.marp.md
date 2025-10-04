@@ -9,16 +9,16 @@ paginate: true
 <!-- _class: frontpage -->
 <!-- _paginate: skip -->
 
-# PetLink Authentication Implementation
+# Petfolio Authentication Implementation
 ## Week 2 Progress Report
 
-Successfully implemented Firebase Authentication and user management system for PetLink, a cross-platform pet care app.
+Successfully implemented Firebase Authentication and user management system for Petfolio, a cross-platform pet care app.
 
 ---
 
 ## 🎯 **Project Overview**
 
-Successfully implemented Firebase Authentication and user management system for PetLink, a cross-platform pet care app. This milestone completes Week 2 requirements and establishes a secure foundation for user-specific pet management.
+Successfully implemented Firebase Authentication and user management system for Petfolio, a cross-platform pet care app. This milestone completes Week 2 requirements and establishes a secure foundation for user-specific pet management.
 
 ---
 

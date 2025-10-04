@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:pet_link/features/auth/domain/user.dart' as app_user;
-import 'package:pet_link/features/auth/data/auth_service.dart';
+import 'package:petfolio/features/auth/domain/user.dart' as app_user;
+import 'package:petfolio/features/auth/data/auth_service.dart';
 
 /// Provider for the AuthService.
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());

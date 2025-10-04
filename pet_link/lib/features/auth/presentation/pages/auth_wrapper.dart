@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pet_link/features/auth/presentation/state/auth_provider.dart';
-import 'package:pet_link/features/auth/presentation/pages/login_page.dart';
-import 'package:pet_link/features/care_plans/application/notification_setup_provider.dart';
+import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/features/auth/presentation/pages/login_page.dart';
+import 'package:petfolio/features/care_plans/application/notification_setup_provider.dart';
 
 /// Wrapper widget that handles authentication state and redirects accordingly.
 class AuthWrapper extends ConsumerStatefulWidget {
@@ -79,7 +79,7 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
                 Icon(Icons.pets, size: 80, color: Colors.blue),
                 SizedBox(height: 16),
                 Text(
-                  'PetLink',
+                  'Petfolio',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,

@@ -1,10 +1,10 @@
-# ASE456 – PetLink  
-**PetLink – Cross-Platform Pet Care App (Flutter/Dart)**  
+# ASE456 – Petfolio  
+**Petfolio – Cross-Platform Pet Care App (Flutter/Dart)**  
 
 ---
 
 ## 1) One-liner  
-*A shared hub for pet care. PetLink keeps owners, families, and sitters perfectly in sync with real-time schedules, reminders, and handoffs — with room to grow into adoption agencies, trainers, and professionals.*  
+*A shared hub for pet care. Petfolio keeps owners, families, and sitters perfectly in sync with real-time schedules, reminders, and handoffs — with room to grow into adoption agencies, trainers, and professionals.*  
 
 ---
 
@@ -52,7 +52,7 @@ Goal: Ship core app for owners by end of Sprint.
 
 ---
 
-# PetLink – Weekly Development Plan  
+# Petfolio – Weekly Development Plan  
 
 ---
 
@@ -175,7 +175,7 @@ Goal: Expand to multi-user care.
 ## 9) Success Criteria  
 - Sprint 1: One owner can create a pet, add a care plan, get reminders, share QR profile.  
 - Sprint 2: **Two linked accounts can see and complete the same care plan in real time.**  
-- Long-term: Agencies, trainers, and vets adopt PetLink as a trusted handoff and coordination tool.  
+- Long-term: Agencies, trainers, and vets adopt Petfolio as a trusted handoff and coordination tool.  
 
 ---
 

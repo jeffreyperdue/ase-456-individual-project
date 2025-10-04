@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pet_link/features/pets/domain/pet.dart';
+import 'package:petfolio/features/pets/domain/pet.dart';
 
 /// PetsRepository centralizes all Firestore and Storage operations
 /// for Pets. Keeping data access in one place makes the UI simpler
