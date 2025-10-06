@@ -44,7 +44,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Sign in failed: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -58,9 +58,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> _sendPasswordReset() async {
     if (_emailController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter your email address first'),
-          backgroundColor: Colors.orange,
+        SnackBar(
+          content: const Text('Please enter your email address first'),
+          backgroundColor: Theme.of(context).colorScheme.secondary,
         ),
       );
       return;
@@ -73,9 +73,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Password reset email sent! Check your inbox.'),
-            backgroundColor: Colors.green,
+          SnackBar(
+            content: const Text('Password reset email sent! Check your inbox.'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
       }
@@ -84,7 +84,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to send reset email: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -105,21 +105,24 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Logo or app title
-                const Icon(Icons.pets, size: 80, color: Colors.blue),
+                Icon(Icons.pets, size: 80, color: Theme.of(context).colorScheme.primary),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Petfolio',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Sign in to manage your pets',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 16, 
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 48),

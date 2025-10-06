@@ -5,8 +5,6 @@ import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
 import 'package:petfolio/features/pets/domain/pet.dart';
 import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
 import 'package:petfolio/features/care_plans/application/pet_with_plan_provider.dart';
-import 'package:petfolio/features/care_plans/application/care_plan_provider.dart';
-import 'package:petfolio/features/care_plans/application/care_task_provider.dart';
 import 'package:petfolio/features/care_plans/presentation/widgets/care_plan_dashboard.dart';
 
 /// Shows the list of pets and a FAB to add a dummy pet.
@@ -34,7 +32,7 @@ class HomePage extends ConsumerWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Sign out failed: $e'),
-                        backgroundColor: Colors.red,
+                        backgroundColor: Theme.of(context).colorScheme.error,
                       ),
                     );
                   }
@@ -54,9 +52,9 @@ class HomePage extends ConsumerWidget {
                         ),
                         Text(
                           currentUser?.email ?? '',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey,
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],

@@ -9,37 +9,37 @@ class NotificationPermissionDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return AlertDialog(
-      title: const Row(
+      title: Row(
         children: [
-          Icon(Icons.notifications, color: Colors.blue),
-          SizedBox(width: 12),
-          Text('Enable Notifications'),
+          Icon(Icons.notifications, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(width: 12),
+          const Text('Enable Notifications'),
         ],
       ),
-      content: const Column(
+      content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Petfolio would like to send you reminders for:',
             style: TextStyle(fontWeight: FontWeight.w500),
           ),
-          SizedBox(height: 16),
-          _PermissionItem(
+          const SizedBox(height: 16),
+          const _PermissionItem(
             icon: Icons.restaurant,
             title: 'Feeding Times',
             description: 'Get reminded when it\'s time to feed your pets',
           ),
-          SizedBox(height: 12),
-          _PermissionItem(
+          const SizedBox(height: 12),
+          const _PermissionItem(
             icon: Icons.medication,
             title: 'Medication Times',
             description: 'Never miss giving your pets their medications',
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             'You can change these settings anytime in your device settings.',
-            style: TextStyle(fontSize: 12, color: Colors.grey),
+            style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
         ],
       ),
@@ -78,11 +78,11 @@ class NotificationPermissionDialog extends ConsumerWidget {
 
     if (setupState.hasPermissions) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
+        SnackBar(
+          content: const Text(
             'Notifications enabled! You\'ll receive reminders for your pets.',
           ),
-          backgroundColor: Colors.green,
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
       );
     } else {
@@ -158,7 +158,7 @@ class _PermissionItem extends StatelessWidget {
               ),
               Text(
                 description,
-                style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
               ),
             ],
           ),

@@ -25,7 +25,7 @@ class NotificationStatusWidget extends ConsumerWidget {
               children: [
                 Icon(
                   Icons.notifications,
-                  color: _getStatusColor(setupState, notificationsEnabled),
+                  color: _getStatusColor(context, setupState, notificationsEnabled),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -63,19 +63,20 @@ class NotificationStatusWidget extends ConsumerWidget {
   }
 
   Color _getStatusColor(
+    BuildContext context,
     NotificationSetupState setupState,
     bool notificationsEnabled,
   ) {
     if (!notificationsEnabled) {
-      return Colors.grey;
+      return Theme.of(context).colorScheme.onSurfaceVariant;
     }
 
     if (setupState.hasPermissions) {
-      return Colors.green;
+      return Theme.of(context).colorScheme.primary;
     } else if (setupState.error != null) {
-      return Colors.red;
+      return Theme.of(context).colorScheme.error;
     } else {
-      return Colors.orange;
+      return Theme.of(context).colorScheme.secondary;
     }
   }
 
@@ -87,24 +88,24 @@ class NotificationStatusWidget extends ConsumerWidget {
     if (!notificationsEnabled) {
       return Text(
         'Notifications are disabled. You won\'t receive reminders for feeding or medication times.',
-        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+        style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.onSurfaceVariant),
       );
     }
 
     if (setupState.hasPermissions) {
       return Text(
         'You\'ll receive reminders for feeding and medication times.',
-        style: TextStyle(fontSize: 12, color: Colors.green[700]),
+        style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.primary),
       );
     } else if (setupState.error != null) {
       return Text(
         'Error: ${setupState.error}',
-        style: const TextStyle(fontSize: 12, color: Colors.red),
+        style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.error),
       );
     } else {
       return Text(
         'Notifications are enabled but permissions are needed.',
-        style: TextStyle(fontSize: 12, color: Colors.orange[700]),
+        style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.secondary),
       );
     }
   }
@@ -135,18 +136,18 @@ class NotificationStatusWidget extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.red[50],
+        color: Theme.of(context).colorScheme.error.withOpacity(0.1),
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: Colors.red[200]!),
+        border: Border.all(color: Theme.of(context).colorScheme.error.withOpacity(0.3)),
       ),
       child: Row(
         children: [
-          Icon(Icons.error_outline, size: 16, color: Colors.red[700]),
+          Icon(Icons.error_outline, size: 16, color: Theme.of(context).colorScheme.error),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               error,
-              style: TextStyle(fontSize: 12, color: Colors.red[700]),
+              style: TextStyle(fontSize: 12, color: Theme.of(context).colorScheme.error),
             ),
           ),
         ],
@@ -209,11 +210,11 @@ class NotificationStatusWidget extends ConsumerWidget {
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
+          SnackBar(
+            content: const Text(
               'Test notification sent! Check your notification area.',
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
       }
@@ -222,7 +223,7 @@ class NotificationStatusWidget extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to send test notification: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -234,31 +235,31 @@ class NotificationStatusWidget extends ConsumerWidget {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Row(
+            title: Row(
               children: [
-                Icon(Icons.notifications, color: Colors.blue),
-                SizedBox(width: 8),
-                Text('Mock Notification'),
+                Icon(Icons.notifications, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                const Text('Mock Notification'),
               ],
             ),
-            content: const Column(
+            content: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Petfolio Test',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 8),
-                Text(
+                const SizedBox(height: 8),
+                const Text(
                   'This is a test notification to verify your settings are working correctly.',
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Text(
                   'Note: This is a mock notification for web testing. On mobile devices, you would receive an actual system notification.',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontStyle: FontStyle.italic,
                   ),
                 ),

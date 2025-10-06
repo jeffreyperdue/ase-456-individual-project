@@ -73,9 +73,9 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
     if (currentUser == null) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('You must be signed in to add pets'),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text('You must be signed in to add pets'),
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -104,7 +104,7 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Photo upload failed: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }

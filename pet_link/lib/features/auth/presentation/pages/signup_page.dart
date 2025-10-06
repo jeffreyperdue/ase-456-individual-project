@@ -53,7 +53,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Sign up failed: ${e.toString()}'),
-            backgroundColor: Colors.red,
+            backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
       }
@@ -79,21 +79,24 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 const SizedBox(height: 32),
 
                 // Logo or app title
-                const Icon(Icons.pets, size: 80, color: Colors.blue),
+                Icon(Icons.pets, size: 80, color: Theme.of(context).colorScheme.primary),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Join Petfolio',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   'Create an account to start managing your pets',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(
+                    fontSize: 16, 
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 48),

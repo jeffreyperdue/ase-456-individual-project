@@ -71,25 +71,25 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
       },
       loading: () {
         // Show loading screen while checking authentication
-        return const Scaffold(
+        return Scaffold(
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.pets, size: 80, color: Colors.blue),
-                SizedBox(height: 16),
+                Icon(Icons.pets, size: 80, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(height: 16),
                 Text(
                   'Petfolio',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                SizedBox(height: 32),
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text('Loading...'),
+                const SizedBox(height: 32),
+                const CircularProgressIndicator(),
+                const SizedBox(height: 16),
+                const Text('Loading...'),
               ],
             ),
           ),
@@ -102,17 +102,21 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 80, color: Colors.red),
+                Icon(Icons.error_outline, size: 80, color: Theme.of(context).colorScheme.error),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Authentication Error',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 24, 
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   error.toString(),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(
