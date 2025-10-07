@@ -22,7 +22,7 @@ title: HW4 – Individual Project Rubric
 - [x] Number of individual features completed: 35+
 - [x] Number of individual requirements completed: 25+
 - [x] Individual burndown rate (%): 90%
-
+NEEDS ATTENTION
 ---
 
 **Calculation:**
@@ -45,13 +45,15 @@ Use the answers for your Marp presentation.
 - Timezone handling for notifications needed multiple iterations to get right
 - Some scope creep in Week 4 with enhanced pet profiles beyond original MVP 
 
+---
+
 ### What Went Well (Individual Level):
 - Successfully implemented complete authentication system with Firebase Auth
 - Built comprehensive pet management system with photo upload functionality
 - Developed robust care plan system with local notifications
 - Created clean architecture with proper separation of concerns using Riverpod
 - Delivered production-ready MVP with all core features functional 
-
+---
 ### Analysis & Improvement Plan (Individual Level):
 - Focus on core MVP features first, defer enhancements to later sprints
 - Allocate more time for cross-platform testing and edge case handling
@@ -79,33 +81,35 @@ Make a summary of your individual progress in the Sprint 1
 ### Individual Sprint 2 Goals:
 
 - Implement QR code sharing and secure handoff functionality
-- Build lost & found mode with location tracking and poster generation
+- Build lost & found mode with location tracking
 - Create weight tracking system with charts and historical data
 - Develop trainer/agency directory with static listings
 - Polish UI/UX with accessibility features and consistent theming 
-
-### Individual Sprint 2 Metrics:
+---
+**### Individual Sprint 2 Metrics:
 
 - [x] Number of individual features planned: 15+
-- [x] Number of individual requirements planned: 20+
+- [x] Number of individual requirements planned: 20+**
+NEEDS ATTENTION
 
+---
 ### Updated Individual Timeline and Milestones:
 
 Make your individual progress plan
 
-- Week 1: QR code generation, sharing infrastructure, public profile views
-- Week 2: Lost & found mode, location services, poster generation system
-- Week 3: Weight tracking, charts, trainer directory, enhanced UI components
-- Week 4: Accessibility improvements, performance optimization, final testing and polish
-
+- Week 7: QR code generation, sharing infrastructure, public profile views
+- Week 8: Lost & found mode, location services, poster generation system
+- Week 9: Weight tracking, charts, trainer directory, enhanced UI components
+- Week 10: Accessibility improvements, performance optimization, final testing and polish
+---
 ### Key Individual Dates:
 
 - Individual presentation: During Sprint 2 (TBD)
 - Individual milestones:
-  - Week 1: Complete sharing system with QR codes
-  - Week 2: Lost & found functionality operational
-  - Week 3: Weight tracking and directory features complete
-  - Week 4: Final polish and accessibility compliance
+  - Week 7: Complete sharing system with QR codes
+  - Week 8: Lost & found functionality operational with poster generation system
+  - Week 9: Weight tracking and directory features complete
+  - Week 10: Final polish and accessibility compliance
 
 **Points:** 5 / 5
 
@@ -116,7 +120,7 @@ Make your individual progress plan
 **Upload All Individual Files to GitHub**
 
 - [x] Individual code uploaded to GitHub
-  - Individual Repository URL: https://github.com/[username]/PetLink (to be updated)
+  - Individual Repository URL: [https://github.com/[username]/PetLink(https://github.com/jeffreyperdue/ase-456-individual-project)
 - [x] Individual tests uploaded
 - [x] Individual documentation uploaded
 - [x] Individual Sprint 1 presentation slides uploaded (Marp)
