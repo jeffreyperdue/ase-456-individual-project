@@ -7,6 +7,9 @@ import 'package:petfolio/features/auth/presentation/pages/auth_wrapper.dart';
 import 'package:petfolio/features/auth/presentation/pages/login_page.dart';
 import 'package:petfolio/features/auth/presentation/pages/signup_page.dart';
 import 'package:petfolio/features/pets/domain/pet.dart';
+import 'package:petfolio/features/sharing/presentation/pages/share_pet_page.dart';
+import 'package:petfolio/features/sharing/presentation/pages/sitter_dashboard_page.dart';
+import 'package:petfolio/features/sharing/presentation/pages/public_pet_profile_page.dart';
 
 /// Root of your app (MaterialApp, routes, theme).
 class PetfolioApp extends StatelessWidget {
@@ -22,6 +25,8 @@ class PetfolioApp extends StatelessWidget {
         '/': (_) => const AuthWrapper(child: HomePage()),
         '/login': (_) => const LoginPage(),
         '/signup': (_) => const SignUpPage(),
+        '/sitter-dashboard':
+            (_) => const AuthWrapper(child: SitterDashboardPage()),
         // Use onGenerateRoute for passing arguments for edit
       },
       onGenerateRoute: (settings) {
@@ -40,6 +45,24 @@ class PetfolioApp extends StatelessWidget {
           if (args is Map && args['pet'] is Pet) {
             return MaterialPageRoute(
               builder: (_) => PetDetailPage(pet: args['pet'] as Pet),
+            );
+          }
+        }
+        if (settings.name == '/share-pet') {
+          final args = settings.arguments;
+          if (args is Map && args['pet'] is Pet) {
+            return MaterialPageRoute(
+              builder: (_) => SharePetPage(pet: args['pet'] as Pet),
+            );
+          }
+        }
+        if (settings.name == '/public-profile') {
+          final args = settings.arguments;
+          if (args is Map && args['tokenId'] is String) {
+            return MaterialPageRoute(
+              builder:
+                  (_) =>
+                      PublicPetProfilePage(tokenId: args['tokenId'] as String),
             );
           }
         }
