@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:petfolio/features/auth/domain/user.dart';
 import 'package:petfolio/features/pets/domain/pet.dart';
 import 'package:petfolio/features/pets/data/pets_repository.dart';
 import 'package:petfolio/features/pets/presentation/state/pet_list_provider.dart';
@@ -69,7 +69,6 @@ void main() {
 
         // Act & Assert
         final petNotifier = container.read(petsProvider.notifier);
-
         expect(() => petNotifier.add(newPet), throwsException);
 
         verify(mockRepository.createPet(newPet)).called(1);
@@ -95,7 +94,6 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act - initialize the provider
-        final petNotifier = container.read(petsProvider.notifier);
         await Future.delayed(Duration.zero); // Allow stream to emit
 
         // Verify initial state
@@ -110,6 +108,7 @@ void main() {
         when(mockRepository.createPet(any)).thenAnswer((_) async {});
 
         // Add new pet
+        final petNotifier = container.read(petsProvider.notifier);
         await petNotifier.add(newPet);
 
         // Assert
@@ -159,7 +158,6 @@ void main() {
 
         // Act & Assert
         final petNotifier = container.read(petsProvider.notifier);
-
         expect(() => petNotifier.update(petId, updates), throwsException);
 
         verify(mockRepository.updatePet(petId, updates)).called(1);
@@ -220,8 +218,8 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act & Assert
-        final petNotifier = container.read(petsProvider.notifier);
 
+        final petNotifier = container.read(petsProvider.notifier);
         expect(() => petNotifier.remove(petId), throwsException);
 
         verify(mockRepository.deletePet(petId)).called(1);
@@ -252,7 +250,6 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act
-        final petNotifier = container.read(petsProvider.notifier);
         await Future.delayed(Duration.zero); // Allow stream to emit
 
         // Assert
@@ -273,7 +270,6 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act
-        final petNotifier = container.read(petsProvider.notifier);
         await Future.delayed(Duration.zero);
 
         // Assert
@@ -293,7 +289,6 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act
-        final petNotifier = container.read(petsProvider.notifier);
         await Future.delayed(Duration.zero);
 
         // Assert
@@ -314,7 +309,6 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act - initialize with pets
-        final petNotifier = container.read(petsProvider.notifier);
         await Future.delayed(Duration.zero);
 
         // Verify pets are loaded
@@ -349,8 +343,8 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act & Assert
-        final petNotifier = container.read(petsProvider.notifier);
 
+        final petNotifier = container.read(petsProvider.notifier);
         expect(() => petNotifier.add(invalidPet), throwsException);
       });
 
@@ -370,8 +364,8 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act & Assert
-        final petNotifier = container.read(petsProvider.notifier);
 
+        final petNotifier = container.read(petsProvider.notifier);
         expect(
           () => petNotifier.update(petId, invalidUpdates),
           throwsException,
@@ -401,9 +395,9 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act
-        final petNotifier = container.read(petsProvider.notifier);
 
         // Perform multiple operations concurrently
+        final petNotifier = container.read(petsProvider.notifier);
         await Future.wait([
           petNotifier.add(pet1),
           petNotifier.add(pet2),
@@ -437,7 +431,6 @@ void main() {
         container.read(authProvider.notifier).state = AsyncValue.data(owner);
 
         // Act
-        final petNotifier = container.read(petsProvider.notifier);
 
         // Emit initial pets
         streamController.add(initialPets);

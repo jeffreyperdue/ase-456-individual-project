@@ -151,9 +151,6 @@ class TestConfig {
 
   /// Set up global test configuration
   static void _setupGlobalConfig() {
-    // Set test timeout
-    const testTimeout = Timeout(Duration(minutes: 5));
-
     // Configure test environment
     TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -163,40 +160,29 @@ class TestConfig {
   /// Clean up after tests
   static void cleanup() {
     // Clean up any resources if needed
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/image_picker'),
-      null,
-    );
+    const MethodChannel(
+      'plugins.flutter.io/image_picker',
+    ).setMockMethodCallHandler(null);
 
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('dexterous.com/flutter/local_notifications'),
-      null,
-    );
+    const MethodChannel(
+      'dexterous.com/flutter/local_notifications',
+    ).setMockMethodCallHandler(null);
 
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('dev.fluttercommunity.plus/share'),
-      null,
-    );
-
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/url_launcher'),
-      null,
-    );
-
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/firebase_auth'),
-      null,
-    );
-
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/cloud_firestore'),
-      null,
-    );
-
-    ServicesBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
-      const MethodChannel('plugins.flutter.io/firebase_storage'),
-      null,
-    );
+    const MethodChannel(
+      'dev.fluttercommunity.plus/share',
+    ).setMockMethodCallHandler(null);
+    const MethodChannel(
+      'plugins.flutter.io/url_launcher',
+    ).setMockMethodCallHandler(null);
+    const MethodChannel(
+      'plugins.flutter.io/firebase_auth',
+    ).setMockMethodCallHandler(null);
+    const MethodChannel(
+      'plugins.flutter.io/cloud_firestore',
+    ).setMockMethodCallHandler(null);
+    const MethodChannel(
+      'plugins.flutter.io/firebase_storage',
+    ).setMockMethodCallHandler(null);
   }
 }
 

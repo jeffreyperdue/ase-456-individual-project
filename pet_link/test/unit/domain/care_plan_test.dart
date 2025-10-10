@@ -4,6 +4,13 @@ import 'package:petfolio/features/care_plans/domain/feeding_schedule.dart';
 import 'package:petfolio/features/care_plans/domain/medication.dart';
 import '../../helpers/test_helpers.dart';
 
+/// Mock Timestamp class for testing
+class MockTimestamp {
+  final DateTime _dateTime;
+  MockTimestamp(this._dateTime);
+  DateTime toDate() => _dateTime;
+}
+
 void main() {
   group('CarePlan Domain Model Tests', () {
     test('should create care plan with required fields', () {
@@ -66,8 +73,8 @@ void main() {
             'notes': 'With breakfast',
           },
         ],
-        'createdAt': '2024-01-01T00:00:00.000Z',
-        'updatedAt': '2024-01-02T00:00:00.000Z',
+        'createdAt': MockTimestamp(DateTime.parse('2024-01-01T00:00:00.000Z')),
+        'updatedAt': MockTimestamp(DateTime.parse('2024-01-02T00:00:00.000Z')),
         'timezone': 'America/Los_Angeles',
       };
 
@@ -131,6 +138,28 @@ void main() {
 
     test('should support equality comparison', () {
       // Arrange
+      final feedingSchedule1 = TestDataFactory.createTestFeedingSchedule();
+      final feedingSchedule2 = TestDataFactory.createTestFeedingSchedule();
+
+      // Test FeedingSchedule equality first
+      expect(feedingSchedule1.id, equals(feedingSchedule2.id));
+      expect(feedingSchedule1.label, equals(feedingSchedule2.label));
+      expect(feedingSchedule1.times, equals(feedingSchedule2.times));
+      expect(feedingSchedule1.daysOfWeek, equals(feedingSchedule2.daysOfWeek));
+      expect(feedingSchedule1.active, equals(feedingSchedule2.active));
+      expect(feedingSchedule1.notes, equals(feedingSchedule2.notes));
+      expect(feedingSchedule1.times, isA<List<String>>());
+      expect(feedingSchedule2.times, isA<List<String>>());
+      expect(feedingSchedule1.times.length, equals(2));
+      expect(feedingSchedule2.times.length, equals(2));
+      expect(feedingSchedule1.times[0], equals('07:00'));
+      expect(feedingSchedule1.times[1], equals('19:00'));
+      expect(feedingSchedule2.times[0], equals('07:00'));
+      expect(feedingSchedule2.times[1], equals('19:00'));
+      expect(feedingSchedule1.hashCode, equals(feedingSchedule2.hashCode));
+      expect(feedingSchedule1, equals(feedingSchedule2));
+
+      // Now test CarePlan equality
       final carePlan1 = TestDataFactory.createTestCarePlan();
       final carePlan2 = TestDataFactory.createTestCarePlan();
       final carePlan3 = TestDataFactory.createTestCarePlan(
@@ -138,6 +167,8 @@ void main() {
       );
 
       // Act & Assert
+      expect(carePlan1.dietText, equals('High-quality dry food twice daily'));
+      expect(carePlan3.dietText, equals('Different diet'));
       expect(carePlan1, equals(carePlan2));
       expect(carePlan1, isNot(equals(carePlan3)));
       expect(carePlan1.hashCode, equals(carePlan2.hashCode));

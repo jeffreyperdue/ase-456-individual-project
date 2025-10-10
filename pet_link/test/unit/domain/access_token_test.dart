@@ -187,7 +187,7 @@ void main() {
 
     test('should identify expired token correctly', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final expiredToken = AccessToken(
         id: 'expired_token',
         petId: 'test_pet',
@@ -204,14 +204,14 @@ void main() {
 
     test('should identify valid token correctly', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final validToken = AccessToken(
         id: 'valid_token',
         petId: 'test_pet',
         grantedBy: 'test_owner',
         role: AccessRole.viewer,
-        expiresAt: DateTime(2024, 1, 16, 12, 0, 0), // Tomorrow
-        createdAt: DateTime(2024, 1, 10, 12, 0, 0),
+        expiresAt: now.add(const Duration(days: 1)), // Tomorrow
+        createdAt: now.subtract(const Duration(days: 5)),
         isActive: true,
       );
 
@@ -222,14 +222,14 @@ void main() {
 
     test('should identify inactive token as invalid', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final inactiveToken = AccessToken(
         id: 'inactive_token',
         petId: 'test_pet',
         grantedBy: 'test_owner',
         role: AccessRole.viewer,
-        expiresAt: DateTime(2024, 1, 16, 12, 0, 0), // Tomorrow
-        createdAt: DateTime(2024, 1, 10, 12, 0, 0),
+        expiresAt: now.add(const Duration(days: 1)), // Tomorrow
+        createdAt: now.subtract(const Duration(days: 5)),
         isActive: false,
       );
 
@@ -240,14 +240,16 @@ void main() {
 
     test('should calculate time until expiration correctly', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final token = AccessToken(
         id: 'time_test_token',
         petId: 'test_pet',
         grantedBy: 'test_owner',
         role: AccessRole.viewer,
-        expiresAt: DateTime(2024, 1, 18, 12, 0, 0), // 3 days from now
-        createdAt: DateTime(2024, 1, 10, 12, 0, 0),
+        expiresAt: now.add(
+          const Duration(days: 3, hours: 1),
+        ), // 3 days and 1 hour from now
+        createdAt: now.subtract(const Duration(days: 5)),
       );
 
       // Act
@@ -259,7 +261,7 @@ void main() {
 
     test('should handle expired token time calculation', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final expiredToken = AccessToken(
         id: 'expired_time_token',
         petId: 'test_pet',
@@ -278,14 +280,16 @@ void main() {
 
     test('should handle single day remaining', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final token = AccessToken(
         id: 'single_day_token',
         petId: 'test_pet',
         grantedBy: 'test_owner',
         role: AccessRole.viewer,
-        expiresAt: DateTime(2024, 1, 16, 12, 0, 0), // Tomorrow
-        createdAt: DateTime(2024, 1, 10, 12, 0, 0),
+        expiresAt: now.add(
+          const Duration(days: 1, hours: 1),
+        ), // Tomorrow + 1 hour
+        createdAt: now.subtract(const Duration(days: 5)),
       );
 
       // Act
@@ -297,14 +301,16 @@ void main() {
 
     test('should handle hours remaining', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final token = AccessToken(
         id: 'hours_token',
         petId: 'test_pet',
         grantedBy: 'test_owner',
         role: AccessRole.viewer,
-        expiresAt: DateTime(2024, 1, 15, 15, 0, 0), // 3 hours from now
-        createdAt: DateTime(2024, 1, 10, 12, 0, 0),
+        expiresAt: now.add(
+          const Duration(hours: 3, minutes: 30),
+        ), // 3 hours and 30 minutes from now
+        createdAt: now.subtract(const Duration(days: 5)),
       );
 
       // Act
@@ -316,14 +322,16 @@ void main() {
 
     test('should handle single hour remaining', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final token = AccessToken(
         id: 'single_hour_token',
         petId: 'test_pet',
         grantedBy: 'test_owner',
         role: AccessRole.viewer,
-        expiresAt: DateTime(2024, 1, 15, 13, 0, 0), // 1 hour from now
-        createdAt: DateTime(2024, 1, 10, 12, 0, 0),
+        expiresAt: now.add(
+          const Duration(hours: 1, minutes: 30),
+        ), // 1 hour and 30 minutes from now
+        createdAt: now.subtract(const Duration(days: 5)),
       );
 
       // Act
@@ -335,14 +343,16 @@ void main() {
 
     test('should handle minutes remaining', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final token = AccessToken(
         id: 'minutes_token',
         petId: 'test_pet',
         grantedBy: 'test_owner',
         role: AccessRole.viewer,
-        expiresAt: DateTime(2024, 1, 15, 12, 45, 0), // 45 minutes from now
-        createdAt: DateTime(2024, 1, 10, 12, 0, 0),
+        expiresAt: now.add(
+          const Duration(minutes: 45, seconds: 30),
+        ), // 45 minutes and 30 seconds from now
+        createdAt: now.subtract(const Duration(days: 5)),
       );
 
       // Act
@@ -354,14 +364,16 @@ void main() {
 
     test('should handle single minute remaining', () {
       // Arrange
-      mockClock.setTime(DateTime(2024, 1, 15, 12, 0, 0)); // Monday noon
+      final now = DateTime.now();
       final token = AccessToken(
         id: 'single_minute_token',
         petId: 'test_pet',
         grantedBy: 'test_owner',
         role: AccessRole.viewer,
-        expiresAt: DateTime(2024, 1, 15, 12, 1, 0), // 1 minute from now
-        createdAt: DateTime(2024, 1, 10, 12, 0, 0),
+        expiresAt: now.add(
+          const Duration(minutes: 1, seconds: 30),
+        ), // 1 minute and 30 seconds from now
+        createdAt: now.subtract(const Duration(days: 5)),
       );
 
       // Act

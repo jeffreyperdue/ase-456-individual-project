@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import 'package:fake_async/fake_async.dart';
-import 'package:clock/clock.dart';
+import 'package:petfolio/features/care_plans/services/clock.dart';
 
 import 'package:petfolio/features/auth/domain/user.dart';
 import 'package:petfolio/features/pets/domain/pet.dart';
@@ -19,10 +19,25 @@ class MockClock implements Clock {
   DateTime _now = DateTime(2024, 1, 15, 12, 0, 0); // Monday noon
 
   @override
-  DateTime now() => _now;
+  DateTime nowUtc() => _now.toUtc();
 
   @override
   DateTime nowLocal() => _now;
+
+  @override
+  DateTime todayAtTime(String timeString) {
+    final parts = timeString.split(':');
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+
+    return DateTime(_now.year, _now.month, _now.day, hour, minute);
+  }
+
+  @override
+  DateTime toUtc(DateTime localTime) => localTime.toUtc();
+
+  @override
+  DateTime toLocal(DateTime utcTime) => utcTime.toLocal();
 
   void setTime(DateTime time) {
     _now = time;
@@ -94,6 +109,7 @@ class TestDataFactory {
     List<String>? times,
     List<int>? daysOfWeek,
     bool active = true,
+    bool withFood = true,
   }) {
     return Medication(
       id: 'test_medication_id',
@@ -102,7 +118,7 @@ class TestDataFactory {
       times: times ?? ['08:00'],
       daysOfWeek: daysOfWeek,
       active: active,
-      withFood: true,
+      withFood: withFood,
       notes: 'Test medication notes',
     );
   }
@@ -111,6 +127,7 @@ class TestDataFactory {
     String? id,
     String? petId,
     String? ownerId,
+    String? dietText,
     List<FeedingSchedule>? feedingSchedules,
     List<Medication>? medications,
   }) {
@@ -118,10 +135,10 @@ class TestDataFactory {
       id: id ?? 'test_care_plan_id',
       petId: petId ?? 'test_pet_id',
       ownerId: ownerId ?? 'test_user_id',
-      dietText: 'High-quality dry food twice daily',
+      dietText: dietText ?? 'High-quality dry food twice daily',
       feedingSchedules: feedingSchedules ?? [createTestFeedingSchedule()],
       medications: medications ?? [createTestMedication()],
-      createdAt: DateTime(2024, 1, 1),
+      createdAt: TestConstants.testDate,
       timezone: 'America/New_York',
     );
   }

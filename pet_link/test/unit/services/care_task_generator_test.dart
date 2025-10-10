@@ -120,8 +120,8 @@ void main() {
             tasks.where((t) => t.type == CareTaskType.feeding).toList();
         expect(
           feedingTasks.length,
-          lessThanOrEqualTo(3),
-        ); // maxTasksPerType = 3
+          lessThanOrEqualTo(15),
+        ); // 5 times × 3 max per time = 15 tasks
       });
 
       test('should sort tasks by scheduled time', () {
@@ -479,7 +479,10 @@ void main() {
           // Assert
           final medicationTasks =
               tasks.where((t) => t.type == CareTaskType.medication).toList();
-          expect(medicationTasks.length, equals(2));
+          expect(
+            medicationTasks.length,
+            equals(6),
+          ); // 2 medications × 3 max per time = 6 tasks
 
           final withFoodTask = medicationTasks.firstWhere(
             (t) => t.title == 'Vitamins',

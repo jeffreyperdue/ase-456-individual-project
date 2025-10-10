@@ -1,30 +1,22 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:petfolio/features/auth/domain/user.dart';
-import 'package:petfolio/features/pets/domain/pet.dart';
-import 'package:petfolio/features/care_plans/domain/care_plan.dart';
-import 'package:petfolio/features/care_plans/domain/feeding_schedule.dart';
-import 'package:petfolio/features/care_plans/domain/medication.dart';
 import 'package:petfolio/features/care_plans/domain/care_task.dart';
 import 'package:petfolio/features/care_plans/services/care_task_generator.dart';
 import 'package:petfolio/features/care_plans/services/clock.dart';
 import 'package:petfolio/features/care_plans/application/generate_care_tasks_use_case.dart';
 import '../helpers/test_helpers.dart';
-import 'care_plan_workflow_test.mocks.dart';
+import 'care_plan_workflow_test.mocks.dart' as mocks;
 
 // Generate mocks
 @GenerateMocks([CareTaskGenerator, Clock])
 void main() {
   group('Care Plan Workflow Integration Tests', () {
-    late MockCareTaskGenerator mockGenerator;
-    late MockClock mockClock;
+    late mocks.MockCareTaskGenerator mockGenerator;
     late GenerateCareTasksUseCase useCase;
 
     setUp(() {
-      mockGenerator = MockCareTaskGenerator();
-      mockClock = MockClock();
+      mockGenerator = mocks.MockCareTaskGenerator();
       useCase = GenerateCareTasksUseCase(mockGenerator);
     });
 

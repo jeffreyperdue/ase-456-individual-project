@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:petfolio/main.dart';
+import 'package:petfolio/app/app.dart';
 import 'helpers/test_helpers.dart';
 
 void main() {
@@ -76,8 +76,7 @@ void main() {
       WidgetTester tester,
     ) async {
       // Arrange
-      const testChild = Text('Test Content');
-      const testProvider = Provider<String>((ref) => 'test_value');
+      final testProvider = Provider<String>((ref) => 'test_value');
 
       // Act
       await tester.pumpWidget(

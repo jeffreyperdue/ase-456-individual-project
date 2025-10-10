@@ -101,15 +101,32 @@ class FeedingSchedule {
     return other is FeedingSchedule &&
         other.id == id &&
         other.label == label &&
-        other.times == times &&
+        _listEquals(other.times, times) &&
         other.daysOfWeek == daysOfWeek &&
         other.active == active &&
         other.notes == notes;
   }
 
+  /// Helper method to compare lists for equality.
+  bool _listEquals<T>(List<T>? a, List<T>? b) {
+    if (a == null) return b == null;
+    if (b == null || a.length != b.length) return false;
+    for (int index = 0; index < a.length; index += 1) {
+      if (a[index] != b[index]) return false;
+    }
+    return true;
+  }
+
   @override
   int get hashCode {
-    return Object.hash(id, label, times, daysOfWeek, active, notes);
+    return Object.hash(
+      id,
+      label,
+      Object.hashAll(times),
+      daysOfWeek,
+      active,
+      notes,
+    );
   }
 
   @override

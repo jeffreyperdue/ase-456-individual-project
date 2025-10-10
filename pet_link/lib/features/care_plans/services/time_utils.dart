@@ -40,6 +40,11 @@ class TimeUtils {
 
   /// Parse a time string (HH:mm) to TimeOfDay.
   static TimeOfDay? parseTimeOfDay(String timeString) {
+    // First validate the format strictly
+    if (!isValidTimeFormat(timeString)) {
+      return null;
+    }
+
     try {
       final parts = timeString.split(':');
       final hour = int.parse(parts[0]);

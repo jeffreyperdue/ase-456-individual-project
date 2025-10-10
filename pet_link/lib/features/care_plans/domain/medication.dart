@@ -115,11 +115,21 @@ class Medication {
         other.id == id &&
         other.name == name &&
         other.dosage == dosage &&
-        other.times == times &&
+        _listEquals(other.times, times) &&
         other.daysOfWeek == daysOfWeek &&
         other.withFood == withFood &&
         other.notes == notes &&
         other.active == active;
+  }
+
+  /// Helper method to compare lists for equality.
+  bool _listEquals<T>(List<T>? a, List<T>? b) {
+    if (a == null) return b == null;
+    if (b == null || a.length != b.length) return false;
+    for (int index = 0; index < a.length; index += 1) {
+      if (a[index] != b[index]) return false;
+    }
+    return true;
   }
 
   @override
@@ -128,7 +138,7 @@ class Medication {
       id,
       name,
       dosage,
-      times,
+      Object.hashAll(times),
       daysOfWeek,
       withFood,
       notes,

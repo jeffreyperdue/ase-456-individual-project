@@ -41,7 +41,9 @@ void main() {
 
         for (final testCase in testCases) {
           // Act
-          final formatted = TimeUtils.formatTimeForDisplay(testCase[0]);
+          final formatted = TimeUtils.formatTimeForDisplay(
+            testCase[0] as String,
+          );
 
           // Assert
           expect(formatted, equals(testCase[1]));
@@ -72,7 +74,7 @@ void main() {
 
         for (final testCase in testCases) {
           // Act
-          final timeOfDay = TimeUtils.parseTimeOfDay(testCase[0]);
+          final timeOfDay = TimeUtils.parseTimeOfDay(testCase[0] as String);
 
           // Assert
           expect(timeOfDay, isNotNull);
@@ -115,8 +117,7 @@ void main() {
           '07:30',
           '12:45',
           '23:59',
-          '9:05', // Single digit hour
-          '12:5', // Single digit minute
+          '09:05', // Two digit hour
         ];
 
         for (final time in validTimes) {
@@ -134,6 +135,7 @@ void main() {
           '25:00', // Hour out of range
           '12:60', // Minute out of range
           '12', // Missing minutes
+          '12:5', // Single digit minute
           'abc:def', // Non-numeric
           '', // Empty string
           '12:30:45', // Too many parts

@@ -219,11 +219,21 @@ class CarePlan {
         other.petId == petId &&
         other.ownerId == ownerId &&
         other.dietText == dietText &&
-        other.feedingSchedules == feedingSchedules &&
-        other.medications == medications &&
+        _listEquals(other.feedingSchedules, feedingSchedules) &&
+        _listEquals(other.medications, medications) &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
         other.timezone == timezone;
+  }
+
+  /// Helper method to compare lists for equality.
+  bool _listEquals<T>(List<T>? a, List<T>? b) {
+    if (a == null) return b == null;
+    if (b == null || a.length != b.length) return false;
+    for (int index = 0; index < a.length; index += 1) {
+      if (a[index] != b[index]) return false;
+    }
+    return true;
   }
 
   @override
@@ -233,8 +243,8 @@ class CarePlan {
       petId,
       ownerId,
       dietText,
-      feedingSchedules,
-      medications,
+      Object.hashAll(feedingSchedules),
+      Object.hashAll(medications),
       createdAt,
       updatedAt,
       timezone,

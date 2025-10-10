@@ -20,7 +20,7 @@ class QRCodeService {
     double size = 200.0,
     int errorCorrectionLevel = QrErrorCorrectLevel.M,
   }) {
-    final data = _generateShareableURL(token);
+    final data = generateShareableURL(token);
 
     return QrImageView(
       data: data,
@@ -39,7 +39,7 @@ class QRCodeService {
     int errorCorrectionLevel = QrErrorCorrectLevel.M,
   }) async {
     try {
-      final data = _generateShareableURL(token);
+      final data = generateShareableURL(token);
       final qrValidationResult = QrValidator.validate(
         data: data,
         version: QrVersions.auto,
@@ -98,7 +98,7 @@ class QRCodeService {
     String? text,
   }) async {
     try {
-      final url = _generateShareableURL(token);
+      final url = generateShareableURL(token);
       final shareText =
           text ?? 'Access ${token.role.displayName} information for this pet';
 
@@ -114,7 +114,7 @@ class QRCodeService {
   /// Open the sharing URL in the default browser.
   Future<void> openURL(AccessToken token) async {
     try {
-      final url = _generateShareableURL(token);
+      final url = generateShareableURL(token);
       final uri = Uri.parse(url);
 
       if (await canLaunchUrl(uri)) {
@@ -132,7 +132,7 @@ class QRCodeService {
   /// This creates a URL that can be used to access the pet profile
   /// using the access token. The URL format will be:
   /// https://yourapp.com/shared-pet?token=TOKEN_ID
-  String _generateShareableURL(AccessToken token) {
+  String generateShareableURL(AccessToken token) {
     // For now, we'll use a placeholder URL structure
     // In a real app, this would be your actual domain
     const baseUrl = 'https://petfolio.app/shared-pet';
@@ -143,7 +143,8 @@ class QRCodeService {
   bool isValidTokenURL(String url) {
     try {
       final uri = Uri.parse(url);
-      return uri.host.contains('petfolio.app') &&
+      return uri.scheme == 'https' &&
+          uri.host.contains('petfolio.app') &&
           uri.pathSegments.contains('shared-pet') &&
           uri.queryParameters.containsKey('token');
     } catch (e) {
