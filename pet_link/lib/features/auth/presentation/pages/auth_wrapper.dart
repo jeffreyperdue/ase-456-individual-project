@@ -23,6 +23,17 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
     // Initialize notifications on app startup
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeNotifications();
+      _startUserValidationTimer();
+    });
+  }
+
+  void _startUserValidationTimer() {
+    // Validate user every 5 minutes to catch deleted users
+    Future.delayed(const Duration(minutes: 5), () {
+      if (mounted) {
+        ref.read(authProvider.notifier).validateCurrentUser();
+        _startUserValidationTimer(); // Schedule next validation
+      }
     });
   }
 
@@ -76,7 +87,11 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.pets, size: 80, color: Theme.of(context).colorScheme.primary),
+                Icon(
+                  Icons.pets,
+                  size: 80,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   'Petfolio',
@@ -102,12 +117,16 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 80, color: Theme.of(context).colorScheme.error),
+                Icon(
+                  Icons.error_outline,
+                  size: 80,
+                  color: Theme.of(context).colorScheme.error,
+                ),
                 const SizedBox(height: 16),
                 Text(
                   'Authentication Error',
                   style: TextStyle(
-                    fontSize: 24, 
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
@@ -116,7 +135,9 @@ class _AuthWrapperState extends ConsumerState<AuthWrapper> {
                 Text(
                   error.toString(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(

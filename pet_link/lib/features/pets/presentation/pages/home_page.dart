@@ -6,6 +6,7 @@ import 'package:petfolio/features/pets/domain/pet.dart';
 import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
 import 'package:petfolio/features/care_plans/application/pet_with_plan_provider.dart';
 import 'package:petfolio/features/care_plans/presentation/widgets/care_plan_dashboard.dart';
+import 'package:petfolio/features/sharing/presentation/pages/share_pet_page.dart';
 
 /// Shows the list of pets and a FAB to add a dummy pet.
 class HomePage extends ConsumerWidget {
@@ -54,7 +55,8 @@ class HomePage extends ConsumerWidget {
                           currentUser?.email ?? '',
                           style: TextStyle(
                             fontSize: 12,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ],
@@ -192,6 +194,11 @@ class HomePage extends ConsumerWidget {
               onPressed: () => _navigateToPetDetail(context, pet),
             ),
             IconButton(
+              tooltip: 'Share',
+              icon: const Icon(Icons.share_outlined),
+              onPressed: () => _navigateToSharePet(context, pet),
+            ),
+            IconButton(
               tooltip: 'Edit',
               icon: const Icon(Icons.edit_outlined),
               onPressed: () => _navigateToEditPet(context, pet),
@@ -269,6 +276,13 @@ class HomePage extends ConsumerWidget {
 
   void _navigateToEditPet(BuildContext context, Pet pet) {
     Navigator.pushNamed(context, '/edit', arguments: {'pet': pet});
+  }
+
+  void _navigateToSharePet(BuildContext context, Pet pet) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SharePetPage(pet: pet)),
+    );
   }
 
   Future<void> _showDeleteDialog(

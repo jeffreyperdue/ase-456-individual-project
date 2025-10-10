@@ -117,6 +117,28 @@ class AuthService {
     }
   }
 
+  /// Force refresh the current user's token and check if user still exists.
+  Future<bool> refreshAndValidateUser() async {
+    try {
+      final user = currentUser;
+      if (user == null) return false;
+
+      // Force token refresh
+      await user.reload();
+
+      // Check if user still exists by trying to get fresh token
+      final token = await user.getIdToken(true); // force refresh
+
+      // Check if user document exists in Firestore
+      final doc = await _firestore.collection('users').doc(user.uid).get();
+
+      return doc.exists && (token?.isNotEmpty ?? false);
+    } catch (e) {
+      print('User validation failed: $e');
+      return false;
+    }
+  }
+
   /// Create a user document in Firestore.
   Future<app_user.User> _createUserInFirestore(User firebaseUser) async {
     final appUser = app_user.User.fromFirebaseAuth(

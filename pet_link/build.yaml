@@ -1,0 +1,13 @@
+targets:
+  $default:
+    builders:
+      mockito|mockBuilder:
+        generate_for:
+          - test/**
+        options:
+          # Generate mocks for all classes in test files
+          customMocks:
+            - AuthService
+            - PetsRepository
+            - CareTaskGenerator
+            - Clock

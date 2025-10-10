@@ -134,6 +134,28 @@ class AuthNotifier extends StateNotifier<AsyncValue<app_user.User?>> {
     }
   }
 
+  /// Validate that the current user still exists and force sign out if not.
+  Future<void> validateCurrentUser() async {
+    final currentUser = state.value;
+    if (currentUser == null) return;
+
+    try {
+      final isValid = await _authService.refreshAndValidateUser();
+      if (!isValid) {
+        // User no longer exists, sign them out
+        await signOut();
+        state = AsyncValue.error(
+          'User account has been deleted',
+          StackTrace.current,
+        );
+      }
+    } catch (error, stackTrace) {
+      // If validation fails, sign out the user
+      await signOut();
+      state = AsyncValue.error(error, stackTrace);
+    }
+  }
+
   @override
   void dispose() {
     _authSubscription.cancel();
