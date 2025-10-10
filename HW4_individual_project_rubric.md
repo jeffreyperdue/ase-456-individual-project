@@ -43,7 +43,6 @@ Use the answers for your Marp presentation.
 - Initial Firebase setup complexity delayed Week 1 progress
 - Web-specific CORS issues with Firebase Storage required additional configuration
 - Timezone handling for notifications needed multiple iterations to get right
-- Some scope creep in Week 4 with enhanced pet profiles beyond original MVP 
 
 ---
 
@@ -120,7 +119,7 @@ Make your individual progress plan
 **Upload All Individual Files to GitHub**
 
 - [x] Individual code uploaded to GitHub
-  - Individual Repository URL: [https://github.com/[username]/PetLink(https://github.com/jeffreyperdue/ase-456-individual-project)
+  - Individual Repository URL: https://github.com/jeffreyperdue/ase-456-individual-project
 - [x] Individual tests uploaded
 - [x] Individual documentation uploaded
 - [x] Individual Sprint 1 presentation slides uploaded (Marp)
