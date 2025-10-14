@@ -45,11 +45,6 @@ Goal: Ship core app for owners by end of Sprint.
 - Local notifications (feeding/med reminders)  
 - Read-only profile (QR/link share)  
 
-**Stretch:**  
-- Bathroom/behavioral notes  
-- Emergency contacts & vet info  
-- Export profile (PDF handoff sheet)  
-
 ---
 
 # Petfolio – Weekly Development Plan  
@@ -103,21 +98,21 @@ Goal: Ship core app for owners by end of Sprint.
 ---
 
 
-### Sprint 2 (Weeks 6–10) – **Sync Foundation**  
-Goal: Expand to multi-user care.  
+### Sprint 2 (Weeks 6–10) – **Essential UX & Multi-user Features**  
 
 **Must-have:**  
-- AccessToken model for role-based sharing  
-- Real-time updates on care plan tasks (feeding/med checkoffs)  
-- Handoff flow for sitters (QR invite, auto-expire)  
-- Notifications for completed tasks (sitter → owner updates)  
-- Lost & Found mode (mark pet lost, last seen location, poster generator)  
+- Basic onboarding improvements and welcome screen  
+- Bottom navigation system for better app structure  
+- Real-time sync for task completions between users  
+- Lost & Found mode with basic poster generation  
+- UI polish with better error handling and user feedback  
 
-**Stretch:**  
-- Push notifications for lost alerts (Firebase Cloud Messaging)  
-- Role-based trainer/adoption roles  
-- Training logs (progress, cues, notes)  
-- Offline cache with Hive  
+**Deferred to Future Sprints:**  
+- Weight tracking system with charts and trends  
+- Push notifications for task completions  
+- Advanced onboarding wizard with templates  
+- Dark mode support and accessibility improvements  
+- Professional roles and offline support  
 
 ---
 
@@ -160,11 +155,11 @@ Goal: Expand to multi-user care.
 
 ---
 
-## 8.1) Phase roadmap (refined)
+## 8.1) Phase roadmap 
 
-- **Sprint 1 (Weeks 1–5):** MVP complete.
-- **Sprint 2 (Weeks 6–10):** Lost mode, weight tracking, directory, polish.
-- **Stretch beyond class project:** advanced roles, push alerts, offline sync, trainer/adoption flows.
+- **Sprint 1 (Weeks 1–5):** ✅ MVP complete with all core features.
+- **Sprint 2 (Weeks 6–10):** Essential UX improvements and multi-user sync foundation.
+- **Future Sprints:** Weight tracking, advanced notifications, professional roles, offline support.
 
 ## 8.2) Phase Roadmap (Beyond Class Project)  
 - **Phase 1:** Owner MVP (profiles + reminders + QR share)  
@@ -176,17 +171,16 @@ Goal: Expand to multi-user care.
 ---
 
 ## 9) Success Criteria  
-- Sprint 1: One owner can create a pet, add a care plan, get reminders, share QR profile.  
-- Sprint 2: **Two linked accounts can see and complete the same care plan in real time.**  
+- Sprint 1: ✅ One owner can create a pet, add a care plan, get reminders, share QR profile.  
+- Sprint 2: **Improved user experience with real-time task completion sync and Lost & Found mode.**  
 - Long-term: Agencies, trainers, and vets adopt Petfolio as a trusted handoff and coordination tool.  
 
 ---
 
-## 10) Risks & Mitigations  
-- **Time (4–6 hrs/week):** keep MVP tight; defer stretch goals.  
-- **Sync complexity:** start simple with AccessToken + real-time updates; refine roles later.  
-- **Push notifications:** begin with local, layer in FCM once core sync works.  
-- **Privacy:** expiring share links, clear opt-in for lost posters, limited role permissions.  
+## 10) Risks & Mitigations    
+- **Sync complexity:** Start with basic task completion sync; expand features later.  
+- **UX complexity:** Focus on essential improvements; defer advanced features.  
+- **Privacy:** ✅ Expiring share links, clear opt-in for lost posters, limited role permissions.  
 
 ---
 
@@ -205,14 +199,42 @@ All core MVP functionality has been successfully implemented:
 - ✅ **Handoff Management** - Create and manage time-boxed access tokens
 - ✅ **Clean Architecture** - Production-ready code structure with proper state management
 
-**Current Status**: Sprint 1 MVP is complete. Ready for Sprint 2 multi-user sync features.
+**Current Status**: Sprint 1 MVP is complete. Ready for Sprint 2 with focused UX improvements and essential multi-user features.
 
 ---
 
-## 11) Next Actions (Sprint 2 - Weeks 6-10)    
-- ⏳ **Real-time sync** - Multi-user task completion and updates  
-- ⏳ **Lost & Found mode** - Mark pet lost, location tracking, poster generation  
-- ⏳ **Weight tracking** - Health monitoring with trend analysis  
-- ⏳ **Enhanced notifications** - Push notifications for task completions  
-- ⏳ **Professional roles** - Adoption agencies, trainers, vets integration  
-- ⏳ **Offline support** - Cache profiles and sync when online 
+## 11) Sprint 2 Weekly Plan (Weeks 6-10)
+
+### **Week 6: Basic Onboarding (4-5 hours)**
+- Welcome screen with app overview and value proposition
+- Guided first pet creation with helpful hints
+- Success screen after pet creation
+
+### **Week 7: Navigation Improvements (4-5 hours)**
+- Bottom navigation bar with 3 tabs: Pets, Care, Profile
+- Visual indicators for current section
+- Consistent navigation across app
+
+### **Week 8: Real-time Sync (4-5 hours)**
+- Firestore real-time listeners for task completions
+- Visual indicators for completed vs pending tasks
+- Cross-device synchronization
+
+### **Week 9: Lost & Found Mode (4-5 hours)**
+- One-tap "Mark as Lost" functionality
+- Basic poster generation with pet details
+- Easy "Found" toggle and visual indicators
+
+### **Week 10: UI Polish (4-5 hours)**
+- Better error handling and user feedback
+- Improved loading states and animations
+- Success/error feedback for user actions
+
+---
+
+## 12) Future Sprint Considerations
+- **Weight Tracking System** - Health monitoring with trends and charts
+- **Enhanced Notifications** - Push notifications for task completions  
+- **Dark Mode Support** - Complete dark theme implementation
+- **Advanced Onboarding** - Multi-step wizard with templates
+- **Accessibility Improvements** - WCAG compliance and screen reader support 
