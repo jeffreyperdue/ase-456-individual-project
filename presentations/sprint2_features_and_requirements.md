@@ -1,5 +1,5 @@
 # Sprint 2 Features & Requirements
-## PetLink - Cross-Platform Pet Care App
+## Petfolio - Cross-Platform Pet Care App
 
 **Sprint Duration**: Weeks 6-10 (5 weeks)  
 **Goal**: Focused UX improvements and essential multi-user features
@@ -28,7 +28,6 @@
 
 #### **Feature 1: Basic Onboarding Improvements**
 **Epic**: User Experience Enhancement
-**Effort**: 3-4 hours
 
 **User Stories:**
 - **US-001**: As a new user, I want to see a welcome screen with app overview so that I understand what the app does
@@ -43,7 +42,6 @@
 
 #### **Feature 2: Bottom Navigation System**
 **Epic**: Navigation & Information Architecture
-**Effort**: 2-3 hours
 
 **User Stories:**
 - **US-004**: As a user, I want clear navigation between different app sections so that I can easily find what I'm looking for
@@ -58,7 +56,6 @@
 
 #### **Feature 3: Real-time Task Completion Sync**
 **Epic**: Multi-user Collaboration
-**Effort**: 4-5 hours
 
 **User Stories:**
 - **US-006**: As a pet owner, I want to see when my sitter completes care tasks so that I know my pet is being cared for
@@ -73,7 +70,6 @@
 
 #### **Feature 4: Lost & Found Mode**
 **Epic**: Emergency Pet Management
-**Effort**: 3-4 hours
 
 **User Stories:**
 - **US-009**: As a pet owner, I want to mark my pet as lost so that I can quickly share information with others
@@ -90,7 +86,7 @@
 
 #### **Feature 5: Basic UI Improvements**
 **Epic**: User Experience Enhancement
-**Effort**: 2-3 hours
+
 
 **User Stories:**
 - **US-012**: As a user, I want better visual feedback when I complete actions so that I know my interactions are registered
@@ -104,7 +100,6 @@
 
 #### **Feature 6: Error Handling Improvements**
 **Epic**: User Experience Enhancement
-**Effort**: 2-3 hours
 
 **User Stories:**
 - **US-014**: As a user, I want clear error messages so that I know what went wrong and how to fix it

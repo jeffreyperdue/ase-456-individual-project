@@ -18,6 +18,8 @@ ASE 456 Individual Project
 
 ### Working Features Showcase
 
+https://youtu.be/zX-gu-JBTW8
+
 - **Authentication System** - Complete signup/login with Firebase Auth
 - **Pet Management** - Full CRUD operations with photo upload
 - **Care Plans** - Feeding schedules and medication tracking
@@ -93,7 +95,7 @@ ASE 456 Individual Project
 
 ## 🎯 Sprint 2 Goals
 
-### What Will Be Accomplished (Refined for 4-5 hours/week)
+### What Will Be Accomplished
 - **Basic Onboarding** - Welcome screen and guided first pet creation
 - **Navigation Improvements** - Bottom navigation with clear section structure
 - **Real-time Sync** - Task completion updates between pet owners and sitters
@@ -104,10 +106,9 @@ ASE 456 Individual Project
 
 ## 📊 Sprint 2 Metrics
 
-### Planned Deliverables (Realistic Scope)
+### Planned Deliverables 
 - **Number of Features Planned**: 6 focused features
 - **Number of Requirements Planned**: 15 user stories
-- **Development Time**: 4-5 hours/week (20-25 total hours)
 - **Enhanced User Experience** - Better onboarding and navigation
 - **Core Functionality** - Real-time sync and Lost & Found mode
 
@@ -115,7 +116,7 @@ ASE 456 Individual Project
 
 ## 📅 Updated Timeline & Milestones
 
-### Sprint 2 Schedule (5 weeks, 4-5 hours/week)
+### Sprint 2 Schedule 
 - **Week 6**: Basic onboarding improvements and welcome screen
 - **Week 7**: Navigation improvements with bottom navigation bar
 - **Week 8**: Real-time sync for task completions between users
@@ -126,7 +127,7 @@ ASE 456 Individual Project
 
 ## 🎯 Key Sprint 2 Dates
 
-### Individual Milestones (Realistic Scope)
+### Individual Milestones 
 - **Week 6**: Welcome screen and guided first pet creation complete
 - **Week 7**: Bottom navigation system operational
 - **Week 8**: Real-time task completion sync working
@@ -150,7 +151,7 @@ ASE 456 Individual Project
 
 ## 🚀 Next Steps
 
-### Sprint 2 Focus Areas (Refined for 4-5 hours/week)
+### Sprint 2 Focus Areas 
 1. **User Experience** - Better onboarding and navigation
 2. **Real-time Collaboration** - Task completion sync between users
 3. **Lost & Found Mode** - Critical emergency feature for pet owners
@@ -175,7 +176,7 @@ ASE 456 Individual Project
 
 ## 📋 Sprint 2 Success Criteria
 
-### Realistic Goals (4-5 hours/week)
+### Realistic Goals
 - **User Experience**: Better onboarding and navigation clarity
 - **Multi-user Sync**: Real-time task completion updates
 - **Lost & Found**: Functional emergency pet marking
