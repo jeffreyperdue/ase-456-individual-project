@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petfolio/app/theme.dart';
+import 'package:petfolio/app/app_startup.dart';
 import 'package:petfolio/features/pets/presentation/pages/home_page.dart';
 import 'package:petfolio/features/pets/presentation/pages/edit_pet_page.dart';
 import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
@@ -10,6 +11,8 @@ import 'package:petfolio/features/pets/domain/pet.dart';
 import 'package:petfolio/features/sharing/presentation/pages/share_pet_page.dart';
 import 'package:petfolio/features/sharing/presentation/pages/sitter_dashboard_page.dart';
 import 'package:petfolio/features/sharing/presentation/pages/public_pet_profile_page.dart';
+import 'package:petfolio/features/onboarding/welcome_view.dart';
+import 'package:petfolio/features/onboarding/success_view.dart';
 
 /// Root of your app (MaterialApp, routes, theme).
 class PetfolioApp extends StatelessWidget {
@@ -22,9 +25,11 @@ class PetfolioApp extends StatelessWidget {
       theme: buildTheme(),
       initialRoute: '/',
       routes: {
-        '/': (_) => const AuthWrapper(child: HomePage()),
+        '/': (_) => const AppStartup(child: AuthWrapper(child: HomePage())),
         '/login': (_) => const LoginPage(),
         '/signup': (_) => const SignUpPage(),
+        '/welcome': (_) => const WelcomeView(),
+        '/onboarding-success': (_) => const SuccessView(),
         '/sitter-dashboard':
             (_) => const AuthWrapper(child: SitterDashboardPage()),
         // Use onGenerateRoute for passing arguments for edit
