@@ -7,6 +7,7 @@ import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
 import 'package:petfolio/features/care_plans/application/pet_with_plan_provider.dart';
 import 'package:petfolio/features/care_plans/presentation/widgets/care_plan_dashboard.dart';
 import 'package:petfolio/features/sharing/presentation/pages/share_pet_page.dart';
+import 'package:petfolio/app/widgets/user_avatar_action.dart';
 
 /// Shows the list of pets and a FAB to add a dummy pet.
 class HomePage extends ConsumerWidget {
@@ -16,84 +17,13 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Listen to Riverpod provider; rebuild when the pets list changes.
     final petsAsync = ref.watch(petsProvider);
-    final currentUser = ref.watch(currentUserDataProvider);
+    // Keep provider subscription for rebuilds on user changes
+    ref.watch(currentUserDataProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Petfolio'),
-        actions: [
-          // User info and sign out
-          PopupMenuButton<String>(
-            onSelected: (value) async {
-              if (value == 'signout') {
-                try {
-                  await ref.read(authProvider.notifier).signOut();
-                } catch (e) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Sign out failed: $e'),
-                        backgroundColor: Theme.of(context).colorScheme.error,
-                      ),
-                    );
-                  }
-                }
-              }
-            },
-            itemBuilder:
-                (context) => [
-                  PopupMenuItem(
-                    enabled: false,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          currentUser?.displayName ?? 'User',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          currentUser?.email ?? '',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const PopupMenuItem(
-                    value: 'signout',
-                    child: Row(
-                      children: [
-                        Icon(Icons.logout),
-                        SizedBox(width: 8),
-                        Text('Sign Out'),
-                      ],
-                    ),
-                  ),
-                ],
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                backgroundImage:
-                    currentUser?.photoUrl != null
-                        ? NetworkImage(currentUser!.photoUrl!)
-                        : null,
-                child:
-                    currentUser?.photoUrl == null
-                        ? Text(
-                          (currentUser?.displayName ??
-                                  currentUser?.email ??
-                                  'U')
-                              .substring(0, 1)
-                              .toUpperCase(),
-                        )
-                        : null,
-              ),
-            ),
-          ),
-        ],
+        actions: const [UserAvatarAction()],
       ),
       body: petsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),

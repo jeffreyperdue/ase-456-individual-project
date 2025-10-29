@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petfolio/app/theme.dart';
 import 'package:petfolio/app/app_startup.dart';
-import 'package:petfolio/features/pets/presentation/pages/home_page.dart';
+import 'package:petfolio/app/main_scaffold.dart';
 import 'package:petfolio/features/pets/presentation/pages/edit_pet_page.dart';
 import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
 import 'package:petfolio/features/auth/presentation/pages/auth_wrapper.dart';
@@ -25,7 +25,7 @@ class PetfolioApp extends StatelessWidget {
       theme: buildTheme(),
       initialRoute: '/',
       routes: {
-        '/': (_) => const AppStartup(child: AuthWrapper(child: HomePage())),
+        '/': (_) => const AppStartup(child: AuthWrapper(child: MainScaffold())),
         '/login': (_) => const LoginPage(),
         '/signup': (_) => const SignUpPage(),
         '/welcome': (_) => const WelcomeView(),
@@ -76,3 +76,4 @@ class PetfolioApp extends StatelessWidget {
     );
   }
 }
+
