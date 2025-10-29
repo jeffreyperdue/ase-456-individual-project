@@ -17,3 +17,4 @@ final hasSeenWelcomeProvider = FutureProvider<bool>((ref) async {
   final localStorage = ref.watch(localStorageServiceProvider);
   return await localStorage.hasSeenWelcome();
 });
+
