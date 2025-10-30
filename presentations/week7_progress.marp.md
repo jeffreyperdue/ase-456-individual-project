@@ -20,6 +20,17 @@ paginate: true
 
 ---
 
+## Key Numbers (Week 7)
+
+### Lines of Code (approx.)
+- New/edited this week: ~500–700 LoC
+- New files created: 7
+- Features completed: 2 / 6 → 33%
+- Requirements completed: 5 / 15 → 33%
+- Burndown Rate: 33% for Sprint 2
+
+---
+
 ## ✅ What Was Shipped
 
 ### Unified Navigation Shell
@@ -140,27 +151,13 @@ Ready to proceed to Week 8: Today’s Tasks list and real-time task updates.
 - Real-time task completion sync groundwork (listeners, models)
 - Optional: Hook Care tab badge to today’s count
 
-
----
-
-## Key Numbers (Week 7)
-
-### Lines of Code (approx.)
-- New/edited this week: ~500–700 LoC
-  - App shell + provider + widgets
-  - Two new pages (Care, Profile)
-  - Tests (unit + widget)
-- New files created: 7
 ---
 ### Sprint 2 Burndown (features)
 - Sprint 2 planned features: 6
   - Week 6: Feature 1 – Onboarding Improvements – ✅ Completed
   - Week 7: Feature 2 – Bottom Navigation System – ✅ Completed
   - Remaining: Feature 3 (Real-time Sync), Feature 4 (Lost & Found), Feature 5 (UI Improvements), Feature 6 (Error Handling)
----
-Progress snapshot:
-- Features completed: 2 / 6 → 33%
-- Time elapsed (Weeks 6–7 of 6–10): 2 / 5 → 40%
-- Status: Slightly behind feature-per-week pace, but on track given Week 8/9 are feature-heavy and Week 10 is polish.
+
+
 
 
