@@ -11,11 +11,7 @@ import 'package:petfolio/features/care_plans/presentation/pages/care_plan_form_p
 import 'package:petfolio/features/pets/presentation/pages/pet_profile_form_page.dart';
 
 class EditPetPage extends ConsumerStatefulWidget {
-  const EditPetPage({
-    super.key, 
-    this.petToEdit,
-    this.isFirstTimeFlow = false,
-  });
+  const EditPetPage({super.key, this.petToEdit, this.isFirstTimeFlow = false});
 
   final Pet? petToEdit; // if provided, we're editing
   final bool isFirstTimeFlow; // if true, show guided onboarding flow
@@ -141,15 +137,15 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
         if (widget.isFirstTimeFlow) {
           // Navigate to success screen for first-time flow
           Navigator.pushReplacementNamed(
-            context, 
+            context,
             '/onboarding-success',
             arguments: {'petName': pet.name},
           );
         } else {
           // Regular flow - show snackbar and go back
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Pet added')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Pet added')));
           Navigator.pop(context);
         }
       }
@@ -299,7 +295,7 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
 
   Widget _buildGuidedFlow(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Your First Pet'),
@@ -311,7 +307,7 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
           children: [
             // Progress indicator
             _buildStepIndicator(theme),
-            
+
             // Step content
             Expanded(
               child: Padding(
@@ -319,7 +315,7 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
                 child: _buildStepContent(theme),
               ),
             ),
-            
+
             // Navigation buttons
             _buildNavigationButtons(theme),
           ],
@@ -337,18 +333,20 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
           Expanded(
             child: Container(
               height: 2,
-              color: _currentStep > 1 
-                  ? theme.colorScheme.primary 
-                  : theme.colorScheme.outline.withValues(alpha: 0.3),
+              color:
+                  _currentStep > 1
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.outline.withValues(alpha: 0.3),
             ),
           ),
           _buildStepIndicatorItem(theme, 2, 'Photo'),
           Expanded(
             child: Container(
               height: 2,
-              color: _currentStep > 2 
-                  ? theme.colorScheme.primary 
-                  : theme.colorScheme.outline.withValues(alpha: 0.3),
+              color:
+                  _currentStep > 2
+                      ? theme.colorScheme.primary
+                      : theme.colorScheme.outline.withValues(alpha: 0.3),
             ),
           ),
           _buildStepIndicatorItem(theme, 3, 'Review'),
@@ -360,39 +358,47 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
   Widget _buildStepIndicatorItem(ThemeData theme, int step, String label) {
     final isActive = _currentStep == step;
     final isCompleted = _currentStep > step;
-    
+
     return Column(
       children: [
         Container(
           width: 32,
           height: 32,
           decoration: BoxDecoration(
-            color: isActive || isCompleted 
-                ? theme.colorScheme.primary 
-                : theme.colorScheme.outline.withValues(alpha: 0.3),
+            color:
+                isActive || isCompleted
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.outline.withValues(alpha: 0.3),
             shape: BoxShape.circle,
           ),
           child: Center(
-            child: isCompleted 
-                ? Icon(Icons.check, color: theme.colorScheme.onPrimary, size: 18)
-                : Text(
-                    step.toString(),
-                    style: TextStyle(
-                      color: isActive || isCompleted 
-                          ? theme.colorScheme.onPrimary 
-                          : theme.colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.bold,
+            child:
+                isCompleted
+                    ? Icon(
+                      Icons.check,
+                      color: theme.colorScheme.onPrimary,
+                      size: 18,
+                    )
+                    : Text(
+                      step.toString(),
+                      style: TextStyle(
+                        color:
+                            isActive || isCompleted
+                                ? theme.colorScheme.onPrimary
+                                : theme.colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
           ),
         ),
         const SizedBox(height: 4),
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: isActive 
-                ? theme.colorScheme.primary 
-                : theme.colorScheme.onSurfaceVariant,
+            color:
+                isActive
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurfaceVariant,
             fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
@@ -431,7 +437,7 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
           ),
         ),
         const SizedBox(height: 32),
-        
+
         // Pet name
         TextFormField(
           controller: _nameCtrl,
@@ -442,7 +448,8 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
             border: const OutlineInputBorder(),
           ),
           textInputAction: TextInputAction.next,
-          onChanged: (value) => setState(() {}), // Trigger rebuild for validation
+          onChanged:
+              (value) => setState(() {}), // Trigger rebuild for validation
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return 'Please enter your pet\'s name';
@@ -454,7 +461,7 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
 
         // Species dropdown
         DropdownButtonFormField<String>(
-          initialValue: _species,
+          value: _species,
           decoration: const InputDecoration(
             labelText: 'Species',
             prefixIcon: Icon(Icons.category),
@@ -474,9 +481,9 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
             return null;
           },
         ),
-        
+
         const Spacer(),
-        
+
         // Hint text
         Container(
           padding: const EdgeInsets.all(16),
@@ -525,7 +532,7 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
           ),
         ),
         const SizedBox(height: 32),
-        
+
         // Photo upload area
         Center(
           child: GestureDetector(
@@ -535,9 +542,10 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
               height: 200,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: _selectedPhoto != null 
-                      ? theme.colorScheme.primary 
-                      : theme.colorScheme.outline,
+                  color:
+                      _selectedPhoto != null
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.outline,
                   width: 2,
                   style: BorderStyle.solid,
                 ),
@@ -545,39 +553,40 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: _selectedPhoto == null
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add_a_photo,
-                            size: 48,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Tap to add photo',
-                            style: theme.textTheme.bodyMedium?.copyWith(
+                child:
+                    _selectedPhoto == null
+                        ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add_a_photo,
+                              size: 48,
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
-                          ),
-                        ],
-                      )
-                    : kIsWeb
+                            const SizedBox(height: 8),
+                            Text(
+                              'Tap to add photo',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        )
+                        : kIsWeb
                         ? (_selectedBytes != null
                             ? Image.memory(_selectedBytes!, fit: BoxFit.cover)
                             : const Icon(Icons.image, size: 48))
                         : Image.file(
-                            File(_selectedPhoto!.path),
-                            fit: BoxFit.cover,
-                          ),
+                          File(_selectedPhoto!.path),
+                          fit: BoxFit.cover,
+                        ),
               ),
             ),
           ),
         ),
-        
+
         const Spacer(),
-        
+
         // Hint text
         Container(
           padding: const EdgeInsets.all(16),
@@ -626,12 +635,14 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
           ),
         ),
         const SizedBox(height: 32),
-        
+
         // Review card
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+            color: theme.colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.5,
+            ),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: theme.colorScheme.outline.withValues(alpha: 0.2),
@@ -642,33 +653,37 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
               // Pet photo or placeholder
               CircleAvatar(
                 radius: 40,
-                backgroundImage: _selectedPhoto == null
-                    ? null
-                    : kIsWeb
+                backgroundImage:
+                    _selectedPhoto == null
+                        ? null
+                        : kIsWeb
                         ? (_selectedBytes != null
                             ? MemoryImage(_selectedBytes!)
                             : null)
                         : FileImage(File(_selectedPhoto!.path))
                             as ImageProvider<Object>,
-                child: _selectedPhoto == null
-                    ? Icon(
-                        Icons.pets,
-                        size: 40,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      )
-                    : null,
+                child:
+                    _selectedPhoto == null
+                        ? Icon(
+                          Icons.pets,
+                          size: 40,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        )
+                        : null,
               ),
               const SizedBox(height: 16),
-              
+
               // Pet name
               Text(
-                _nameCtrl.text.trim().isEmpty ? 'Your Pet' : _nameCtrl.text.trim(),
+                _nameCtrl.text.trim().isEmpty
+                    ? 'Your Pet'
+                    : _nameCtrl.text.trim(),
                 style: theme.textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 4),
-              
+
               // Species
               Text(
                 _species ?? 'Unknown Species',
@@ -679,9 +694,9 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
             ],
           ),
         ),
-        
+
         const Spacer(),
-        
+
         // Success hint
         Container(
           padding: const EdgeInsets.all(16),
@@ -725,28 +740,32 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
                 child: const Text('Previous'),
               ),
             ),
-          
+
           if (_currentStep > 1) const SizedBox(width: 16),
-          
+
           // Next/Complete button
           Expanded(
             flex: _currentStep == 1 ? 1 : 1,
             child: FilledButton(
-              onPressed: _isSaving ? null : () {
-                if (_currentStep < 3) {
-                  _nextStep();
-                } else {
-                  // Final step - save the pet
-                  _save();
-                }
-              },
-              child: _isSaving 
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(_currentStep == 3 ? 'Create Pet' : 'Next'),
+              onPressed:
+                  _isSaving
+                      ? null
+                      : () {
+                        if (_currentStep < 3) {
+                          _nextStep();
+                        } else {
+                          // Final step - save the pet
+                          _save();
+                        }
+                      },
+              child:
+                  _isSaving
+                      ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                      : Text(_currentStep == 3 ? 'Create Pet' : 'Next'),
             ),
           ),
         ],

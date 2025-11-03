@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:petfolio/features/care_plans/presentation/widgets/care_plan_dashboard.dart';
-import 'package:petfolio/app/widgets/user_avatar_action.dart';
 import 'package:petfolio/app/navigation_provider.dart';
 
 class CareDashboardPage extends ConsumerWidget {
@@ -9,13 +8,9 @@ class CareDashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Care'),
-        actions: const [UserAvatarAction()],
-      ),
-      body: SafeArea(
-        child: Column(
+    return Stack(
+      children: [
+        Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Expanded(child: CarePlanDashboard()),
@@ -53,16 +48,20 @@ class CareDashboardPage extends ConsumerWidget {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.today),
-        label: const Text("Today's Tasks"),
-        onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Today's Tasks coming in Week 8 (real-time sync).")),
-          );
-        },
-      ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButton.extended(
+            icon: const Icon(Icons.today),
+            label: const Text("Today's Tasks"),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Today's Tasks coming in Week 8 (real-time sync).")),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

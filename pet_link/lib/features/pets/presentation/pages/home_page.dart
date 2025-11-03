@@ -7,7 +7,6 @@ import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
 import 'package:petfolio/features/care_plans/application/pet_with_plan_provider.dart';
 import 'package:petfolio/features/care_plans/presentation/widgets/care_plan_dashboard.dart';
 import 'package:petfolio/features/sharing/presentation/pages/share_pet_page.dart';
-import 'package:petfolio/app/widgets/user_avatar_action.dart';
 
 /// Shows the list of pets and a FAB to add a dummy pet.
 class HomePage extends ConsumerWidget {
@@ -20,67 +19,69 @@ class HomePage extends ConsumerWidget {
     // Keep provider subscription for rebuilds on user changes
     ref.watch(currentUserDataProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Petfolio'),
-        actions: const [UserAvatarAction()],
-      ),
-      body: petsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error:
-            (error, stack) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Error: $error'),
-                  ElevatedButton(
-                    onPressed: () => ref.invalidate(petsProvider),
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            ),
-        data:
-            (pets) =>
-                pets.isEmpty
-                    ? const Center(
-                      child: Text('No pets yet. Tap + to add one.'),
-                    )
-                    : Column(
-                      children: [
-                        // Care Plan Dashboard
-                        const CarePlanDashboard(),
-
-                        // Pets List
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: pets.length,
-                            itemBuilder: (context, i) {
-                              final Pet pet = pets[i];
-                              final imageUrl = pet.photoUrl;
-                              final cacheBustedUrl =
-                                  imageUrl == null
-                                      ? null
-                                      : '${imageUrl}${imageUrl.contains('?') ? '&' : '?'}ts=${DateTime.now().millisecondsSinceEpoch}';
-                              return _buildPetTile(
-                                context,
-                                ref,
-                                pet,
-                                cacheBustedUrl,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+    return Stack(
+      children: [
+        petsAsync.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error:
+              (error, stack) => Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Error: $error'),
+                    ElevatedButton(
+                      onPressed: () => ref.invalidate(petsProvider),
+                      child: const Text('Retry'),
                     ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Open the Add Pet form instead of adding a dummy
-          Navigator.pushNamed(context, '/edit');
-        },
-        child: const Icon(Icons.add),
-      ),
+                  ],
+                ),
+              ),
+          data:
+              (pets) =>
+                  pets.isEmpty
+                      ? const Center(
+                        child: Text('No pets yet. Tap + to add one.'),
+                      )
+                      : Column(
+                        children: [
+                          // Care Plan Dashboard
+                          const CarePlanDashboard(),
+
+                          // Pets List
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: pets.length,
+                              itemBuilder: (context, i) {
+                                final Pet pet = pets[i];
+                                final imageUrl = pet.photoUrl;
+                                final cacheBustedUrl =
+                                    imageUrl == null
+                                        ? null
+                                        : '${imageUrl}${imageUrl.contains('?') ? '&' : '?'}ts=${DateTime.now().millisecondsSinceEpoch}';
+                                return _buildPetTile(
+                                  context,
+                                  ref,
+                                  pet,
+                                  cacheBustedUrl,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+        ),
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButton(
+            onPressed: () {
+              // Open the Add Pet form instead of adding a dummy
+              Navigator.pushNamed(context, '/edit');
+            },
+            child: const Icon(Icons.add),
+          ),
+        ),
+      ],
     );
   }
 

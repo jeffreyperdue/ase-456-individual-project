@@ -27,12 +27,11 @@ Pet owners face **coordination difficulties** when managing pet care across mult
 
 ## 💡 The Solution: Petfolio
 
-### A Shared Hub for Pet Care
 - **Real-time Sync** - Shared care plans, feeding schedules, and reminders update instantly across linked users
 - **Role-Based Permissions** - Owner, co-caretaker, sitter (time-boxed), and viewer roles
 - **Simple Handoff** - Secure QR codes or links for sitters and temporary caregivers
 - **Single Source of Truth** - Diet, medications, routines, and behavior in one trusted place
-- **Lost & Found Alerts** - Broadcast missing pet info with auto-generated posters
+- **Lost & Found Alerts** - Broadcast missing pet info
 
 **Vision**: Keep owners, families, and sitters perfectly in sync with real-time schedules, reminders, and handoffs
 
@@ -80,8 +79,6 @@ https://youtu.be/zX-gu-JBTW8
 ### Individual Level Challenges
 - **Initial Firebase Setup Complexity** - Delayed Week 1 progress due to configuration complexity
 - **Web-Specific CORS Issues** - Firebase Storage required additional configuration for web platform
-- **Timezone Handling** - Notifications needed multiple iterations to handle timezone differences correctly
-- **Cross-Platform Testing** - Required more time for platform-specific edge cases
 
 ---
 
@@ -158,7 +155,7 @@ https://youtu.be/zX-gu-JBTW8
 - **Guided First Pet Creation** (US-002) - 3-step flow with progress indicators and contextual hints
 - **Success Screen** (US-003) - Celebratory completion with next steps guidance
 - **Smart State Management** - Persistent onboarding state with fallback logic for returning users
-
+---
 ### Technical Highlights
 - `LocalStorageService` - Persistent onboarding tracking using SharedPreferences
 - `AppStartup` widget - Smart routing logic for new vs. returning users
@@ -173,16 +170,17 @@ https://youtu.be/zX-gu-JBTW8
 - **Bottom Navigation Bar** (US-004, US-005) - 3-tab system: Pets, Care, Profile
 - **Unified Navigation Shell** - `MainScaffold` with Material 3 `NavigationBar`
 - **State Persistence** - Tab state saved and restored across app restarts
+
+---
 - **New Sections Created**:
   - `CareDashboardPage` - Action chips and FAB for task management
   - `ProfilePage` - Centralized user profile and sign out
 - **Consistent Profile Access** - Top-right avatar icon on all tabs
-
+---
 ### Technical Highlights
 - `MainScaffold` - Unified app shell with IndexedStack for tab state
 - `NavigationProvider` - Riverpod notifier with SharedPreferences persistence
 - Integration with existing `AppStartup` and `AuthWrapper` flows
-- ~500-700 lines of new code, 7 new files created
 
 ---
 
@@ -190,9 +188,7 @@ https://youtu.be/zX-gu-JBTW8
 
 ### Completed Features (33% of Sprint 2)
 - ✅ **Feature 1**: Basic Onboarding Improvements (Week 6)
-  - US-001, US-002, US-003 - All complete
 - ✅ **Feature 2**: Bottom Navigation System (Week 7)
-  - US-004, US-005 - All complete
 
 ### Remaining Features (67% of Sprint 2)
 - **Feature 3**: Real-time Task Completion Sync (Week 8)
@@ -236,8 +232,6 @@ https://youtu.be/zX-gu-JBTW8
 3. **Lost & Found Mode** - Critical emergency feature for pet owners (Week 9)
 4. **UI Polish** - Better error handling and user feedback (Week 10)
 5. **Foundation** - Build on solid MVP with essential improvements - **IN PROGRESS**
-
-**Weeks 6-7 complete! Ready for real-time sync and Lost & Found features.**
 
 ---
 

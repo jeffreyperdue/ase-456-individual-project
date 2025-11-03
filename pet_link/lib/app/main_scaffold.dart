@@ -4,6 +4,7 @@ import 'package:petfolio/app/navigation_provider.dart';
 import 'package:petfolio/features/pets/presentation/pages/home_page.dart';
 import 'package:petfolio/features/care_plans/presentation/pages/care_dashboard_page.dart';
 import 'package:petfolio/features/auth/presentation/pages/profile_page.dart';
+import 'package:petfolio/app/widgets/user_avatar_action.dart';
 
 class MainScaffold extends ConsumerWidget {
   const MainScaffold({super.key});
@@ -14,11 +15,22 @@ class MainScaffold extends ConsumerWidget {
     const ProfilePage(),
   ];
 
+  static final List<_PageConfig> _pageConfigs = [
+    const _PageConfig(title: 'Petfolio', showUserAvatar: true),
+    const _PageConfig(title: 'Care', showUserAvatar: true),
+    const _PageConfig(title: 'Profile', showUserAvatar: false),
+  ];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(navIndexProvider);
+    final pageConfig = _pageConfigs[currentIndex];
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text(pageConfig.title),
+        actions: pageConfig.showUserAvatar ? const [UserAvatarAction()] : null,
+      ),
       body: SafeArea(
         child: IndexedStack(
           index: currentIndex,
@@ -49,6 +61,16 @@ class MainScaffold extends ConsumerWidget {
       ),
     );
   }
+}
+
+class _PageConfig {
+  final String title;
+  final bool showUserAvatar;
+
+  const _PageConfig({
+    required this.title,
+    required this.showUserAvatar,
+  });
 }
 
 class _CareBadge extends StatelessWidget {
