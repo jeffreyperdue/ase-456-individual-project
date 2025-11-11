@@ -91,57 +91,113 @@ class HomePage extends ConsumerWidget {
     Pet pet,
     String? cacheBustedUrl,
   ) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(16),
-        leading: CircleAvatar(
-          radius: 30,
-          foregroundImage:
-              cacheBustedUrl != null ? NetworkImage(cacheBustedUrl) : null,
-          child:
-              cacheBustedUrl == null
-                  ? Text(pet.name.substring(0, 1).toUpperCase())
-                  : null,
-        ),
-        title: Text(
-          pet.name,
-          style: const TextStyle(fontWeight: FontWeight.w600),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(pet.species),
-            const SizedBox(height: 4),
-            _buildCarePlanStatus(context, ref, pet),
-          ],
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              tooltip: 'View Details',
-              icon: const Icon(Icons.info_outline),
-              onPressed: () => _navigateToPetDetail(context, pet),
+    return Stack(
+      children: [
+        Card(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          color: pet.isLost ? Colors.red[50] : null,
+          shape: pet.isLost
+              ? RoundedRectangleBorder(
+                  side: const BorderSide(color: Colors.red, width: 2),
+                  borderRadius: BorderRadius.circular(12),
+                )
+              : null,
+          child: ListTile(
+            contentPadding: const EdgeInsets.all(16),
+            leading: CircleAvatar(
+              radius: 30,
+              foregroundImage:
+                  cacheBustedUrl != null ? NetworkImage(cacheBustedUrl) : null,
+              child:
+                  cacheBustedUrl == null
+                      ? Text(pet.name.substring(0, 1).toUpperCase())
+                      : null,
             ),
-            IconButton(
-              tooltip: 'Share',
-              icon: const Icon(Icons.share_outlined),
-              onPressed: () => _navigateToSharePet(context, pet),
+            title: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    pet.name,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
+                if (pet.isLost)
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Text(
+                      'LOST',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            IconButton(
-              tooltip: 'Edit',
-              icon: const Icon(Icons.edit_outlined),
-              onPressed: () => _navigateToEditPet(context, pet),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(pet.species),
+                const SizedBox(height: 4),
+                _buildCarePlanStatus(context, ref, pet),
+                if (pet.isLost) ...[
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.warning_amber_rounded,
+                        size: 14,
+                        color: Colors.red[700],
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Marked as lost',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.red[700],
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ],
             ),
-            IconButton(
-              tooltip: 'Delete',
-              icon: const Icon(Icons.delete_outline),
-              onPressed: () => _showDeleteDialog(context, ref, pet),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  tooltip: 'View Details',
+                  icon: const Icon(Icons.info_outline),
+                  onPressed: () => _navigateToPetDetail(context, pet),
+                ),
+                IconButton(
+                  tooltip: 'Share',
+                  icon: const Icon(Icons.share_outlined),
+                  onPressed: () => _navigateToSharePet(context, pet),
+                ),
+                IconButton(
+                  tooltip: 'Edit',
+                  icon: const Icon(Icons.edit_outlined),
+                  onPressed: () => _navigateToEditPet(context, pet),
+                ),
+                IconButton(
+                  tooltip: 'Delete',
+                  icon: const Icon(Icons.delete_outline),
+                  onPressed: () => _showDeleteDialog(context, ref, pet),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 
