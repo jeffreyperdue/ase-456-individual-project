@@ -28,4 +28,13 @@ abstract class TaskCompletionRepository {
 
   /// Get the latest completion for a specific task.
   Future<TaskCompletion?> getLatestCompletionForTask(String careTaskId);
+
+  /// Watch task completions for a specific pet in real-time.
+  Stream<List<TaskCompletion>> watchTaskCompletionsForPet(String petId);
+
+  /// Watch task completions for a specific care task in real-time.
+  Stream<List<TaskCompletion>> watchTaskCompletionsForTask(String careTaskId);
+
+  /// Watch the latest completion for a specific task in real-time.
+  Stream<TaskCompletion?> watchLatestCompletionForTask(String careTaskId);
 }

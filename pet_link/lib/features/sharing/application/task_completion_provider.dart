@@ -25,11 +25,32 @@ final getTaskCompletionsUseCaseProvider = Provider<GetTaskCompletionsUseCase>((
   return GetTaskCompletionsUseCase(repository);
 });
 
-/// Provider for task completions for a specific pet.
+/// Provider for task completions for a specific pet (Future-based).
 final petTaskCompletionsProvider =
     FutureProvider.family<List<TaskCompletion>, String>((ref, petId) async {
       final useCase = ref.watch(getTaskCompletionsUseCaseProvider);
       return await useCase.getCompletionsForPet(petId);
+    });
+
+/// Stream provider for real-time task completions for a specific pet.
+final petTaskCompletionsStreamProvider =
+    StreamProvider.family<List<TaskCompletion>, String>((ref, petId) {
+      final repository = ref.watch(taskCompletionRepositoryProvider);
+      return repository.watchTaskCompletionsForPet(petId);
+    });
+
+/// Stream provider for real-time task completions for a specific care task.
+final taskCompletionsStreamProvider =
+    StreamProvider.family<List<TaskCompletion>, String>((ref, careTaskId) {
+      final repository = ref.watch(taskCompletionRepositoryProvider);
+      return repository.watchTaskCompletionsForTask(careTaskId);
+    });
+
+/// Stream provider for the latest completion of a specific task.
+final latestTaskCompletionStreamProvider =
+    StreamProvider.family<TaskCompletion?, String>((ref, careTaskId) {
+      final repository = ref.watch(taskCompletionRepositoryProvider);
+      return repository.watchLatestCompletionForTask(careTaskId);
     });
 
 /// Provider for task completions by a specific user.

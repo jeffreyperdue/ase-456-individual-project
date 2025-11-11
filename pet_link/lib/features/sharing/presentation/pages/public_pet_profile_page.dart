@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../pets/domain/pet.dart';
 import '../../../pets/domain/pet_profile.dart';
-import '../../../care_plans/domain/care_plan.dart';
+import '../../../care_plans/domain/care_task.dart';
+import '../../../care_plans/application/care_plan_provider.dart';
+import '../../../care_plans/application/care_task_provider.dart';
 import '../../../auth/domain/user.dart';
+import '../../../auth/presentation/state/auth_provider.dart';
 import '../../domain/access_token.dart';
 import '../../application/get_access_token_use_case.dart';
+import '../../application/task_completion_provider.dart';
 import '../../data/access_token_repository_impl.dart';
+import '../../../pets/data/pets_repository.dart';
 import '../widgets/public_profile_header.dart';
 import '../widgets/read_only_pet_info.dart';
 import '../widgets/read_only_care_plan.dart';
+import '../widgets/sitter_task_list.dart';
 
 /// Screen for displaying pet profiles to non-authenticated users via access tokens.
 class PublicPetProfilePage extends ConsumerStatefulWidget {
@@ -26,7 +32,6 @@ class _PublicPetProfilePageState extends ConsumerState<PublicPetProfilePage> {
   AccessToken? _accessToken;
   Pet? _pet;
   PetProfile? _petProfile;
-  CarePlan? _carePlan;
   User? _owner;
   bool _isLoading = true;
   String? _error;
@@ -68,44 +73,39 @@ class _PublicPetProfilePageState extends ConsumerState<PublicPetProfilePage> {
 
   Future<void> _loadPetData(String petId) async {
     try {
-      // TODO: Implement pet data loading from repository
-      // For now, we'll create mock data to demonstrate the UI
+      // Load real pet data from repository
+      final repository = PetsRepository();
+      final pet = await repository.getPetById(petId);
 
-      // Mock pet data
-      final pet = Pet(
-        id: petId,
-        ownerId: _accessToken!.grantedBy,
-        name: 'Buddy',
-        species: 'Dog',
-        breed: 'Golden Retriever',
-        dateOfBirth: DateTime(2020, 3, 15),
-        weightKg: 25.5,
-        heightCm: 55.0,
-        photoUrl: null,
-        createdAt: DateTime.now().subtract(const Duration(days: 365)),
-      );
+      if (pet == null) {
+        setState(() {
+          _error = 'Pet not found';
+          _isLoading = false;
+        });
+        return;
+      }
 
-      // Mock pet profile
+      // Mock pet profile for now (TODO: implement pet profile repository)
       final petProfile = PetProfile(
         id: 'profile_$petId',
         petId: petId,
         ownerId: _accessToken!.grantedBy,
-        veterinarianContact: 'Dr. Smith - (555) 123-4567',
-        emergencyContact: 'Emergency Vet - (555) 987-6543',
-        allergies: 'Chicken, Pollen',
-        chronicConditions: 'None',
-        vaccinationHistory: 'Up to date - last updated 2024-01-15',
-        generalNotes: 'Friendly dog, loves walks and treats',
-        tags: ['friendly', 'active', 'vaccinated'],
-        createdAt: DateTime.now().subtract(const Duration(days: 365)),
+        veterinarianContact: null,
+        emergencyContact: null,
+        allergies: null,
+        chronicConditions: null,
+        vaccinationHistory: null,
+        generalNotes: null,
+        tags: [],
+        createdAt: DateTime.now(),
       );
 
-      // Mock owner
+      // Mock owner for now (TODO: load from user repository)
       final owner = User(
         id: _accessToken!.grantedBy,
         email: 'owner@example.com',
         displayName: 'Pet Owner',
-        createdAt: DateTime.now().subtract(const Duration(days: 400)),
+        createdAt: DateTime.now(),
       );
 
       setState(() {
@@ -196,9 +196,9 @@ class _PublicPetProfilePageState extends ConsumerState<PublicPetProfilePage> {
 
             const SizedBox(height: 16),
 
-            // Care plan (if sitter access)
+            // Care plan and tasks (if sitter access)
             if (_accessToken!.role == AccessRole.sitter) ...[
-              ReadOnlyCarePlan(pet: _pet!, carePlan: _carePlan),
+              _buildSitterContent(context, ref),
               const SizedBox(height: 16),
             ],
 
@@ -210,6 +210,211 @@ class _PublicPetProfilePageState extends ConsumerState<PublicPetProfilePage> {
         ),
       ),
     );
+  }
+
+  Widget _buildSitterContent(BuildContext context, WidgetRef ref) {
+    // Watch care plan for this pet
+    final carePlanAsync = ref.watch(carePlanForPetProvider(_pet!.id));
+    
+    // Watch tasks with completion status
+    final tasksAsync = carePlanAsync.when(
+      data: (carePlan) {
+        if (carePlan == null) {
+          return const AsyncValue.data(<CareTaskWithCompletion>[]);
+        }
+        return ref.watch(
+          careTaskWithCompletionProvider((carePlan: carePlan, petId: _pet!.id)),
+        );
+      },
+      loading: () => const AsyncValue.loading(),
+      error: (error, stack) => AsyncValue.error(error, stack),
+    );
+
+    return Column(
+      children: [
+        // Care plan details
+        ReadOnlyCarePlan(pet: _pet!, carePlan: carePlanAsync.valueOrNull),
+
+        const SizedBox(height: 16),
+
+        // Tasks section
+        tasksAsync.when(
+          data: (tasksWithCompletion) {
+            // Filter to show incomplete tasks and recently completed
+            final incompleteTasks = tasksWithCompletion
+                .where((t) => !t.isCompleted)
+                .where((t) => t.task.scheduledTime.isAfter(
+                      DateTime.now().subtract(const Duration(days: 1)),
+                    ))
+                .toList();
+
+            if (incompleteTasks.isEmpty && tasksWithCompletion.isEmpty) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  'No tasks available for this pet',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.task_alt,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Care Tasks',
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      if (incompleteTasks.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Text(
+                            'All tasks are completed!',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      else
+                        _buildTasksList(context, ref, incompleteTasks),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+          loading: () => const Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(child: CircularProgressIndicator()),
+          ),
+          error: (error, stack) => Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              'Error loading tasks: $error',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTasksList(
+    BuildContext context,
+    WidgetRef ref,
+    List<CareTaskWithCompletion> tasks,
+  ) {
+    // Get current user ID for task completion
+    final firebaseUserAsync = ref.watch(firebaseUserProvider);
+    final firebaseUser = firebaseUserAsync.value;
+    
+    if (firebaseUser == null) {
+      return Text(
+        'Please sign in to complete tasks',
+        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          color: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+
+    return SitterTaskList(
+      tasksWithCompletion: tasks,
+      onTaskCompleted: (task) => _onTaskCompleted(context, ref, task, firebaseUser.uid),
+    );
+  }
+
+  Future<void> _onTaskCompleted(
+    BuildContext context,
+    WidgetRef ref,
+    CareTask task,
+    String sitterUserId,
+  ) async {
+    if (_accessToken == null || _pet == null) return;
+
+    try {
+      final completeTaskUseCase = ref.read(completeTaskUseCaseProvider);
+      
+      // Show loading indicator
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                SizedBox(width: 12),
+                Text('Completing task...'),
+              ],
+            ),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+
+      // Complete the task
+      await completeTaskUseCase.execute(
+        petId: _pet!.id,
+        careTaskId: task.id,
+        completedBy: sitterUserId,
+        notes: null,
+      );
+
+      // Invalidate providers to refresh tasks
+      ref.invalidate(carePlanForPetProvider(_pet!.id));
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${task.title} marked as complete'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            action: SnackBarAction(
+              label: 'OK',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to complete task: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 
   Widget _buildAccessInfoFooter(BuildContext context) {

@@ -77,6 +77,33 @@ class PetsRepository {
     await _firestore.collection('pets').doc(petId).delete();
   }
 
+  /// Get a Pet by id.
+  /// Returns null if the pet doesn't exist or can't be accessed.
+  Future<Pet?> getPetById(String petId) async {
+    try {
+      final doc = await _firestore.collection('pets').doc(petId).get();
+      if (!doc.exists) return null;
+
+      final data = doc.data()!;
+      return Pet(
+        id: doc.id,
+        ownerId: data['ownerId'] ?? '',
+        name: data['name'] ?? '',
+        species: data['species'] ?? 'Unknown',
+        breed: data['breed'],
+        dateOfBirth: data['dateOfBirth']?.toDate(),
+        weightKg: (data['weightKg'] as num?)?.toDouble(),
+        heightCm: (data['heightCm'] as num?)?.toDouble(),
+        photoUrl: data['photoUrl'],
+        isLost: data['isLost'] ?? false,
+        createdAt: data['createdAt']?.toDate(),
+        updatedAt: data['updatedAt']?.toDate(),
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// Upload a pet photo to Firebase Storage and return a public download URL.
   ///
   /// Folder structure: users/{ownerId}/pets/{petId}/{filename}
