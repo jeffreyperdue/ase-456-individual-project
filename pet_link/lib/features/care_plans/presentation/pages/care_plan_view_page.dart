@@ -6,6 +6,7 @@ import '../../application/care_plan_provider.dart';
 import '../../application/care_task_provider.dart';
 import '../widgets/care_task_card.dart';
 import 'care_plan_form_page.dart';
+import '../../../auth/application/user_provider.dart';
 
 /// Page for viewing a care plan and upcoming tasks.
 class CarePlanViewPage extends ConsumerWidget {
@@ -103,6 +104,25 @@ class CarePlanViewPage extends ConsumerWidget {
           // Real-time tasks with completion status
           tasksWithCompletionAsync.when(
             data: (tasksWithCompletion) {
+              // Get unique user IDs from completed tasks
+              final completedUserIds = tasksWithCompletion
+                  .where((t) => t.isCompleted && t.completedByUserId != null)
+                  .map((t) => t.completedByUserId!)
+                  .toSet()
+                  .toList();
+
+              // Fetch display names for users who completed tasks
+              final displayNamesAsync = ref.watch(
+                userDisplayNamesProvider(completedUserIds),
+              );
+
+              // Create a map of user ID -> display name
+              final displayNames = displayNamesAsync.when(
+                data: (names) => names,
+                loading: () => <String, String>{},
+                error: (_, __) => <String, String>{},
+              );
+
               // Filter tasks into categories
               final overdueTasks = tasksWithCompletion
                   .where((t) => t.task.isOverdue && !t.isCompleted)
@@ -136,21 +156,23 @@ class CarePlanViewPage extends ConsumerWidget {
                   if (overdueTasks.isNotEmpty || dueSoonTasks.isNotEmpty) ...[
                     _buildUrgentTasksSection(
                       context,
+                      ref,
                       overdueTasks,
                       dueSoonTasks,
+                      displayNames,
                     ),
                     const SizedBox(height: 24),
                   ],
 
                   // Today's tasks
                   if (todayTasks.isNotEmpty) ...[
-                    _buildTodayTasksSection(context, todayTasks),
+                    _buildTodayTasksSection(context, ref, todayTasks, displayNames),
                     const SizedBox(height: 24),
                   ],
 
                   // All upcoming tasks
                   if (upcomingTasks.isNotEmpty) ...[
-                    _buildUpcomingTasksSection(context, upcomingTasks),
+                    _buildUpcomingTasksSection(context, ref, upcomingTasks, displayNames),
                     const SizedBox(height: 24),
                   ],
 
@@ -225,8 +247,10 @@ class CarePlanViewPage extends ConsumerWidget {
 
   Widget _buildUrgentTasksSection(
     BuildContext context,
+    WidgetRef ref,
     List<CareTaskWithCompletion> overdueTasks,
     List<CareTaskWithCompletion> dueSoonTasks,
+    Map<String, String> displayNames,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,6 +288,9 @@ class CarePlanViewPage extends ConsumerWidget {
               child: CareTaskCard(
                 taskWithCompletion: taskWithCompletion,
                 isUrgent: true,
+                completedByDisplayName: taskWithCompletion.completedByUserId != null
+                    ? displayNames[taskWithCompletion.completedByUserId]
+                    : null,
               ),
             ),
           ),
@@ -285,6 +312,9 @@ class CarePlanViewPage extends ConsumerWidget {
               child: CareTaskCard(
                 taskWithCompletion: taskWithCompletion,
                 isUrgent: true,
+                completedByDisplayName: taskWithCompletion.completedByUserId != null
+                    ? displayNames[taskWithCompletion.completedByUserId]
+                    : null,
               ),
             ),
           ),
@@ -295,7 +325,9 @@ class CarePlanViewPage extends ConsumerWidget {
 
   Widget _buildTodayTasksSection(
     BuildContext context,
+    WidgetRef ref,
     List<CareTaskWithCompletion> todayTasks,
+    Map<String, String> displayNames,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,7 +348,12 @@ class CarePlanViewPage extends ConsumerWidget {
         ...todayTasks.map(
           (taskWithCompletion) => Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: CareTaskCard(taskWithCompletion: taskWithCompletion),
+            child: CareTaskCard(
+              taskWithCompletion: taskWithCompletion,
+              completedByDisplayName: taskWithCompletion.completedByUserId != null
+                  ? displayNames[taskWithCompletion.completedByUserId]
+                  : null,
+            ),
           ),
         ),
       ],
@@ -325,7 +362,9 @@ class CarePlanViewPage extends ConsumerWidget {
 
   Widget _buildUpcomingTasksSection(
     BuildContext context,
+    WidgetRef ref,
     List<CareTaskWithCompletion> upcomingTasks,
+    Map<String, String> displayNames,
   ) {
     if (upcomingTasks.isEmpty) {
       return const SizedBox.shrink();
@@ -353,7 +392,12 @@ class CarePlanViewPage extends ConsumerWidget {
         ...upcomingTasks.map(
           (taskWithCompletion) => Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: CareTaskCard(taskWithCompletion: taskWithCompletion),
+            child: CareTaskCard(
+              taskWithCompletion: taskWithCompletion,
+              completedByDisplayName: taskWithCompletion.completedByUserId != null
+                  ? displayNames[taskWithCompletion.completedByUserId]
+                  : null,
+            ),
           ),
         ),
       ],

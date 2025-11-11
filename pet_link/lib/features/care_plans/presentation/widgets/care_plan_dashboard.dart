@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../application/pet_with_plan_provider.dart';
+import '../../application/care_task_provider.dart';
 
 /// A dashboard widget showing care plan summaries and urgent tasks.
 class CarePlanDashboard extends ConsumerWidget {
@@ -8,8 +9,9 @@ class CarePlanDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final allPetsAsync = ref.watch(allPetsWithPlanProvider);
-    final petsWithUrgentTasks = ref.watch(petsWithUrgentTasksProvider);
+    // Use completion-aware provider for real-time statistics
+    final allPetsAsync = ref.watch(allPetsWithPlanCompletionProvider);
+    final petsWithUrgentTasks = ref.watch(petsWithUrgentTasksCompletionProvider);
 
     return allPetsAsync.when(
       data: (allPets) {
@@ -47,7 +49,7 @@ class CarePlanDashboard extends ConsumerWidget {
                   const SizedBox(height: 16),
                 ],
 
-                // Care plan summary
+                // Care plan summary with completion statistics
                 _buildCarePlanSummary(context, allPets),
               ],
             ),
@@ -134,6 +136,14 @@ class CarePlanDashboard extends ConsumerWidget {
       0,
       (sum, pet) => sum + (pet.taskStats.today as int),
     );
+    final completedTasks = allPets.fold<int>(
+      0,
+      (sum, pet) => sum + (pet.taskStats.completed as int),
+    );
+    final pendingTasks = allPets.fold<int>(
+      0,
+      (sum, pet) => sum + (pet.taskStats.pending as int),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,6 +184,31 @@ class CarePlanDashboard extends ConsumerWidget {
                 '$totalTasks',
                 Icons.task,
                 Theme.of(context).colorScheme.tertiary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        // Completion statistics row
+        Row(
+          children: [
+            Expanded(
+              child: _buildStatCard(
+                context,
+                'Completed',
+                '$completedTasks',
+                Icons.check_circle,
+                Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _buildStatCard(
+                context,
+                'Pending',
+                '$pendingTasks',
+                Icons.pending,
+                Theme.of(context).colorScheme.error,
               ),
             ),
           ],

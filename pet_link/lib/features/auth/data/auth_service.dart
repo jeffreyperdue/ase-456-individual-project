@@ -176,4 +176,54 @@ class AuthService {
       rethrow;
     }
   }
+
+  /// Get a user by ID from Firestore.
+  Future<app_user.User?> getUserById(String userId) async {
+    try {
+      final doc = await _firestore.collection('users').doc(userId).get();
+      if (doc.exists) {
+        return app_user.User.fromJson(doc.data()!);
+      }
+      return null;
+    } catch (e) {
+      print('Error getting user by ID: $e');
+      return null;
+    }
+  }
+
+  /// Get multiple users by their IDs from Firestore.
+  Future<Map<String, app_user.User>> getUsersByIds(List<String> userIds) async {
+    if (userIds.isEmpty) return {};
+
+    try {
+      // Firestore 'in' queries are limited to 10 items, so we need to batch
+      final Map<String, app_user.User> users = {};
+      final batches = <List<String>>[];
+      
+      for (var i = 0; i < userIds.length; i += 10) {
+        batches.add(userIds.sublist(i, i + 10 > userIds.length ? userIds.length : i + 10));
+      }
+
+      for (final batch in batches) {
+        final query = await _firestore
+            .collection('users')
+            .where(FieldPath.documentId, whereIn: batch)
+            .get();
+
+        for (final doc in query.docs) {
+          try {
+            final user = app_user.User.fromJson(doc.data());
+            users[user.id] = user;
+          } catch (e) {
+            print('Error parsing user ${doc.id}: $e');
+          }
+        }
+      }
+
+      return users;
+    } catch (e) {
+      print('Error getting users by IDs: $e');
+      return {};
+    }
+  }
 }

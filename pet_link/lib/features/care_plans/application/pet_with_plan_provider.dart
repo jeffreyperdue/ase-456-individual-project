@@ -171,3 +171,162 @@ final petsWithoutCarePlansProvider = Provider<List<Pet>>((ref) {
     error: (_, __) => [],
   );
 });
+
+/// Provider for all pets with their care plans and completion-aware statistics (real-time).
+/// This provider uses completion-aware statistics that include task completion status.
+/// Use this for the dashboard to show real-time completion statistics.
+final allPetsWithPlanCompletionProvider = Provider<AsyncValue<List<PetWithPlan>>>((ref) {
+  final petsAsync = ref.watch(petsProvider);
+
+  return petsAsync.when(
+    data: (pets) {
+      if (pets.isEmpty) {
+        return const AsyncValue.data([]);
+      }
+
+      // For each pet, watch the completion-aware stats
+      // Note: This creates multiple stream subscriptions, but Riverpod manages them efficiently
+      final petsWithPlanAsync = pets.map((pet) {
+        final carePlanAsync = ref.watch(carePlanForPetProvider(pet.id));
+        
+        return carePlanAsync.when(
+          data: (carePlan) {
+            if (carePlan == null) {
+              return AsyncValue.data(PetWithPlan.fromData(
+                pet,
+                null,
+                const CareTaskStats(
+                  total: 0,
+                  overdue: 0,
+                  dueSoon: 0,
+                  today: 0,
+                  completed: 0,
+                  pending: 0,
+                ),
+              ));
+            }
+            
+            // Watch completion-aware stats
+            final statsAsync = ref.watch(
+              careTaskStatsWithCompletionProvider((carePlan: carePlan, petId: pet.id)),
+            );
+            
+            return statsAsync.when(
+              data: (taskStats) => AsyncValue.data(PetWithPlan.fromData(pet, carePlan, taskStats)),
+              loading: () => AsyncValue.data(PetWithPlan.fromData(
+                pet,
+                carePlan,
+                const CareTaskStats(
+                  total: 0,
+                  overdue: 0,
+                  dueSoon: 0,
+                  today: 0,
+                  completed: 0,
+                  pending: 0,
+                ),
+              )),
+              error: (error, stack) => AsyncValue.data(PetWithPlan.fromData(
+                pet,
+                carePlan,
+                const CareTaskStats(
+                  total: 0,
+                  overdue: 0,
+                  dueSoon: 0,
+                  today: 0,
+                  completed: 0,
+                  pending: 0,
+                ),
+              )),
+            );
+          },
+          loading: () => AsyncValue.data(PetWithPlan.fromData(
+            pet,
+            null,
+            const CareTaskStats(
+              total: 0,
+              overdue: 0,
+              dueSoon: 0,
+              today: 0,
+              completed: 0,
+              pending: 0,
+            ),
+          )),
+          error: (error, stack) => AsyncValue.data(PetWithPlan.fromData(
+            pet,
+            null,
+            const CareTaskStats(
+              total: 0,
+              overdue: 0,
+              dueSoon: 0,
+              today: 0,
+              completed: 0,
+              pending: 0,
+            ),
+          )),
+        );
+      }).toList();
+
+      // Combine all AsyncValues into a single AsyncValue<List<PetWithPlan>>
+      // Check if any are loading or have errors
+      bool hasLoading = false;
+      Object? firstError;
+      StackTrace? firstStackTrace;
+      final List<PetWithPlan> petsWithPlan = [];
+
+      for (final async in petsWithPlanAsync) {
+        if (async.isLoading) {
+          hasLoading = true;
+          break;
+        } else if (async.hasError) {
+          if (firstError == null) {
+            firstError = async.error;
+            firstStackTrace = async.stackTrace;
+          }
+          // Continue processing other pets even if one has an error
+          // Use default stats for this pet
+          petsWithPlan.add(async.value ?? PetWithPlan.fromData(
+            pets[petsWithPlan.length],
+            null,
+            const CareTaskStats(
+              total: 0,
+              overdue: 0,
+              dueSoon: 0,
+              today: 0,
+              completed: 0,
+              pending: 0,
+            ),
+          ));
+        } else if (async.hasValue) {
+          petsWithPlan.add(async.value!);
+        }
+      }
+
+      if (hasLoading) {
+        return const AsyncValue.loading();
+      }
+
+      if (firstError != null && petsWithPlan.isEmpty) {
+        return AsyncValue.error(firstError, firstStackTrace ?? StackTrace.current);
+      }
+
+      return AsyncValue.data(petsWithPlan);
+    },
+    loading: () => const AsyncValue.loading(),
+    error: (error, stack) => AsyncValue.error(error, stack),
+  );
+});
+
+/// Provider for pets that have urgent care tasks (using completion-aware stats).
+final petsWithUrgentTasksCompletionProvider = Provider<List<PetWithPlan>>((ref) {
+  final allPetsAsync = ref.watch(allPetsWithPlanCompletionProvider);
+
+  return allPetsAsync.when(
+    data: (petsWithPlan) {
+      return petsWithPlan
+          .where((petWithPlan) => petWithPlan.hasUrgentTasks)
+          .toList();
+    },
+    loading: () => [],
+    error: (_, __) => [],
+  );
+});
