@@ -191,6 +191,22 @@ When adding new features:
 4. **Update test utilities** if new test data factories are needed
 5. **Mock new external dependencies** in `test_config.dart`
 
+## Week 9 Lost & Found Tests
+
+The following tests have been created for the Lost & Found feature:
+
+1. **Unit Tests:**
+   - `test/unit/domain/lost_report_test.dart` - Tests for LostReport domain model
+   - `test/unit/presentation/lost_found_notifier_test.dart` - Tests for LostFoundNotifier
+
+2. **Widget Tests:**
+   - `test/widget/lost_pet_poster_widget_test.dart` - Tests for LostPetPosterWidget
+
+3. **Integration Tests:**
+   - `test/integration/lost_found_workflow_test.dart` - End-to-end workflow tests
+
+**Note:** Repository tests for `LostReportRepository` are not included as they require complex Firestore mocking. The repository is tested indirectly through integration tests and through the notifier tests. For comprehensive repository testing, consider using Firebase emulator-based integration tests.
+
 ## Continuous Integration
 
 The test suite is designed to run in CI environments:

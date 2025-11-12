@@ -16,6 +16,10 @@ void main() {
 
     setUp(() {
       mockAuthService = MockAuthService();
+      // Stub authStateChanges to return an empty stream by default
+      // This is needed because AuthNotifier subscribes to it during initialization
+      when(mockAuthService.authStateChanges)
+          .thenAnswer((_) => const Stream.empty());
       container = ProviderContainer(
         overrides: [authServiceProvider.overrideWithValue(mockAuthService)],
       );

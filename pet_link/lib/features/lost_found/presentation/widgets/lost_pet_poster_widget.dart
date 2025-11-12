@@ -22,9 +22,10 @@ class LostPetPosterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Poster dimensions - optimized for sharing (4:3 aspect ratio)
+    // Poster dimensions - optimized for sharing (portrait orientation)
+    // Increased height to accommodate all content without overflow
     const posterWidth = 800.0;
-    const posterHeight = 1000.0;
+    const posterHeight = 1200.0;
 
     return Container(
       width: posterWidth,
@@ -32,17 +33,18 @@ class LostPetPosterWidget extends StatelessWidget {
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
           // Header with "LOST" text
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 32),
+            padding: const EdgeInsets.symmetric(vertical: 24),
             color: Colors.red,
             child: const Text(
               'LOST',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 72,
+                fontSize: 64,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 letterSpacing: 8,
@@ -50,12 +52,12 @@ class LostPetPosterWidget extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
-          // Pet photo
+          // Pet photo - reduced size to save space
           Container(
-            width: 400,
-            height: 400,
+            width: 350,
+            height: 350,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: Colors.grey, width: 4),
@@ -72,7 +74,7 @@ class LostPetPosterWidget extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
 
           // Pet name
           Padding(
@@ -80,16 +82,19 @@ class LostPetPosterWidget extends StatelessWidget {
             child: Text(
               pet.name.toUpperCase(),
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 48,
+                fontSize: 42,
                 fontWeight: FontWeight.bold,
                 color: Colors.black87,
                 letterSpacing: 2,
+                height: 1.2,
               ),
             ),
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
           // Pet species and breed
           Padding(
@@ -97,40 +102,17 @@ class LostPetPosterWidget extends StatelessWidget {
             child: Text(
               _getPetDescription(),
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: 22,
                 color: Colors.black54,
+                height: 1.3,
               ),
             ),
           ),
 
-          const SizedBox(height: 32),
-
-          // Last seen location (if provided)
-          if (lastSeenLocation != null && lastSeenLocation!.isNotEmpty) ...[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.location_on, color: Colors.red, size: 24),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      'Last seen: $lastSeenLocation',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
+          const SizedBox(height: 20),
 
           // Lost date
           Padding(
@@ -145,14 +127,42 @@ class LostPetPosterWidget extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
+
+          // Last seen location (if provided)
+          if (lastSeenLocation != null && lastSeenLocation!.isNotEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.location_on, color: Colors.red, size: 20),
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: Text(
+                      'Last seen: $lastSeenLocation',
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
 
           // Notes (if provided)
           if (notes != null && notes!.isNotEmpty) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(8),
@@ -160,49 +170,64 @@ class LostPetPosterWidget extends StatelessWidget {
                 child: Text(
                   notes!,
                   textAlign: TextAlign.center,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Colors.black87,
+                    height: 1.4,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
           ],
 
-          const Spacer(),
+          // Add flexible space if needed, but with a minimum to avoid overflow
+          Expanded(
+            child: Container(), // Empty flexible space
+          ),
 
-          // Contact information
+          // Contact information - fixed at bottom
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
             color: Colors.grey[200],
             child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
                   'If found, please contact:',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 if (owner.displayName != null) ...[
                   Text(
                     owner.displayName!,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 20,
                       fontWeight: FontWeight.w600,
                       color: Colors.black87,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                 ],
                 Text(
                   owner.email,
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     color: Colors.black87,
                   ),
                 ),
@@ -213,13 +238,13 @@ class LostPetPosterWidget extends StatelessWidget {
           // App branding
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 10),
             color: Colors.grey[300],
             child: const Text(
               'Petfolio',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.w500,
                 color: Colors.black54,
               ),
@@ -270,4 +295,5 @@ class LostPetPosterWidget extends StatelessWidget {
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 }
+
 

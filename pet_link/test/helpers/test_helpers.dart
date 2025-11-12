@@ -11,6 +11,7 @@ import 'package:petfolio/features/care_plans/domain/care_plan.dart';
 import 'package:petfolio/features/care_plans/domain/feeding_schedule.dart';
 import 'package:petfolio/features/care_plans/domain/medication.dart';
 import 'package:petfolio/features/sharing/domain/access_token.dart';
+import 'package:petfolio/features/lost_found/domain/lost_report.dart';
 
 /// Test helpers and utilities for PetLink testing suite.
 
@@ -160,6 +161,26 @@ class TestDataFactory {
       notes: 'Test access token',
     );
   }
+
+  static LostReport createTestLostReport({
+    String? id,
+    String? petId,
+    String? ownerId,
+    DateTime? createdAt,
+    String? lastSeenLocation,
+    String? notes,
+    String? posterUrl,
+  }) {
+    return LostReport(
+      id: id ?? 'test_lost_report_id',
+      petId: petId ?? 'test_pet_id',
+      ownerId: ownerId ?? 'test_user_id',
+      createdAt: createdAt ?? DateTime(2024, 1, 15, 12, 0, 0),
+      lastSeenLocation: lastSeenLocation,
+      notes: notes,
+      posterUrl: posterUrl,
+    );
+  }
 }
 
 /// Widget test helper for testing with Riverpod
@@ -245,6 +266,7 @@ class TestConstants {
   static const String testPetId = 'test_pet_id';
   static const String testCarePlanId = 'test_care_plan_id';
   static const String testAccessTokenId = 'test_token_id';
+  static const String testLostReportId = 'test_lost_report_id';
 
   static const String testEmail = 'test@example.com';
   static const String testPassword = 'testpassword123';

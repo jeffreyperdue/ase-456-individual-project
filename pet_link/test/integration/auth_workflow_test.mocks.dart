@@ -113,4 +113,22 @@ class MockAuthService extends _i1.Mock implements _i2.AuthService {
             returnValueForMissingStub: _i3.Future<void>.value(),
           )
           as _i3.Future<void>);
+
+  @override
+  _i3.Future<_i5.User?> getUserById(String? userId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUserById, [userId]),
+            returnValue: _i3.Future<_i5.User?>.value(),
+          )
+          as _i3.Future<_i5.User?>);
+
+  @override
+  _i3.Future<Map<String, _i5.User>> getUsersByIds(List<String>? userIds) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUsersByIds, [userIds]),
+            returnValue: _i3.Future<Map<String, _i5.User>>.value(
+              <String, _i5.User>{},
+            ),
+          )
+          as _i3.Future<Map<String, _i5.User>>);
 }

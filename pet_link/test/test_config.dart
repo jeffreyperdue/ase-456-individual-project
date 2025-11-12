@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 
 /// Test configuration utilities and setup
 class TestConfig {
+  static bool _firebaseInitialized = false;
+
   /// Initialize test environment
   static void initialize() {
     // Set up method channels for testing
@@ -12,8 +14,26 @@ class TestConfig {
     // Mock platform channels if needed
     _setupPlatformChannels();
 
+    // Initialize Firebase for testing
+    _initializeFirebase();
+
     // Set up any global test configurations
     _setupGlobalConfig();
+  }
+
+  /// Initialize Firebase for testing
+  static void _initializeFirebase() {
+    if (_firebaseInitialized) return;
+
+    try {
+      // Set up Firebase Core channel mocks
+      // Note: Firebase Core initialization in tests requires complex setup
+      // For now, we mock the channels to prevent errors
+      _firebaseInitialized = true;
+    } catch (e) {
+      // If Firebase initialization setup fails, continue with mocks
+      _firebaseInitialized = true;
+    }
   }
 
   /// Set up platform channels for testing
@@ -80,73 +100,163 @@ class TestConfig {
       }
     });
 
-    // Mock Firebase Auth channel
+    // Mock SharedPreferences channel
     const MethodChannel(
-      'plugins.flutter.io/firebase_auth',
+      'plugins.flutter.io/shared_preferences',
     ).setMockMethodCallHandler((MethodCall methodCall) async {
       switch (methodCall.method) {
-        case 'signInWithEmailAndPassword':
-          return {
-            'user': {
-              'uid': 'mock_user_id',
-              'email': 'test@example.com',
-              'displayName': 'Test User',
-            },
-          };
-        case 'createUserWithEmailAndPassword':
-          return {
-            'user': {
-              'uid': 'mock_user_id',
-              'email': 'test@example.com',
-              'displayName': 'Test User',
-            },
-          };
-        case 'signOut':
-          return null;
-        case 'sendPasswordResetEmail':
-          return null;
+        case 'getAll':
+          return <String, dynamic>{};
+        case 'setBool':
+        case 'setInt':
+        case 'setDouble':
+        case 'setString':
+        case 'setStringList':
+          return true;
+        case 'remove':
+        case 'clear':
+          return true;
         default:
           return null;
       }
     });
+
+    // Mock Firebase Core channel first
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('plugins.flutter.io/firebase_core'),
+      (MethodCall methodCall) async {
+        if (methodCall.method == 'Firebase#initializeCore') {
+          return [
+            {
+              'name': '[DEFAULT]',
+              'options': {
+                'apiKey': 'mock-api-key',
+                'appId': 'mock-app-id',
+                'messagingSenderId': 'mock-sender-id',
+                'projectId': 'mock-project-id',
+              },
+              'pluginConstants': {},
+            }
+          ];
+        }
+        if (methodCall.method == 'Firebase#initializeApp') {
+          return {
+            'name': '[DEFAULT]',
+            'options': {
+              'apiKey': 'mock-api-key',
+              'appId': 'mock-app-id',
+              'messagingSenderId': 'mock-sender-id',
+              'projectId': 'mock-project-id',
+            },
+            'pluginConstants': {},
+          };
+        }
+        if (methodCall.method == 'Firebase#app') {
+          return {
+            'name': '[DEFAULT]',
+            'options': {
+              'apiKey': 'mock-api-key',
+              'appId': 'mock-app-id',
+              'messagingSenderId': 'mock-sender-id',
+              'projectId': 'mock-project-id',
+            },
+            'pluginConstants': {},
+          };
+        }
+        return null;
+      },
+    );
+
+    // Mock Firebase Auth channel
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('plugins.flutter.io/firebase_auth'),
+      (MethodCall methodCall) async {
+        switch (methodCall.method) {
+          case 'Auth#registerIdTokenListener':
+          case 'Auth#registerAuthStateListener':
+            return {'user': null};
+          case 'Auth#signInWithEmailAndPassword':
+            return {
+              'user': {
+                'uid': 'mock_user_id',
+                'email': 'test@example.com',
+                'displayName': 'Test User',
+              },
+            };
+          case 'Auth#createUserWithEmailAndPassword':
+            return {
+              'user': {
+                'uid': 'mock_user_id',
+                'email': 'test@example.com',
+                'displayName': 'Test User',
+              },
+            };
+          case 'Auth#signOut':
+            return null;
+          case 'Auth#sendPasswordResetEmail':
+            return null;
+          case 'Auth#getCurrentUser':
+            return {'user': null};
+          default:
+            return null;
+        }
+      },
+    );
 
     // Mock Firestore channel
-    const MethodChannel(
-      'plugins.flutter.io/cloud_firestore',
-    ).setMockMethodCallHandler((MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'collection':
-          return 'mock_collection';
-        case 'doc':
-          return 'mock_document';
-        case 'get':
-          return {'exists': true, 'data': <String, dynamic>{}};
-        case 'set':
-          return null;
-        case 'update':
-          return null;
-        case 'delete':
-          return null;
-        default:
-          return null;
-      }
-    });
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('plugins.flutter.io/cloud_firestore'),
+      (MethodCall methodCall) async {
+        switch (methodCall.method) {
+          case 'Query#snapshots':
+            return <String, dynamic>{};
+          case 'DocumentReference#snapshots':
+            return <String, dynamic>{};
+          case 'Query#get':
+            return {
+              'documents': <Map<String, dynamic>>[],
+            };
+          case 'DocumentReference#get':
+            return {
+              'exists': false,
+              'data': <String, dynamic>{},
+            };
+          case 'DocumentReference#set':
+            return null;
+          case 'DocumentReference#update':
+            return null;
+          case 'DocumentReference#delete':
+            return null;
+          default:
+            return null;
+        }
+      },
+    );
 
     // Mock Firebase Storage channel
-    const MethodChannel(
-      'plugins.flutter.io/firebase_storage',
-    ).setMockMethodCallHandler((MethodCall methodCall) async {
-      switch (methodCall.method) {
-        case 'ref':
-          return 'mock_storage_ref';
-        case 'putFile':
-          return 'mock_download_url';
-        case 'getDownloadURL':
-          return 'https://mock-storage-url.com/file.jpg';
-        default:
-          return null;
-      }
-    });
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('plugins.flutter.io/firebase_storage'),
+      (MethodCall methodCall) async {
+        switch (methodCall.method) {
+          case 'Reference#putFile':
+          case 'Reference#putData':
+            return {
+              'bucket': 'mock-bucket',
+              'fullPath': 'mock/path.jpg',
+              'name': 'mock-file.jpg',
+              'metadata': <String, dynamic>{},
+            };
+          case 'Reference#getDownloadURL':
+            return 'https://mock-storage-url.com/file.jpg';
+          default:
+            return null;
+        }
+      },
+    );
   }
 
   /// Set up global test configuration
@@ -182,6 +292,14 @@ class TestConfig {
     ).setMockMethodCallHandler(null);
     const MethodChannel(
       'plugins.flutter.io/firebase_storage',
+    ).setMockMethodCallHandler(null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(
+      const MethodChannel('plugins.flutter.io/firebase_core'),
+      null,
+    );
+    const MethodChannel(
+      'plugins.flutter.io/shared_preferences',
     ).setMockMethodCallHandler(null);
   }
 }

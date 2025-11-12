@@ -37,14 +37,8 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Lost Pet Poster'),
-        actions: [
-          if (!_isSharing)
-            IconButton(
-              icon: const Icon(Icons.share),
-              onPressed: _sharePoster,
-              tooltip: 'Share Poster',
-            ),
-        ],
+        // Removed share icon from AppBar to avoid hero tag conflict
+        // Share button is available in the body below
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -174,12 +168,36 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
             widget.lostReport.id,
             {'posterUrl': posterUrl},
           );
+
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Poster uploaded successfully'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
         } catch (e) {
+          // Log the error for debugging
+          debugPrint('Poster upload error: $e');
+          
           // Continue with sharing even if upload fails
+          // Show a non-blocking warning message
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Poster generated but upload failed: $e'),
+                content: Text('Poster generated but upload failed: ${e.toString()}'),
+                backgroundColor: Colors.orange,
+                duration: const Duration(seconds: 4),
+                action: SnackBarAction(
+                  label: 'Retry',
+                  textColor: Colors.white,
+                  onPressed: () {
+                    // Retry upload in the background
+                    _retryUpload(imageBytes);
+                  },
+                ),
               ),
             );
           }
@@ -297,6 +315,46 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
     } catch (e) {
       // If image loading check fails, continue anyway
       // The poster will show a placeholder if image doesn't load
+    }
+  }
+
+  /// Retry uploading the poster to Firebase Storage.
+  Future<void> _retryUpload(Uint8List imageBytes) async {
+    try {
+      final posterService = ref.read(posterGeneratorServiceProvider);
+      final posterUrl = await posterService.uploadPoster(
+        imageBytes: imageBytes,
+        ownerId: widget.owner.id,
+        petId: widget.pet.id,
+      );
+
+      // Update lost report with poster URL
+      final repository = ref.read(lostReportRepositoryProvider);
+      await repository.updateLostReport(
+        widget.lostReport.id,
+        {'posterUrl': posterUrl},
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Poster uploaded successfully'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Retry upload error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Upload failed: ${e.toString()}'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
     }
   }
 }
