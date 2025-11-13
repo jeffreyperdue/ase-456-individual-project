@@ -23,6 +23,8 @@ class PetfolioApp extends StatelessWidget {
     return MaterialApp(
       title: 'Petfolio',
       theme: buildTheme(),
+      darkTheme: buildDarkTheme(),
+      themeMode: ThemeMode.system, // Respects system theme preference
       initialRoute: '/',
       routes: {
         '/': (_) => const AppStartup(child: AuthWrapper(child: MainScaffold())),
