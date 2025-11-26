@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:petfolio/app/config.dart';
 import 'package:petfolio/services/local_storage_provider.dart';
 
 /// Success screen shown after completing the first-time pet creation flow.
@@ -184,7 +185,7 @@ class SuccessView extends ConsumerWidget {
     if (context.mounted) {
       Navigator.pushNamedAndRemoveUntil(
         context,
-        '/',
+        RouteNames.root,
         (route) => false, // Remove all previous routes
       );
     }

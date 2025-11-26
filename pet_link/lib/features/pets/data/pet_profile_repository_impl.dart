@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:petfolio/app/config.dart';
 import '../domain/pet_profile.dart';
 import '../domain/pet_profile_repository.dart';
 
@@ -14,7 +15,7 @@ class PetProfileRepositoryImpl implements PetProfileRepository {
   @override
   Stream<PetProfile?> watchPetProfile(String petId) {
     return _firestore
-        .collection('pet_profiles')
+        .collection(FirestoreCollections.petProfiles)
         .where('petId', isEqualTo: petId)
         .limit(1)
         .snapshots()
@@ -44,15 +45,16 @@ class PetProfileRepositoryImpl implements PetProfileRepository {
 
     if (profile.id.isEmpty || profile.id == profile.petId) {
       // Create new profile
-      final docRef = await _firestore
-          .collection('pet_profiles')
-          .add(profileData);
+      final docRef =
+          await _firestore.collection(FirestoreCollections.petProfiles).add(
+                profileData,
+              );
 
       return profileToSave.copyWith(id: docRef.id);
     } else {
       // Update existing profile
       await _firestore
-          .collection('pet_profiles')
+          .collection(FirestoreCollections.petProfiles)
           .doc(profile.id)
           .set(profileData, SetOptions(merge: true));
 
@@ -63,12 +65,11 @@ class PetProfileRepositoryImpl implements PetProfileRepository {
   /// Delete a pet profile.
   @override
   Future<void> deletePetProfile(String petId) async {
-    final querySnapshot =
-        await _firestore
-            .collection('pet_profiles')
-            .where('petId', isEqualTo: petId)
-            .limit(1)
-            .get();
+    final querySnapshot = await _firestore
+        .collection(FirestoreCollections.petProfiles)
+        .where('petId', isEqualTo: petId)
+        .limit(1)
+        .get();
 
     if (querySnapshot.docs.isNotEmpty) {
       await querySnapshot.docs.first.reference.delete();

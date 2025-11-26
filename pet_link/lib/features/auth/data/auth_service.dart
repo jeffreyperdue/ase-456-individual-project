@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:petfolio/app/config.dart';
 import 'package:petfolio/features/auth/domain/user.dart' as app_user;
 
 /// Service for handling Firebase Authentication and user management.
@@ -19,8 +20,10 @@ class AuthService {
     if (firebaseUser == null) return null;
 
     try {
-      final doc =
-          await _firestore.collection('users').doc(firebaseUser.uid).get();
+      final doc = await _firestore
+          .collection(FirestoreCollections.users)
+          .doc(firebaseUser.uid)
+          .get();
       if (doc.exists) {
         return app_user.User.fromJson(doc.data()!);
       } else {
@@ -130,7 +133,10 @@ class AuthService {
       final token = await user.getIdToken(true); // force refresh
 
       // Check if user document exists in Firestore
-      final doc = await _firestore.collection('users').doc(user.uid).get();
+      final doc = await _firestore
+          .collection(FirestoreCollections.users)
+          .doc(user.uid)
+          .get();
 
       return doc.exists && (token?.isNotEmpty ?? false);
     } catch (e) {
@@ -150,7 +156,7 @@ class AuthService {
 
     try {
       await _firestore
-          .collection('users')
+          .collection(FirestoreCollections.users)
           .doc(firebaseUser.uid)
           .set(appUser.toJson());
       print('✅ User created in Firestore: ${appUser.email}');
@@ -164,7 +170,10 @@ class AuthService {
   /// Update user profile in Firestore.
   Future<void> updateUserProfile(app_user.User user) async {
     try {
-      await _firestore.collection('users').doc(user.id).update({
+      await _firestore
+          .collection(FirestoreCollections.users)
+          .doc(user.id)
+          .update({
         'displayName': user.displayName,
         'photoUrl': user.photoUrl,
         'roles': user.roles,
@@ -180,7 +189,10 @@ class AuthService {
   /// Get a user by ID from Firestore.
   Future<app_user.User?> getUserById(String userId) async {
     try {
-      final doc = await _firestore.collection('users').doc(userId).get();
+      final doc = await _firestore
+          .collection(FirestoreCollections.users)
+          .doc(userId)
+          .get();
       if (doc.exists) {
         return app_user.User.fromJson(doc.data()!);
       }
@@ -206,7 +218,7 @@ class AuthService {
 
       for (final batch in batches) {
         final query = await _firestore
-            .collection('users')
+            .collection(FirestoreCollections.users)
             .where(FieldPath.documentId, whereIn: batch)
             .get();
 

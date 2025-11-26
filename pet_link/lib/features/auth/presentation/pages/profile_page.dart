@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:petfolio/app/config.dart';
 import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
 import 'package:petfolio/services/error_handler.dart';
 import 'package:petfolio/app/utils/feedback_utils.dart';
@@ -59,7 +60,11 @@ class ProfilePage extends ConsumerWidget {
                     await ref.read(authProvider.notifier).signOut();
                     if (context.mounted) {
                       FeedbackUtils.showSuccess(context, 'Signed out successfully');
-                      Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        RouteNames.root,
+                        (_) => false,
+                      );
                     }
                   } catch (e) {
                     if (context.mounted) {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:petfolio/app/config.dart';
 import '../domain/care_plan.dart';
 import '../domain/care_plan_repository.dart';
 
@@ -17,7 +18,7 @@ class CarePlanRepositoryImpl implements CarePlanRepository {
   @override
   Stream<CarePlan?> watchCarePlanForPet(String petId) {
     return _firestore
-        .collection('care_plans')
+        .collection(FirestoreCollections.carePlans)
         .where('petId', isEqualTo: petId)
         .limit(1)
         .snapshots()
@@ -34,7 +35,10 @@ class CarePlanRepositoryImpl implements CarePlanRepository {
   /// Get a specific care plan by ID.
   @override
   Future<CarePlan?> getCarePlan(String carePlanId) async {
-    final doc = await _firestore.collection('care_plans').doc(carePlanId).get();
+    final doc = await _firestore
+        .collection(FirestoreCollections.carePlans)
+        .doc(carePlanId)
+        .get();
 
     if (!doc.exists) return null;
 
@@ -47,19 +51,21 @@ class CarePlanRepositoryImpl implements CarePlanRepository {
   @override
   Future<void> createCarePlan(CarePlan carePlan) async {
     // Check for existing care plan for this pet
-    final existing =
-        await _firestore
-            .collection('care_plans')
-            .where('petId', isEqualTo: carePlan.petId)
-            .limit(1)
-            .get();
+    final existing = await _firestore
+        .collection(FirestoreCollections.carePlans)
+        .where('petId', isEqualTo: carePlan.petId)
+        .limit(1)
+        .get();
 
     if (existing.docs.isNotEmpty) {
       throw Exception('Care plan already exists for pet ${carePlan.petId}');
     }
 
     // Create the care plan document
-    await _firestore.collection('care_plans').doc(carePlan.id).set({
+    await _firestore
+        .collection(FirestoreCollections.carePlans)
+        .doc(carePlan.id)
+        .set({
       'petId': carePlan.petId,
       'ownerId': carePlan.ownerId,
       'dietText': carePlan.dietText,
@@ -78,7 +84,10 @@ class CarePlanRepositoryImpl implements CarePlanRepository {
     String carePlanId,
     Map<String, dynamic> updates,
   ) async {
-    await _firestore.collection('care_plans').doc(carePlanId).update({
+    await _firestore
+        .collection(FirestoreCollections.carePlans)
+        .doc(carePlanId)
+        .update({
       ...updates,
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -87,18 +96,20 @@ class CarePlanRepositoryImpl implements CarePlanRepository {
   /// Delete a care plan.
   @override
   Future<void> deleteCarePlan(String carePlanId) async {
-    await _firestore.collection('care_plans').doc(carePlanId).delete();
+    await _firestore
+        .collection(FirestoreCollections.carePlans)
+        .doc(carePlanId)
+        .delete();
   }
 
   /// Check if a care plan exists for the given pet.
   @override
   Future<bool> carePlanExistsForPet(String petId) async {
-    final snapshot =
-        await _firestore
-            .collection('care_plans')
-            .where('petId', isEqualTo: petId)
-            .limit(1)
-            .get();
+    final snapshot = await _firestore
+        .collection(FirestoreCollections.carePlans)
+        .where('petId', isEqualTo: petId)
+        .limit(1)
+        .get();
 
     return snapshot.docs.isNotEmpty;
   }
@@ -106,12 +117,11 @@ class CarePlanRepositoryImpl implements CarePlanRepository {
   /// Get care plan ID for a pet (helper method).
   /// Returns null if no care plan exists.
   Future<String?> getCarePlanIdForPet(String petId) async {
-    final snapshot =
-        await _firestore
-            .collection('care_plans')
-            .where('petId', isEqualTo: petId)
-            .limit(1)
-            .get();
+    final snapshot = await _firestore
+        .collection(FirestoreCollections.carePlans)
+        .where('petId', isEqualTo: petId)
+        .limit(1)
+        .get();
 
     if (snapshot.docs.isEmpty) return null;
     return snapshot.docs.first.id;

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:petfolio/app/config.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petfolio/features/pets/domain/pet.dart';
 
@@ -21,7 +22,7 @@ class PetsRepository {
   /// and rebuild automatically when the data changes in Firestore.
   Stream<List<Pet>> watchPetsForOwner(String ownerId) {
     return _firestore
-        .collection('pets')
+        .collection(FirestoreCollections.pets)
         .where('ownerId', isEqualTo: ownerId)
         .snapshots()
         .map(
@@ -49,7 +50,7 @@ class PetsRepository {
   /// Create or overwrite a Pet document. If [pet.id] already exists,
   /// the document will be replaced. Use [updatePet] to merge instead.
   Future<void> createPet(Pet pet) async {
-    await _firestore.collection('pets').doc(pet.id).set({
+    await _firestore.collection(FirestoreCollections.pets).doc(pet.id).set({
       'ownerId': pet.ownerId,
       'name': pet.name,
       'species': pet.species,
@@ -66,7 +67,10 @@ class PetsRepository {
 
   /// Update specific fields on a Pet.
   Future<void> updatePet(String petId, Map<String, dynamic> updates) async {
-    await _firestore.collection('pets').doc(petId).update({
+    await _firestore
+        .collection(FirestoreCollections.pets)
+        .doc(petId)
+        .update({
       ...updates,
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -74,14 +78,17 @@ class PetsRepository {
 
   /// Delete a Pet by id.
   Future<void> deletePet(String petId) async {
-    await _firestore.collection('pets').doc(petId).delete();
+    await _firestore.collection(FirestoreCollections.pets).doc(petId).delete();
   }
 
   /// Get a Pet by id.
   /// Returns null if the pet doesn't exist or can't be accessed.
   Future<Pet?> getPetById(String petId) async {
     try {
-      final doc = await _firestore.collection('pets').doc(petId).get();
+      final doc = await _firestore
+          .collection(FirestoreCollections.pets)
+          .doc(petId)
+          .get();
       if (!doc.exists) return null;
 
       final data = doc.data()!;

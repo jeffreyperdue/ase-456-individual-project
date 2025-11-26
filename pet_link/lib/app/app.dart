@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:petfolio/app/theme.dart';
 import 'package:petfolio/app/app_startup.dart';
 import 'package:petfolio/app/main_scaffold.dart';
+import 'package:petfolio/app/config.dart';
 import 'package:petfolio/features/pets/presentation/pages/edit_pet_page.dart';
 import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
 import 'package:petfolio/features/auth/presentation/pages/auth_wrapper.dart';
@@ -23,19 +24,20 @@ class PetfolioApp extends StatelessWidget {
     return MaterialApp(
       title: 'Petfolio',
       theme: buildTheme(),
-      initialRoute: '/',
+      initialRoute: RouteNames.root,
       routes: {
-        '/': (_) => const AppStartup(child: AuthWrapper(child: MainScaffold())),
-        '/login': (_) => const LoginPage(),
-        '/signup': (_) => const SignUpPage(),
-        '/welcome': (_) => const WelcomeView(),
-        '/onboarding-success': (_) => const SuccessView(),
-        '/sitter-dashboard':
+        RouteNames.root: (_) =>
+            const AppStartup(child: AuthWrapper(child: MainScaffold())),
+        RouteNames.login: (_) => const LoginPage(),
+        RouteNames.signup: (_) => const SignUpPage(),
+        RouteNames.welcome: (_) => const WelcomeView(),
+        RouteNames.onboardingSuccess: (_) => const SuccessView(),
+        RouteNames.sitterDashboard:
             (_) => const AuthWrapper(child: SitterDashboardPage()),
         // Use onGenerateRoute for passing arguments for edit
       },
       onGenerateRoute: (settings) {
-        if (settings.name == '/edit') {
+        if (settings.name == RouteNames.editPet) {
           final args = settings.arguments; // may be null for create
           return MaterialPageRoute(
             builder:
@@ -45,7 +47,7 @@ class PetfolioApp extends StatelessWidget {
                 ),
           );
         }
-        if (settings.name == '/pet-detail') {
+        if (settings.name == RouteNames.petDetail) {
           final args = settings.arguments;
           if (args is Map && args['pet'] is Pet) {
             return MaterialPageRoute(
@@ -53,7 +55,7 @@ class PetfolioApp extends StatelessWidget {
             );
           }
         }
-        if (settings.name == '/share-pet') {
+        if (settings.name == RouteNames.sharePet) {
           final args = settings.arguments;
           if (args is Map && args['pet'] is Pet) {
             return MaterialPageRoute(
@@ -61,7 +63,7 @@ class PetfolioApp extends StatelessWidget {
             );
           }
         }
-        if (settings.name == '/public-profile') {
+        if (settings.name == RouteNames.publicProfile) {
           final args = settings.arguments;
           if (args is Map && args['tokenId'] is String) {
             return MaterialPageRoute(

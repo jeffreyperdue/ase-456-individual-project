@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:petfolio/app/config.dart';
 import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
 import 'package:petfolio/services/error_handler.dart';
 import 'package:petfolio/app/utils/feedback_utils.dart';
@@ -41,7 +42,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
       if (mounted) {
         FeedbackUtils.showSuccess(context, 'Signed in successfully');
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, RouteNames.root);
       }
     } catch (e) {
       if (mounted) {
