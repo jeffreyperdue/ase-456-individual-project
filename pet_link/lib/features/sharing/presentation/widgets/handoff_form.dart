@@ -32,13 +32,19 @@ class HandoffForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Limit roles exposed in the UI to currently supported ones.
+    final availableRoles = [
+      AccessRole.viewer,
+      AccessRole.sitter,
+    ];
+
     return Form(
       key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Access Role Selection
-          _buildRoleSelection(context),
+          _buildRoleSelection(context, availableRoles),
 
           const SizedBox(height: 16),
 
@@ -47,24 +53,17 @@ class HandoffForm extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // Recipient User ID
-          _buildRecipientUserId(context),
-
-          const SizedBox(height: 16),
-
-          // Contact Information
-          _buildContactInfo(context),
-
-          const SizedBox(height: 16),
-
-          // Notes
-          _buildNotes(context),
+          // Advanced options (recipient, contact, notes)
+          _buildAdvancedOptions(context),
         ],
       ),
     );
   }
 
-  Widget _buildRoleSelection(BuildContext context) {
+  Widget _buildRoleSelection(
+    BuildContext context,
+    List<AccessRole> availableRoles,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -75,7 +74,7 @@ class HandoffForm extends StatelessWidget {
           ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
-        ...AccessRole.values.map((role) {
+        ...availableRoles.map((role) {
           return RadioListTile<AccessRole>(
             title: Row(
               children: [
@@ -107,6 +106,29 @@ class HandoffForm extends StatelessWidget {
             contentPadding: EdgeInsets.zero,
           );
         }).toList(),
+      ],
+    );
+  }
+
+  Widget _buildAdvancedOptions(BuildContext context) {
+    return ExpansionTile(
+      title: Text(
+        'Advanced options',
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      subtitle: Text(
+        'Recipient, contact info, and notes (optional)',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+      ),
+      childrenPadding: const EdgeInsets.only(top: 8, bottom: 4),
+      children: [
+        _buildRecipientUserId(context),
+        const SizedBox(height: 16),
+        _buildContactInfo(context),
+        const SizedBox(height: 16),
+        _buildNotes(context),
       ],
     );
   }
