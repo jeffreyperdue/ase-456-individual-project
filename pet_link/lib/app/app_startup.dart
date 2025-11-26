@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
-import 'package:petfolio/features/auth/presentation/pages/auth_wrapper.dart';
 import 'package:petfolio/features/onboarding/welcome_view.dart';
 import 'package:petfolio/services/local_storage_provider.dart';
 import 'package:petfolio/features/pets/presentation/pages/edit_pet_page.dart';
@@ -17,6 +16,8 @@ class AppStartup extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final onboardingComplete = ref.watch(onboardingCompleteProvider);
+    // We still read hasSeenWelcome in case we want it for future microcopy,
+    // but routing for logged-out users now always shows WelcomeView.
     final hasSeenWelcome = ref.watch(hasSeenWelcomeProvider);
 
     // Debug logging
@@ -28,20 +29,10 @@ class AppStartup extends ConsumerWidget {
     return authState.when(
       data: (user) {
         if (user == null) {
-          // User is not authenticated - check if they've seen welcome screen
-          return hasSeenWelcome.when(
-            data: (seen) {
-              if (!seen) {
-                // Show welcome screen for first-time users
-                return const WelcomeView();
-              } else {
-                // Show login page for returning users
-                return const AuthWrapper(child: SizedBox()); // Will show LoginPage
-              }
-            },
-            loading: () => _buildLoadingScreen(context),
-            error: (error, stack) => _buildErrorScreen(context, ref, error.toString()),
-          );
+          // User is not authenticated - always show welcome screen.
+          // hasSeenWelcome is ignored for routing to keep behavior consistent
+          // on cold start and after logout.
+          return const WelcomeView();
         } else {
           // User is authenticated - check onboarding completion
           return onboardingComplete.when(

@@ -37,6 +37,10 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
   @override
   Widget build(BuildContext context) {
     final accessTokensAsync = ref.watch(petAccessTokensProvider(widget.pet.id));
+    final authState = ref.watch(authProvider);
+    final isAuthLoading = authState.isLoading;
+    final isUserSignedIn =
+        authState is AsyncData && authState.value != null;
 
     return Scaffold(
       appBar: AppBar(
@@ -58,7 +62,10 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
             const SizedBox(height: 16),
 
             // Create new handoff form
-            _buildCreateHandoffForm(context),
+            _buildCreateHandoffForm(
+              context,
+              isAuthReady: !isAuthLoading && isUserSignedIn,
+            ),
 
             const SizedBox(height: 16),
 
@@ -137,7 +144,10 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
     );
   }
 
-  Widget _buildCreateHandoffForm(BuildContext context) {
+  Widget _buildCreateHandoffForm(
+    BuildContext context, {
+    required bool isAuthReady,
+  }) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       child: Padding(
@@ -173,7 +183,7 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: _isCreating ? null : _createHandoff,
+                onPressed: (!_isCreating && isAuthReady) ? _createHandoff : null,
                 icon:
                     _isCreating
                         ? SizedBox(
@@ -182,7 +192,9 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
                           child: LoadingWidgets.inlineLoading(),
                         )
                         : const Icon(Icons.share),
-                label: Text(_isCreating ? 'Creating...' : 'Create Handoff'),
+                label: Text(
+                  _isCreating ? 'Creating...' : 'Generate Share Link / QR',
+                ),
               ),
             ),
           ],
@@ -276,11 +288,31 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
   Future<void> _createHandoff() async {
     if (!_formKey.currentState!.validate()) return;
 
+    final authState = ref.read(authProvider);
+    if (authState.isLoading) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Finishing sign-in, please try again in a moment')),
+      );
+      return;
+    }
+
     final firebaseUserAsync = ref.read(firebaseUserProvider);
     final firebaseUser = firebaseUserAsync.value;
 
     if (firebaseUser == null) {
-      FeedbackUtils.showError(context, 'Please sign in to create handoffs', customMessage: 'Please sign in to create handoffs');
+      // If auth reports a signed-in user but firebaseUser hasn't caught up yet,
+      // treat this as a transient state instead of a sign-in error.
+      if (authState is AsyncData && authState.value != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Preparing your account, please try again in a moment'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please sign in to create handoffs')),
+        );
+      }
       return;
     }
 
@@ -303,17 +335,12 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
       // Refresh the tokens list
       ref.invalidate(petAccessTokensProvider(widget.pet.id));
 
-      // Show success message with action to view QR
+      // Navigate directly to QR / link page
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Handoff created successfully'),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            action: SnackBarAction(
-              label: 'View QR',
-              textColor: Colors.white,
-              onPressed: () => _showTokenQRCode(context, token),
-            ),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QRCodeDisplayPage(token: token),
           ),
         );
       }

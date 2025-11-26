@@ -490,6 +490,15 @@ class CarePlanViewPage extends ConsumerWidget {
   }
 
   Widget _buildErrorState(BuildContext context, Object error) {
+    final message = error.toString();
+    final isIndexError =
+        message.contains('failed-precondition') && message.contains('index');
+
+    final displayMessage = isIndexError
+        ? 'Care plan data is temporarily unavailable due to a Firestore configuration issue (missing index). '
+            'This does not affect your data; the app owner needs to create the required index in Firebase.'
+        : message;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32),
@@ -510,7 +519,7 @@ class CarePlanViewPage extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              error.toString(),
+              displayMessage,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
