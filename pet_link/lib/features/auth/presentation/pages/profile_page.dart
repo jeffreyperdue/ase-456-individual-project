@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/services/error_handler.dart';
+import 'package:petfolio/app/utils/feedback_utils.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -55,16 +58,12 @@ class ProfilePage extends ConsumerWidget {
                   try {
                     await ref.read(authProvider.notifier).signOut();
                     if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: const Text('Signed out'), backgroundColor: Theme.of(context).colorScheme.secondary),
-                      );
+                      FeedbackUtils.showSuccess(context, 'Signed out successfully');
                       Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
                     }
                   } catch (e) {
                     if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Sign out failed: $e'), backgroundColor: Theme.of(context).colorScheme.error),
-                      );
+                      ErrorHandler.handleError(context, e);
                     }
                   }
                 },
@@ -72,8 +71,20 @@ class ProfilePage extends ConsumerWidget {
             ],
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Failed to load profile: $e')),
+        loading: () => LoadingWidgets.circularProgress(),
+        error: (e, _) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Failed to load profile: ${ErrorHandler.mapErrorToMessage(e)}'),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => ref.invalidate(authProvider),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

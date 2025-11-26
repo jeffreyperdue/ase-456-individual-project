@@ -10,6 +10,8 @@ import 'package:petfolio/features/auth/domain/user.dart' as app_user;
 import 'package:petfolio/features/lost_found/presentation/widgets/lost_pet_poster_widget.dart';
 import 'package:petfolio/features/lost_found/domain/lost_report.dart';
 import 'package:petfolio/features/lost_found/presentation/state/lost_found_provider.dart';
+import 'package:petfolio/services/error_handler.dart';
+import 'package:petfolio/app/utils/feedback_utils.dart';
 
 /// Page that displays the lost pet poster and allows sharing.
 class LostPetPosterPage extends ConsumerStatefulWidget {
@@ -125,11 +127,7 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
 
       if (boundary == null) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to capture poster. Please try again.'),
-            ),
-          );
+          FeedbackUtils.showError(context, 'Failed to capture poster. Please try again.', customMessage: 'Failed to capture poster. Please try again.');
         }
         return;
       }
@@ -141,11 +139,7 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
 
       if (byteData == null) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Failed to generate poster image'),
-            ),
-          );
+          FeedbackUtils.showError(context, 'Failed to generate poster image', customMessage: 'Failed to generate poster image');
         }
         return;
       }
@@ -170,13 +164,7 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
           );
 
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Poster uploaded successfully'),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 2),
-              ),
-            );
+            FeedbackUtils.showSuccess(context, 'Poster uploaded successfully');
           }
         } catch (e) {
           // Log the error for debugging
@@ -185,20 +173,11 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
           // Continue with sharing even if upload fails
           // Show a non-blocking warning message
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Poster generated but upload failed: ${e.toString()}'),
-                backgroundColor: Colors.orange,
-                duration: const Duration(seconds: 4),
-                action: SnackBarAction(
-                  label: 'Retry',
-                  textColor: Colors.white,
-                  onPressed: () {
-                    // Retry upload in the background
-                    _retryUpload(imageBytes);
-                  },
-                ),
-              ),
+            FeedbackUtils.showErrorWithRetry(
+              context,
+              e,
+              () => _retryUpload(imageBytes),
+              customMessage: 'Poster generated but upload failed. Tap retry to try again.',
             );
           }
         }
@@ -217,11 +196,7 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error sharing poster: $e'),
-          ),
-        );
+        ErrorHandler.handleError(context, e);
       }
     } finally {
       if (mounted) {
@@ -260,20 +235,12 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
         );
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('${widget.pet.name} has been marked as found!'),
-            ),
-          );
+          FeedbackUtils.showSuccess(context, '${widget.pet.name} has been marked as found!');
           Navigator.pop(context); // Go back to pet detail page
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error marking pet as found: $e'),
-            ),
-          );
+          ErrorHandler.handleError(context, e);
         }
       }
     }
@@ -336,24 +303,12 @@ class _LostPetPosterPageState extends ConsumerState<LostPetPosterPage> {
       );
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Poster uploaded successfully'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
+        FeedbackUtils.showSuccess(context, 'Poster uploaded successfully');
       }
     } catch (e) {
       debugPrint('Retry upload error: $e');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Upload failed: ${e.toString()}'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 4),
-          ),
-        );
+        ErrorHandler.handleError(context, e);
       }
     }
   }

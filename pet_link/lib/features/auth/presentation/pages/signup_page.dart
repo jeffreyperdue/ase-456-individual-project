@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/services/error_handler.dart';
+import 'package:petfolio/app/utils/feedback_utils.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
@@ -46,16 +49,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           );
 
       if (mounted) {
+        FeedbackUtils.showSuccess(context, 'Account created successfully!');
         Navigator.pushReplacementNamed(context, '/');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Sign up failed: ${e.toString()}'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ErrorHandler.handleError(context, e);
       }
     } finally {
       if (mounted) {
@@ -207,16 +206,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                 const SizedBox(height: 32),
 
                 // Sign up button
-                FilledButton(
-                  onPressed: _isLoading ? null : _signUp,
-                  child:
-                      _isLoading
-                          ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                          : const Text('Create Account'),
+                LoadingWidgets.loadingButton(
+                  text: 'Create Account',
+                  onPressed: _signUp,
+                  isLoading: _isLoading,
                 ),
                 const SizedBox(height: 16),
 

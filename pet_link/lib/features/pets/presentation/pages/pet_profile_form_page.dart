@@ -5,6 +5,9 @@ import '../../domain/pet_profile.dart';
 import '../../application/pet_profile_form_provider.dart';
 import '../../application/pet_profile_providers.dart';
 import '../../../auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/services/error_handler.dart';
+import 'package:petfolio/app/utils/feedback_utils.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
 
 /// Page for creating and editing pet profiles.
 class PetProfileFormPage extends ConsumerStatefulWidget {
@@ -322,20 +325,12 @@ class _PetProfileFormPageState extends ConsumerState<PetProfileFormPage> {
               // Save button
               SizedBox(
                 width: double.infinity,
-                child: FilledButton(
-                  onPressed: formState.isSubmitting ? null : _saveProfile,
-                  child:
-                      formState.isSubmitting
-                          ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                          : Text(
-                            widget.existingProfile == null
-                                ? 'Create Profile'
-                                : 'Update Profile',
-                          ),
+                child: LoadingWidgets.loadingButton(
+                  text: widget.existingProfile == null
+                      ? 'Create Profile'
+                      : 'Update Profile',
+                  onPressed: _saveProfile,
+                  isLoading: formState.isSubmitting,
                 ),
               ),
 
@@ -460,7 +455,7 @@ class _PetProfileFormPageState extends ConsumerState<PetProfileFormPage> {
     final currentUser = ref.read(currentUserDataProvider);
 
     if (currentUser == null) {
-      _showErrorSnackBar('You must be signed in to save pet profiles');
+      FeedbackUtils.showError(context, 'You must be signed in to save pet profiles', customMessage: 'You must be signed in to save pet profiles');
       return;
     }
 
@@ -477,17 +472,18 @@ class _PetProfileFormPageState extends ConsumerState<PetProfileFormPage> {
 
       if (widget.existingProfile != null) {
         await profileNotifier.updatePetProfile(profile);
-        _showSuccessSnackBar('Pet profile updated successfully!');
+        FeedbackUtils.showSuccess(context, 'Pet profile updated successfully!');
       } else {
         await profileNotifier.createPetProfile(profile);
-        _showSuccessSnackBar('Pet profile created successfully!');
+        FeedbackUtils.showSuccess(context, 'Pet profile created successfully!');
       }
 
       if (mounted) {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      formNotifier.setError('Failed to save pet profile: $e');
+      ErrorHandler.handleError(context, e);
+      formNotifier.setError('Failed to save pet profile: ${ErrorHandler.mapErrorToMessage(e)}');
     } finally {
       formNotifier.setSubmitting(false);
     }
@@ -521,36 +517,15 @@ class _PetProfileFormPageState extends ConsumerState<PetProfileFormPage> {
           petProfileForPetProvider(widget.pet.id).notifier,
         );
         await profileNotifier.deletePetProfile();
-        _showSuccessSnackBar('Pet profile deleted successfully!');
+        FeedbackUtils.showSuccess(context, 'Pet profile deleted successfully!');
 
         if (mounted) {
           Navigator.of(context).pop();
         }
       } catch (e) {
-        _showErrorSnackBar('Failed to delete pet profile: $e');
+        ErrorHandler.handleError(context, e);
       }
     }
   }
 
-  void _showSuccessSnackBar(String message) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
-      );
-    }
-  }
-
-  void _showErrorSnackBar(String message) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
-    }
-  }
 }

@@ -11,6 +11,9 @@ import '../../application/care_plan_form_provider.dart';
 import '../../application/care_plan_provider.dart';
 import '../../application/providers.dart';
 import '../../../auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/services/error_handler.dart';
+import 'package:petfolio/app/utils/feedback_utils.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
 
 /// Page for creating and editing care plans.
 class CarePlanFormPage extends ConsumerStatefulWidget {
@@ -433,28 +436,12 @@ class _CarePlanFormPageState extends ConsumerState<CarePlanFormPage> {
 
     return SizedBox(
       width: double.infinity,
-      child: FilledButton(
-        onPressed:
-            formState.isValid && !formState.isSubmitting ? _saveCarePlan : null,
-        child:
-            formState.isSubmitting
-                ? const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                    SizedBox(width: 8),
-                    Text('Saving...'),
-                  ],
-                )
-                : Text(
-                  widget.existingCarePlan != null
-                      ? 'Update Care Plan'
-                      : 'Create Care Plan',
-                ),
+      child: LoadingWidgets.loadingButton(
+        text: widget.existingCarePlan != null
+            ? 'Update Care Plan'
+            : 'Create Care Plan',
+        onPressed: formState.isValid && !formState.isSubmitting ? _saveCarePlan : null,
+        isLoading: formState.isSubmitting,
       ),
     );
   }
@@ -491,7 +478,7 @@ class _CarePlanFormPageState extends ConsumerState<CarePlanFormPage> {
     final currentUser = ref.read(currentUserDataProvider);
 
     if (currentUser == null) {
-      _showErrorSnackBar('You must be signed in to save care plans');
+      FeedbackUtils.showError(context, 'You must be signed in to save care plans', customMessage: 'You must be signed in to save care plans');
       return;
     }
 
@@ -507,17 +494,17 @@ class _CarePlanFormPageState extends ConsumerState<CarePlanFormPage> {
 
       if (widget.existingCarePlan != null) {
         await carePlanNotifier.updateCarePlan(carePlan);
-        _showSuccessSnackBar('Care plan updated successfully!');
+        FeedbackUtils.showSuccess(context, 'Care plan updated successfully!');
       } else {
         await carePlanNotifier.createCarePlan(carePlan);
-        _showSuccessSnackBar('Care plan created successfully!');
+        FeedbackUtils.showSuccess(context, 'Care plan created successfully!');
       }
 
       if (mounted) {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      _showErrorSnackBar('Failed to save care plan: $e');
+      ErrorHandler.handleError(context, e);
     } finally {
       formNotifier.setSubmitting(false);
     }
@@ -558,35 +545,14 @@ class _CarePlanFormPageState extends ConsumerState<CarePlanFormPage> {
 
     try {
       await carePlanNotifier.deleteCarePlan(widget.existingCarePlan!.id);
-      _showSuccessSnackBar('Care plan deleted successfully');
+      FeedbackUtils.showSuccess(context, 'Care plan deleted successfully');
 
       if (mounted) {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      _showErrorSnackBar('Failed to delete care plan: $e');
+      ErrorHandler.handleError(context, e);
     }
   }
 
-  void _showSuccessSnackBar(String message) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
-      );
-    }
-  }
-
-  void _showErrorSnackBar(String message) {
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(message),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ),
-      );
-    }
-  }
 }

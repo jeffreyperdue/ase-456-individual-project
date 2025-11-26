@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:petfolio/features/auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/services/error_handler.dart';
+import 'package:petfolio/app/utils/feedback_utils.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -37,16 +40,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           );
 
       if (mounted) {
+        FeedbackUtils.showSuccess(context, 'Signed in successfully');
         Navigator.pushReplacementNamed(context, '/');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Sign in failed: ${e.toString()}'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ErrorHandler.handleError(context, e);
       }
     } finally {
       if (mounted) {
@@ -57,12 +56,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _sendPasswordReset() async {
     if (_emailController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please enter your email address first'),
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-        ),
-      );
+      FeedbackUtils.showInfo(context, 'Please enter your email address first');
       return;
     }
 
@@ -72,21 +66,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           .sendPasswordResetEmail(_emailController.text.trim());
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Password reset email sent! Check your inbox.'),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
+        FeedbackUtils.showSuccess(context, 'Password reset email sent! Check your inbox.');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to send reset email: ${e.toString()}'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ErrorHandler.handleError(context, e);
       }
     }
   }
@@ -195,16 +179,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 const SizedBox(height: 24),
 
                 // Sign in button
-                FilledButton(
-                  onPressed: _isLoading ? null : _signIn,
-                  child:
-                      _isLoading
-                          ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                          : const Text('Sign In'),
+                LoadingWidgets.loadingButton(
+                  text: 'Sign In',
+                  onPressed: _signIn,
+                  isLoading: _isLoading,
                 ),
                 const SizedBox(height: 16),
 

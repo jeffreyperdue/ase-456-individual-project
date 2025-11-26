@@ -11,6 +11,9 @@ import '../widgets/sitter_task_list.dart';
 import '../../../auth/presentation/state/auth_provider.dart';
 import '../../../pets/data/pets_repository.dart';
 import 'public_pet_profile_page.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
+import 'package:petfolio/app/widgets/retry_widget.dart';
+import 'package:petfolio/services/error_handler.dart';
 
 /// Provider for sitter's access tokens.
 final sitterTokensProvider = FutureProvider<List<AccessToken>>((ref) async {
@@ -110,8 +113,11 @@ class SitterDashboardPage extends ConsumerWidget {
 
           return _buildDashboard(context, ref, tokens, firebaseUser.uid);
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => _buildError(context, 'Failed to load sitter data: $error'),
+        loading: () => LoadingWidgets.circularProgress(),
+        error: (error, stack) => RetryWidget(
+          message: ErrorHandler.mapErrorToMessage(error),
+          onRetry: () => ref.invalidate(sitterTokensProvider),
+        ),
       ),
     );
   }

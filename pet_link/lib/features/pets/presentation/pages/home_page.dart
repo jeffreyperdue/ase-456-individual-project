@@ -7,6 +7,9 @@ import 'package:petfolio/features/pets/presentation/pages/pet_detail_page.dart';
 import 'package:petfolio/features/care_plans/application/pet_with_plan_provider.dart';
 import 'package:petfolio/features/care_plans/presentation/widgets/care_plan_dashboard.dart';
 import 'package:petfolio/features/sharing/presentation/pages/share_pet_page.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
+import 'package:petfolio/app/widgets/retry_widget.dart';
+import 'package:petfolio/services/error_handler.dart';
 
 /// Shows the list of pets and a FAB to add a dummy pet.
 class HomePage extends ConsumerWidget {
@@ -22,20 +25,11 @@ class HomePage extends ConsumerWidget {
     return Stack(
       children: [
         petsAsync.when(
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error:
-              (error, stack) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Error: $error'),
-                    ElevatedButton(
-                      onPressed: () => ref.invalidate(petsProvider),
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              ),
+          loading: () => LoadingWidgets.circularProgress(),
+          error: (error, stack) => RetryWidget(
+            message: ErrorHandler.mapErrorToMessage(error),
+            onRetry: () => ref.invalidate(petsProvider),
+          ),
           data:
               (pets) =>
                   pets.isEmpty

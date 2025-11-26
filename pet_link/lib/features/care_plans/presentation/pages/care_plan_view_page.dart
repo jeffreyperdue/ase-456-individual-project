@@ -7,6 +7,9 @@ import '../../application/care_task_provider.dart';
 import '../widgets/care_task_card.dart';
 import 'care_plan_form_page.dart';
 import '../../../auth/application/user_provider.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
+import 'package:petfolio/app/widgets/retry_widget.dart';
+import 'package:petfolio/services/error_handler.dart';
 
 /// Page for viewing a care plan and upcoming tasks.
 class CarePlanViewPage extends ConsumerWidget {
@@ -36,8 +39,11 @@ class CarePlanViewPage extends ConsumerWidget {
           }
           return _buildCarePlanContent(context, ref, carePlan);
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => _buildErrorState(context, error),
+        loading: () => LoadingWidgets.circularProgress(),
+        error: (error, stack) => RetryWidget(
+          message: ErrorHandler.mapErrorToMessage(error),
+          onRetry: () => ref.invalidate(carePlanForPetProvider(pet.id)),
+        ),
       ),
     );
   }
@@ -181,7 +187,7 @@ class CarePlanViewPage extends ConsumerWidget {
                 ],
               );
             },
-            loading: () => const Center(child: CircularProgressIndicator()),
+            loading: () => LoadingWidgets.circularProgress(),
             error: (error, stack) => _buildErrorState(context, error),
           ),
         ],

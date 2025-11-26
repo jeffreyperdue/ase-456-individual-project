@@ -10,6 +10,10 @@ import '../widgets/handoff_form.dart';
 import '../widgets/access_token_card.dart';
 import '../pages/qr_code_display_page.dart';
 import '../../../auth/presentation/state/auth_provider.dart';
+import 'package:petfolio/services/error_handler.dart';
+import 'package:petfolio/app/utils/feedback_utils.dart';
+import 'package:petfolio/app/widgets/loading_widgets.dart';
+import 'package:petfolio/app/widgets/retry_widget.dart';
 
 /// Screen for creating and managing pet handoffs (access tokens).
 class SharePetPage extends ConsumerStatefulWidget {
@@ -172,10 +176,10 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
                 onPressed: _isCreating ? null : _createHandoff,
                 icon:
                     _isCreating
-                        ? const SizedBox(
+                        ? SizedBox(
                           width: 16,
                           height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: LoadingWidgets.inlineLoading(),
                         )
                         : const Icon(Icons.share),
                 label: Text(_isCreating ? 'Creating...' : 'Create Handoff'),
@@ -257,17 +261,11 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
                       }).toList(),
                 );
               },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error:
-                  (error, stack) => Container(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'Error loading tokens: $error',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                  ),
+              loading: () => LoadingWidgets.circularProgress(),
+              error: (error, stack) => RetryWidget(
+                message: ErrorHandler.mapErrorToMessage(error),
+                onRetry: () => ref.invalidate(petAccessTokensProvider(widget.pet.id)),
+              ),
             ),
           ],
         ),
@@ -282,9 +280,7 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
     final firebaseUser = firebaseUserAsync.value;
 
     if (firebaseUser == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please sign in to create handoffs')),
-      );
+      FeedbackUtils.showError(context, 'Please sign in to create handoffs', customMessage: 'Please sign in to create handoffs');
       return;
     }
 
@@ -307,13 +303,15 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
       // Refresh the tokens list
       ref.invalidate(petAccessTokensProvider(widget.pet.id));
 
-      // Show success message
+      // Show success message with action to view QR
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Handoff created successfully'),
+            content: const Text('Handoff created successfully'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
             action: SnackBarAction(
               label: 'View QR',
+              textColor: Colors.white,
               onPressed: () => _showTokenQRCode(context, token),
             ),
           ),
@@ -329,12 +327,7 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
       });
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to create handoff: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ErrorHandler.handleError(context, e);
       }
     } finally {
       if (mounted) {
@@ -400,12 +393,7 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to generate QR code: $e'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
+        ErrorHandler.handleError(context, e);
       }
     }
   }
@@ -419,9 +407,7 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
 
   void _manageToken(BuildContext context, AccessToken token) {
     // TODO: Implement token management dialog
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Token management coming soon')),
-    );
+    FeedbackUtils.showInfo(context, 'Token management coming soon');
   }
 
   Future<void> _deleteToken(BuildContext context, AccessToken token) async {
@@ -460,18 +446,11 @@ class _SharePetPageState extends ConsumerState<SharePetPage> {
         ref.invalidate(petAccessTokensProvider(widget.pet.id));
 
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Handoff deleted successfully')),
-          );
+          FeedbackUtils.showSuccess(context, 'Handoff deleted successfully');
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to delete handoff: $e'),
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-          );
+          ErrorHandler.handleError(context, e);
         }
       }
     }
