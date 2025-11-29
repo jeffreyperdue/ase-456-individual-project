@@ -159,7 +159,7 @@ class PetProfile {
 
   @override
   int get hashCode {
-    return Object.hash(
+  return Object.hash(
       id,
       petId,
       ownerId,
@@ -173,7 +173,7 @@ class PetProfile {
       lastCheckupDate,
       currentMedications,
       generalNotes,
-      tags,
+      Object.hashAll(tags),
       createdAt,
       updatedAt,
     );

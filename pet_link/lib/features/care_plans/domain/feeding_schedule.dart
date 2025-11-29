@@ -101,8 +101,8 @@ class FeedingSchedule {
     return other is FeedingSchedule &&
         other.id == id &&
         other.label == label &&
-        _listEquals(other.times, times) &&
-        other.daysOfWeek == daysOfWeek &&
+      _listEquals(other.times, times) &&
+      _listEquals(other.daysOfWeek, daysOfWeek) &&
         other.active == active &&
         other.notes == notes;
   }

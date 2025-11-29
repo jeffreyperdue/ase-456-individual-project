@@ -18,33 +18,24 @@ final usersByIdsProvider = FutureProvider.family<Map<String, app_user.User>, Lis
 
 /// Provider for getting a user's display name by ID.
 /// Returns the display name, or email if display name is not available, or null if user not found.
-final userDisplayNameProvider = FutureProvider.family<String?, String>((ref, userId) async {
-  final userAsync = ref.watch(userByIdProvider(userId));
-  return userAsync.when(
-    data: (user) {
-      if (user == null) return null;
-      return user.displayName ?? user.email;
-    },
-    loading: () => null,
-    error: (_, __) => null,
-  );
+final userDisplayNameProvider =
+    FutureProvider.family<String?, String>((ref, userId) async {
+  final user = await ref.watch(userByIdProvider(userId).future);
+  if (user == null) return null;
+  return user.displayName ?? user.email;
 });
 
 /// Provider for getting display names for multiple users.
 /// Returns a map of userId -> displayName (or email if no display name).
-final userDisplayNamesProvider = FutureProvider.family<Map<String, String>, List<String>>((ref, userIds) async {
+final userDisplayNamesProvider =
+    FutureProvider.family<Map<String, String>, List<String>>(
+        (ref, userIds) async {
   if (userIds.isEmpty) return {};
-  final usersAsync = ref.watch(usersByIdsProvider(userIds));
-  return usersAsync.when(
-    data: (users) {
-      final Map<String, String> displayNames = {};
-      for (final entry in users.entries) {
-        displayNames[entry.key] = entry.value.displayName ?? entry.value.email;
-      }
-      return displayNames;
-    },
-    loading: () => <String, String>{},
-    error: (_, __) => <String, String>{},
-  );
+  final users = await ref.watch(usersByIdsProvider(userIds).future);
+  final Map<String, String> displayNames = {};
+  for (final entry in users.entries) {
+    displayNames[entry.key] = entry.value.displayName ?? entry.value.email;
+  }
+  return displayNames;
 });
 

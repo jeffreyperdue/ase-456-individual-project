@@ -115,8 +115,8 @@ class Medication {
         other.id == id &&
         other.name == name &&
         other.dosage == dosage &&
-        _listEquals(other.times, times) &&
-        other.daysOfWeek == daysOfWeek &&
+      _listEquals(other.times, times) &&
+      _listEquals(other.daysOfWeek, daysOfWeek) &&
         other.withFood == withFood &&
         other.notes == notes &&
         other.active == active;

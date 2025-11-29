@@ -69,9 +69,8 @@ void main() {
         // Assert
         verify(mockPetsRepository.updatePet(pet.id, {'isLost': true}))
             .called(1);
-        verify(mockLostReportRepository.createLostReport(any)).called(1);
 
-        // Verify lost report data
+        // Verify lost report data and that it was created exactly once
         verify(mockLostReportRepository.createLostReport(
           argThat(
             predicate<LostReport>((report) =>

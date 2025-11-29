@@ -126,9 +126,10 @@ void main() {
         );
         expect(validationErrors, contains('Medication name is required'));
         expect(validationErrors, contains('Medication dosage is required'));
+        // When name is empty, the validation message uses the empty name.
         expect(
           validationErrors,
-          contains('Medication "Test Medication" must have at least one time'),
+          contains('Medication "" must have at least one time'),
         );
       });
     });
