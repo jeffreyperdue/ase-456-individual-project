@@ -16,45 +16,53 @@
                     <h3>Project Progress Report</h3>
                     <p>A comprehensive overview of the project's development timeline, features, and milestones.</p>
                     <div class="pdf-viewer">
-                        <iframe src="{{ "pdfs/project_progress.marp.pdf" | relURL }}#toolbar=0" type="application/pdf" width="100%" height="600px" frameborder="0">
-                            <p>Your browser does not support PDFs. <a href="{{ "pdfs/project_progress.marp.pdf" | relURL }}" download>Download the PDF</a> instead.</p>
+                        <iframe src="{{ "pdfs/project_progress.marp.pdf" | absURL }}#toolbar=0" type="application/pdf" width="100%" height="600px" frameborder="0" style="border: none;">
+                            <p>Your browser does not support PDFs. <a href="{{ "pdfs/project_progress.marp.pdf" | absURL }}" download>Download the PDF</a> instead.</p>
                         </iframe>
                     </div>
-                    <a href="{{ "pdfs/project_progress.marp.pdf" | relURL }}" class="btn btn-primary" download>📄 Download PDF</a>
+                    <a href="{{ "pdfs/project_progress.marp.pdf" | absURL }}" class="btn btn-primary" download>📄 Download PDF</a>
                 </div>
 
                 <div class="doc-card">
                     <h3>System Design & Architecture</h3>
                     <p>Detailed documentation of the system architecture, technical decisions, and design patterns used in Petfolio.</p>
                     <div class="pdf-viewer">
-                        <iframe src="{{ "pdfs/system_design_architecture.marp.pdf" | relURL }}#toolbar=0" type="application/pdf" width="100%" height="600px" frameborder="0">
-                            <p>Your browser does not support PDFs. <a href="{{ "pdfs/system_design_architecture.marp.pdf" | relURL }}" download>Download the PDF</a> instead.</p>
+                        <iframe src="{{ "pdfs/system_design_architecture.marp.pdf" | absURL }}#toolbar=0" type="application/pdf" width="100%" height="600px" frameborder="0" style="border: none;">
+                            <p>Your browser does not support PDFs. <a href="{{ "pdfs/system_design_architecture.marp.pdf" | absURL }}" download>Download the PDF</a> instead.</p>
                         </iframe>
                     </div>
-                    <a href="{{ "pdfs/system_design_architecture.marp.pdf" | relURL }}" class="btn btn-primary" download>📄 Download PDF</a>
+                    <a href="{{ "pdfs/system_design_architecture.marp.pdf" | absURL }}" class="btn btn-primary" download>📄 Download PDF</a>
                 </div>
 
                 <div class="doc-card">
                     <h3>User Guide</h3>
                     <p>Complete user guide with instructions on how to use all features of the Petfolio application.</p>
                     <div class="pdf-viewer">
-                        <iframe src="{{ "pdfs/user_guide.marp.pdf" | relURL }}#toolbar=0" type="application/pdf" width="100%" height="600px" frameborder="0">
-                            <p>Your browser does not support PDFs. <a href="{{ "pdfs/user_guide.marp.pdf" | relURL }}" download>Download the PDF</a> instead.</p>
+                        <iframe src="{{ "pdfs/user_guide.marp.pdf" | absURL }}#toolbar=0" type="application/pdf" width="100%" height="600px" frameborder="0" style="border: none;">
+                            <p>Your browser does not support PDFs. <a href="{{ "pdfs/user_guide.marp.pdf" | absURL }}" download>Download the PDF</a> instead.</p>
                         </iframe>
                     </div>
-                    <a href="{{ "pdfs/user_guide.marp.pdf" | relURL }}" class="btn btn-primary" download>📄 Download PDF</a>
+                    <a href="{{ "pdfs/user_guide.marp.pdf" | absURL }}" class="btn btn-primary" download>📄 Download PDF</a>
                 </div>
 
                 <div class="doc-card">
                     <h3>Final Presentation</h3>
                     <p>The final project presentation covering all aspects of the Petfolio application, including features, architecture, and development process.</p>
                     <div class="pdf-viewer">
-                        <iframe src="{{ "pdfs/final_presentation.marp.pdf" | relURL }}#toolbar=0" type="application/pdf" width="100%" height="600px" frameborder="0">
-                            <p>Your browser does not support PDFs. <a href="{{ "pdfs/final_presentation.marp.pdf" | relURL }}" download>Download the PDF</a> instead.</p>
+                        <iframe src="{{ "pdfs/final_presentation.marp.pdf" | absURL }}#toolbar=0" type="application/pdf" width="100%" height="600px" frameborder="0" style="border: none;">
+                            <p>Your browser does not support PDFs. <a href="{{ "pdfs/final_presentation.marp.pdf" | absURL }}" download>Download the PDF</a> instead.</p>
                         </iframe>
                     </div>
-                    <a href="{{ "pdfs/final_presentation.marp.pdf" | relURL }}" class="btn btn-primary" download>📄 Download PDF</a>
+                    <a href="{{ "pdfs/final_presentation.marp.pdf" | absURL }}" class="btn btn-primary" download>📄 Download PDF</a>
                 </div>
+            </div>
+            
+            <div class="quick-links" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                <h3 style="margin-bottom: 1rem;">Quick Links</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="{{ .Site.BaseURL }}">← Return to Home</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="{{ .Site.Params.github }}" target="_blank" rel="noopener">View Project on GitHub</a></li>
+                </ul>
             </div>
         </div>
     </div>

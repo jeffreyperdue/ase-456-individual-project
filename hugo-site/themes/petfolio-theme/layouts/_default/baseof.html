@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
     <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
-    <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+    <link rel="stylesheet" href="{{ "css/style.css" | absURL }}">
 </head>
 <body>
     <header class="site-header">
         <div class="container">
             <nav class="navbar">
                 <div class="nav-brand">
-                    <a href="{{ "/" | relURL }}">🐾 Petfolio</a>
+                    <a href="{{ .Site.BaseURL }}">🐾 Petfolio</a>
                 </div>
                 <ul class="nav-menu">
                     {{ range .Site.Menus.main }}
-                    <li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>
+                    <li><a href="{{ .URL | absURL }}">{{ .Name }}</a></li>
                     {{ end }}
                 </ul>
             </nav>
