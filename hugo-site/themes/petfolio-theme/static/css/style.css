@@ -276,8 +276,8 @@ body {
 /* Documentation Cards */
 .docs-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: 3rem;
     margin-top: 2rem;
 }
 
@@ -309,6 +309,31 @@ body {
 
 .doc-card .btn {
     display: inline-block;
+    margin-top: 1rem;
+}
+
+/* PDF Viewer */
+.pdf-viewer {
+    width: 100%;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-light);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pdf-viewer iframe {
+    display: block;
+    width: 100%;
+    border: none;
+    background: white;
+}
+
+@media (max-width: 768px) {
+    .pdf-viewer iframe {
+        height: 500px !important;
+    }
 }
 
 /* Footer */
