@@ -50,11 +50,9 @@ class CareDashboardPage extends ConsumerWidget {
             icon: const Icon(Icons.today),
             label: const Text("Today's Tasks"),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const TodayTasksPage(),
-                ),
-              );
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const TodayTasksPage()));
             },
           ),
         ),
@@ -78,22 +76,23 @@ Future<void> _onAddCarePlanPressed(BuildContext context, WidgetRef ref) async {
     // No pets yet - prompt user to create one first.
     final createPet = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('No pets found'),
-        content: const Text(
-          'You need to add a pet before creating a care plan. Would you like to add a pet now?',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+      builder:
+          (context) => AlertDialog(
+            title: const Text('No pets found'),
+            content: const Text(
+              'You need to add a pet before creating a care plan. Would you like to add a pet now?',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('Cancel'),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('Add Pet'),
+              ),
+            ],
           ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Add Pet'),
-          ),
-        ],
-      ),
     );
 
     if (createPet == true) {
@@ -125,16 +124,18 @@ Future<void> _onAddCarePlanPressed(BuildContext context, WidgetRef ref) async {
                   final pet = pets[index];
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundImage: pet.photoUrl != null
-                          ? NetworkImage(pet.photoUrl!)
-                          : null,
-                      child: pet.photoUrl == null
-                          ? Text(
-                              pet.name.isNotEmpty
-                                  ? pet.name[0].toUpperCase()
-                                  : '?',
-                            )
-                          : null,
+                      backgroundImage:
+                          pet.photoUrl != null
+                              ? NetworkImage(pet.photoUrl!)
+                              : null,
+                      child:
+                          pet.photoUrl == null
+                              ? Text(
+                                pet.name.isNotEmpty
+                                    ? pet.name[0].toUpperCase()
+                                    : '?',
+                              )
+                              : null,
                     ),
                     title: Text(pet.name),
                     subtitle: Text(pet.species),
@@ -156,22 +157,23 @@ Future<void> _onAddCarePlanPressed(BuildContext context, WidgetRef ref) async {
       // Pet already has a care plan – ask whether to edit it.
       final editExisting = await showDialog<bool>(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Care plan already exists'),
-          content: Text(
-            '${selectedPet.name} already has an active care plan. Would you like to edit it?',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
+        builder:
+            (context) => AlertDialog(
+              title: const Text('Care plan already exists'),
+              content: Text(
+                '${selectedPet.name} already has an active care plan. Would you like to edit it?',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Edit Care Plan'),
+                ),
+              ],
             ),
-            FilledButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text('Edit Care Plan'),
-            ),
-          ],
-        ),
       );
 
       if (editExisting != true) {
@@ -180,11 +182,7 @@ Future<void> _onAddCarePlanPressed(BuildContext context, WidgetRef ref) async {
     }
 
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => CarePlanFormPage(pet: selectedPet),
-      ),
+      MaterialPageRoute(builder: (_) => CarePlanFormPage(pet: selectedPet)),
     );
   }
 }
-
-

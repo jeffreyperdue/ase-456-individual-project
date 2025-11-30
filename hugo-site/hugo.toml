@@ -1,0 +1,29 @@
+baseURL = 'https://jeffreyperdue.github.io/ase-456-individual-project/'
+languageCode = 'en-us'
+title = 'Petfolio - Cross-Platform Pet Care App'
+theme = 'petfolio-theme'
+
+[pagination]
+  pagerSize = 10
+
+[params]
+  description = "A shared hub for pet care. Petfolio keeps owners, families, and sitters perfectly in sync with real-time schedules, reminders, and handoffs."
+  author = "Jeffrey Perdue"
+  github = "https://github.com/jeffreyperdue/ase-456-individual-project"
+
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    identifier = "documentation"
+    name = "Documentation"
+    url = "/documentation/"
+    weight = 2
+  [[menu.main]]
+    identifier = "about"
+    name = "About"
+    url = "/about/"
+    weight = 3

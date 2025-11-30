@@ -1,0 +1,102 @@
+{{ define "main" }}
+<div class="hero">
+    <div class="container">
+        <h1 class="hero-title">Petfolio</h1>
+        <p class="hero-subtitle">Cross-Platform Pet Care Application</p>
+        <p class="hero-description">
+            A shared hub for pet care. Petfolio keeps owners, families, and sitters perfectly in sync with real-time schedules, reminders, and handoffs.
+        </p>
+        <div class="hero-buttons">
+            <a href="/documentation/" class="btn btn-primary">View Documentation</a>
+            <a href="{{ .Site.Params.github }}" class="btn btn-secondary" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+    </div>
+</div>
+
+<div class="features">
+    <div class="container">
+        <h2 class="section-title">Core Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Real-time Sync</h3>
+                <p>Shared care plans, feeding schedules, and reminders update instantly across all linked users.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔐</div>
+                <h3>Role-Based Permissions</h3>
+                <p>Owner, co-caretaker, sitter (time-boxed), and viewer roles with secure access control.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>Simple Handoffs</h3>
+                <p>Generate secure QR codes or links for sitters and temporary caregivers with one tap.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>Single Source of Truth</h3>
+                <p>Diet, medications, routines, and behavior notes in one trusted place.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚨</div>
+                <h3>Lost & Found Alerts</h3>
+                <p>Broadcast missing pet info with auto-generated posters for quick sharing.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Multi-User Support</h3>
+                <p>Perfect coordination between owners, family members, and pet sitters.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tech-stack">
+    <div class="container">
+        <h2 class="section-title">Technology Stack</h2>
+        <div class="tech-grid">
+            <div class="tech-item">
+                <strong>Flutter</strong>
+                <span>Cross-platform framework</span>
+            </div>
+            <div class="tech-item">
+                <strong>Firebase</strong>
+                <span>Backend & authentication</span>
+            </div>
+            <div class="tech-item">
+                <strong>Riverpod</strong>
+                <span>State management</span>
+            </div>
+            <div class="tech-item">
+                <strong>Firestore</strong>
+                <span>Real-time database</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="stats">
+    <div class="container">
+        <h2 class="section-title">Project Statistics</h2>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">122</div>
+                <div class="stat-label">Dart Source Files</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">21,200+</div>
+                <div class="stat-label">Lines of Code</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">457</div>
+                <div class="stat-label">Automated Tests</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">15</div>
+                <div class="stat-label">Major Features</div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}
+
